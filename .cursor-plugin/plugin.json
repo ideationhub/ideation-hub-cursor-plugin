@@ -1,0 +1,68 @@
+{
+  "name": "ideation-hub",
+  "displayName": "Ideation Hub",
+  "version": "1.0.0",
+  "description": "Connect coding agents to Ideation Hub to read, validate, trace, and propose Business Needs, User Needs, PRDs, Designs, Implementations, and Tests via MCP.",
+  "author": {
+    "name": "Ideation Hub",
+    "email": "support@ideationhub.me"
+  },
+  "publisher": "Ideation Hub",
+  "homepage": "https://www.ideationhub.me",
+  "repository": "https://github.com/alexworden/ideation-hub-cursor-plugin",
+  "license": "MIT",
+  "logo": "assets/logo.svg",
+  "category": "Productivity",
+  "keywords": [
+    "ideation-hub",
+    "requirements",
+    "prd",
+    "traceability",
+    "design-controls",
+    "product-management",
+    "alm",
+    "sdlc",
+    "mcp"
+  ],
+  "tags": [
+    "ideation-hub",
+    "requirements",
+    "prd",
+    "traceability",
+    "design-controls",
+    "mcp",
+    "skills"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./mcp.json",
+  "variables": [
+    {
+      "name": "IH_CLIENT_ID",
+      "description": "Ideation Hub Agent Client ID (minted at https://www.ideationhub.me/settings/agents?setup=grokbot)",
+      "required": true,
+      "secret": false
+    },
+    {
+      "name": "IH_CLIENT_SECRET",
+      "description": "Ideation Hub Agent Client Secret (shown once when creating the Agent Credential at https://www.ideationhub.me/settings/agents?setup=grokbot)",
+      "required": true,
+      "secret": true
+    }
+  ],
+  "setupFields": [
+    {
+      "key": "IH_CLIENT_ID",
+      "label": "Agent Client ID",
+      "description": "Create an Agent Credential at https://www.ideationhub.me/settings/agents?setup=grokbot",
+      "secret": false,
+      "required": true
+    },
+    {
+      "key": "IH_CLIENT_SECRET",
+      "label": "Agent Client Secret",
+      "description": "Copy the Client Secret shown once when creating your Agent Credential",
+      "secret": true,
+      "required": true
+    }
+  ]
+}
