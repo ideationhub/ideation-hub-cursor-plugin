@@ -171,6 +171,28 @@ Pass/fail checks when filing or reviewing:
 3. A Business Need statement contains no customer benefit or outcome.
 4. Reviewers flag any misfiled item and re-propose it as the right type; never delete it.
 
+## STPA Guidance (Safety & Reliability Analysis)
+
+When guiding users through safety, reliability, or hazard analysis using STPA (Systems-Theoretic Process Analysis), enforce the **two-stage STPA hierarchy**:
+
+- **Distinct STPA Layer vs. Requirements:** Maintain Losses, Hazards, Control Actions, Unsafe Control Actions (UCAs), Loss Scenarios, and safety Constraints in the dedicated STPA analysis layer—never mix them into Business Needs, User Needs, or Product Requirements lists, and never duplicate STPA text inside PRDs. Link requirements, designs, implementations, and verification tests to STPA records by reference via TraceLinks.
+- **Stage 1 (Pre-Design) — Losses & Hazards Derive from User Needs (`UN-`):**
+  - **Losses** and **Hazards** (system states or conditions that can produce a Loss if left uncontrolled) derive from User Needs (`UN-`) and can be named early, before any Product Requirement or Design exists.
+  - A Hazard is an analysis artifact, not a User Need or Product Requirement, and **safety constraints do NOT live on Hazards**.
+  - Link each Hazard to the Loss(es) it can cause and to the User Need(s) it derives from or informs. Flag any Hazard without a linked design-level Control Action or Constraint as an uncontrolled hazard gap.
+- **Stage 2 (Post-Initial-Design) — Control Actions, UCAs, Loss Scenarios & Constraints Trace Up to Designs (`SD-` / `UXD-` / `CD-`):**
+  - **An initial Design (`SD-`, `UXD-`, or `CD-`, which traces up to a `PRD-`) must be in place before Control Actions, UCAs, Loss Scenarios, and safety Constraints can be identified.** If no Design exists yet, help the user capture pre-design Losses and Hazards on the User Needs first, then establish the PRD and initial Design before deriving STPA controls and constraints.
+  - **Affirmative Control Actions & Constraints:** Express each Control Action and safety Constraint in the affirmative as a mandated behavior on the Design's control structure. Every Control Action and Constraint traces up to the **Design** (`Constraint / CA -> Design -> PRD -> UN`) and links to the pre-design Hazard(s) it controls.
+  - **Four UCA Failure Modes (Never Write Negative Requirements):** For each design-level Control Action, systematically walk all four failure modes against the Design's control loop to derive **Unsafe Control Actions (UCAs)**:
+    1. `not_provided` — Not followed or not provided when needed
+    2. `provided_unsafely` — Followed or provided when unsafe
+    3. `wrong_timing` — Followed too early, too late, or out of order
+    4. `wrong_duration` — Applied too long or stopped too soon
+    Record UCAs under their parent Control Action (which traces to a Design) and link each UCA to the Hazard(s) it can produce and the design-level Constraint(s) that prevent it. **Never enumerate UCAs or negative failure modes as negative Product Requirements.**
+  - **Loss Scenarios & End-to-End Traceability:** Capture **Loss Scenarios** linking a design-level Control Action failure (UCA or causal pathway in the Design's control loop) to its resulting pre-design Hazard and Loss, yielding design-level safety Constraints traced up to the Design. Implementations (`IMPL-`) and Verification Tests (`VER-` / `UT-`) trace to the Design, Constraints, and Loss Scenarios they implement and verify, forming an unbroken chain:
+    `User Need (with Losses & Hazards) <- PRD <- Design <- Control Actions, UCAs, Loss Scenarios & Constraints <- Implementation & Verification Test`.
+- **Tagging (`STPA`):** Attach free-form tags (e.g., `STPA`) to STPA records, related requirements/designs/tests, and pending proposals so users and agents can filter requirements views, STPA views, and the Review queue by tag to inspect and review related items as a group. All agent-authored STPA proposals require human Acceptance in the Review queue.
+
 ## Anti-patterns
 
 - Echoing a secret or token anywhere
