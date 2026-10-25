@@ -45,6 +45,12 @@ Every requirement has a **Human Readable Durable ID** (`BN-`, `UN-`, `PRD-`, `SD
 6. **Determine how best to update those requirements or add to them, keeping the design control structure in place:** TraceLinks up to UNs/business needs, the PRD rubric (testable product behavior, no implementation), and propose-only via Review (§4) unless direct edit is explicitly granted. Apply the layered pattern (see Writing rules): Profile = the person, UN = the WHAT, PRD = the HOW as testable product behavior.
 7. **Recommend, don't just transcribe.** If the user is misguided (e.g. needs in a Profile, a HOW in a User Need), still recommend how to define the requirements clearly: explain the better structure and offer a rewritten version.
 
+## Upward Traceability & Discovery Guidelines (Required When Authoring Requirements)
+
+1. **Every PRD must trace up to one or more User Needs (`PRD --addresses--> UN`).** A PRD with no upward trace to a User Need is an orphan defect; link it to every User Need it satisfies via `parentId` on create and/or `ih_link_requirements` (`sourceId: "<PRD-ID>", type: "addresses", targetId: "<UN-ID>"`).
+2. **Search existing User Needs whenever defining a new requirement.** Before creating or updating a requirement, search all existing User Needs in the Product (`ih_search_requirements` or `ih_get_chain`) and consider which existing User Needs that new requirement satisfies.
+3. **Suggest candidate new User Needs or Business Objectives and ask before creating them.** Also consider which *new* User Needs or Business Objectives (Business Needs) the new requirement would satisfy that are not yet in the Product. Suggest those to the user as candidate proposals and ask whether they are reasonable before creating them.
+
 ## 1. Bot credentials (guide the user)
 
 The user may not know how to do this. Relay these steps in plain words:
