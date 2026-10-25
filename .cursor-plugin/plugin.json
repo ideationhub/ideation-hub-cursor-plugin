@@ -9,7 +9,7 @@
   },
   "publisher": "Ideation Hub",
   "homepage": "https://www.ideationhub.me",
-  "repository": "https://github.com/alexworden/ideation-hub-cursor-plugin",
+  "repository": "https://github.com/ideationhub/ideation-hub-cursor-plugin",
   "license": "MIT",
   "logo": "assets/logo.svg",
   "category": "Productivity",

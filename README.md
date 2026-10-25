@@ -74,7 +74,7 @@ The plugin connects automatically to `https://api.ideationhub.me/api/mcp` using 
 ### 3. Team Marketplace Instant Install (Optional)
 Cursor Teams / Enterprise admins can import this repository directly with zero wait time via **Cursor Dashboard → Settings → Plugins → Import from Repo** using:
 ```text
-https://github.com/alexworden/ideation-hub-cursor-plugin
+https://github.com/ideationhub/ideation-hub-cursor-plugin
 ```
 
 ---
