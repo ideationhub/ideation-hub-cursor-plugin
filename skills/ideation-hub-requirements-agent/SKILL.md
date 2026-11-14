@@ -1,7 +1,7 @@
 ---
 name: ideation-hub-requirements-agent
 description: Connect coding agents to Ideation Hub (www.ideationhub.me) via the MCP server at /api/mcp or REST API to read, validate, trace, suggest, or directly edit Business Needs, User Profiles, User Needs, Product Requirements, Designs, Implementations, Tests, and TraceLinks.
-version: 1.5.7
+version: 1.5.8
 ---
 
 # Ideation Hub — Requirements & Traceability Agent Skill
@@ -215,6 +215,7 @@ After proposing, tell the issuer in one short message:
 - **Limit each body to that requirement's purpose.** On a new requirement or a revision, include only the detail that states that requirement. Omit background and explanatory subject detail that is not needed to state it. A separate capability belongs in its own traced requirement.
   - Example of this rule, not a change to a living record: a requirement whose purpose is an optional per-project STPA layer states that per-project on/off capability. It does not enumerate what the STPA layer contains or explain STPA.
 - **Plain, unambiguous sentences (every type).** A newcomer should understand each title and body on first read. Name a clear subject that exists in the product, with an accurate verb (a permission declares; it does not decide). No jargon, coined phrases, or internal shorthand (e.g. "no silent living writes"). Avoid words with two readings (e.g. "per"; write "for each"). Keep sentences short and state the point first; put any list after it instead of packing many items into one sentence. Run the editor pass in §4 step 5. Stay concise.
+- **Titles never name a User Profile or role** (for example "Agents …", "Product Owner can …", "Developers …"). The trace from the Product Requirement up to its User Need, and from there to the Profile, already carries who it is for. Write the title as the capability itself.
 - A PRD states only **WHAT the product must do**, concisely. A checker can pass/fail it without the linked UN.
 - No who / why / role / purpose / outcome — the TraceLinks up to the UN carry that.
 - No component counts, UI surfaces (pages, dialogs, controls), implementation shape, or design/engineering decisions.
@@ -337,3 +338,4 @@ When guiding users through safety, reliability, or hazard analysis using STPA (S
 - 1.5.5 (2026-11-14) — Every trace is many-to-many, zero or more on each side, including User Need ↔ Profile. Hard rule: a Product Requirement never links directly to a Profile. Untraced records are coverage gaps to flag, not defects.
 - 1.5.6 (2026-11-14) — One "Traceability rules" section holds every trace cardinality rule, the PRD-to-Profile hard rule, and the Profile capability rule. Other sections link to it.
 - 1.5.7 (2026-11-14) — Traceability rules: a User Need traces up to a User Profile only (drop User Need → Business Need). This section uses Business Objective.
+- 1.5.8 (2026-11-14) — Titles never name a User Profile or role; write the title as the capability itself.
