@@ -1,7 +1,7 @@
 ---
 name: ideation-hub-requirements-agent
 description: Connect coding agents to Ideation Hub (www.ideationhub.me) via the MCP server at /api/mcp or REST API to read, validate, trace, suggest, or directly edit Business Needs, User Profiles, User Needs, Product Requirements, Designs, Implementations, Tests, and TraceLinks.
-version: 1.5.3
+version: 1.5.4
 ---
 
 # Ideation Hub — Requirements & Traceability Agent Skill
@@ -149,7 +149,7 @@ Workflow:
    - **Clarify ambiguous definitions or structure before any write.** If duplicate, conflicting, overlapping, or related requirements leave ambiguity about which record to create or update, whether to combine or separate capabilities, or which traces are appropriate, explain the relevant records and recommend a structure, then ask the user to resolve that ambiguity. Do not silently merge, broaden scope, withdraw, or invent relationships. Clear, non-conflicting matches do not require another confirmation. A second `add` of an existing key conflicts.
 3. **Consider traces whenever modifying a requirement.** Before any edit, withdrawal, obsolete, reclassify, or link change, read the requirement's inbound and outbound traces (`ih_get_requirement`, `ih_get_neighbors`). Check whether each existing trace still holds after the change, whether any should be added, removed, or redirected, and whether linked requirements need their own updates. Where you are not certain a trace or related change is right, ask the user for guidance rather than guessing. After a trim, split, or merge, re-check that no obligation is unowned or double-owned and that traces still hold.
 4. **Explain planned related changes and ask before acting on recommendations.** Before writing, tell the user the main change and every related change you plan (trace additions or removals, edits to linked requirements, withdrawals), with a one-line rationale for each, and ask any open questions. Proceed only with what the user confirms; changes the user explicitly asked for need no second confirmation, but related changes you recommend do.
-5. **Editor pass before proposing (required).** Clear, readable requirements are a primary goal. Reread each title, then each body, as a careful human editor would for a reader new to the product: Is the subject a real thing in the product? Is the verb accurate? Could any word or phrase be read two ways? Would the reader stumble or need context? Rewrite until it reads naturally and cannot be misread; titles get the most care.
+5. **Editor pass before proposing (required).** Clear, readable requirements are a primary goal. Reread each title, then each body, as a careful human editor would for a reader new to the product: Is the subject a real thing in the product? Is the verb accurate? Could any word or phrase be read two ways? Is any sentence too long, or does it bury its point behind a list? Would the reader stumble or need context? Rewrite until it reads naturally and cannot be misread; titles get the most care.
 6. **Validate and propose with a parent.** Use `ih_validate_against_trace`, or `ih_propose_bulk_push` with `dryRun: true` when staging several changes, before writing.
 
 | Change | Call | Notes |
@@ -192,7 +192,7 @@ After proposing, tell the issuer in one short message:
 
 - **Limit each body to that requirement's purpose.** On a new requirement or a revision, include only the detail that states that requirement. Omit background and explanatory subject detail that is not needed to state it. A separate capability belongs in its own traced requirement.
   - Example of this rule, not a change to a living record: a requirement whose purpose is an optional per-project STPA layer states that per-project on/off capability. It does not enumerate what the STPA layer contains or explain STPA.
-- **Plain, unambiguous sentences (every type).** A newcomer should understand each title and body on first read. Name a clear subject that exists in the product, with an accurate verb (a permission declares; it does not decide). No jargon, coined phrases, or internal shorthand (e.g. "no silent living writes"). Avoid words with two readings (e.g. "per"; write "for each"). Run the editor pass in §4 step 5. Stay concise.
+- **Plain, unambiguous sentences (every type).** A newcomer should understand each title and body on first read. Name a clear subject that exists in the product, with an accurate verb (a permission declares; it does not decide). No jargon, coined phrases, or internal shorthand (e.g. "no silent living writes"). Avoid words with two readings (e.g. "per"; write "for each"). Keep sentences short and state the point first; put any list after it instead of packing many items into one sentence. Run the editor pass in §4 step 5. Stay concise.
 - A PRD states only **WHAT the product must do**, concisely. A checker can pass/fail it without the linked UN.
 - No who / why / role / purpose / outcome — the TraceLinks up to the UN carry that.
 - No component counts, UI surfaces (pages, dialogs, controls), implementation shape, or design/engineering decisions.
@@ -308,5 +308,6 @@ When guiding users through safety, reliability, or hazard analysis using STPA (S
 - 1.4.9 (2026-11-09) — reconciled with the published plugin copy (ideationhub/ideation-hub-cursor-plugin 1.4.0) so both copies match: kept its STPA Guidance section, Upward Traceability & Discovery Guidelines, Design/Implementation/Test record types and id prefixes, broader `realized_by` / `checked_by` definitions, MCP-header authentication, MCP tool parameter signatures, and MCP tool names in the conversational and propose workflows. No behavior rules changed from 1.4.8.
 - 1.5.0 (2026-11-14) — Scope boundary and overlap rubric: broad-but-disjoint allowed, one owner per obligation, mandatory overlap check and boundary before propose, fix options, ask on partial overlap. Prefer-update limited to full duplicates.
 - 1.5.1 (2026-11-14) — Plain, complete sentences: no jargon or internal shorthand in titles or bodies.
+- 1.5.4 (2026-11-14) — Short sentences, point first, lists after the point.
 - 1.5.3 (2026-11-14) — Required editor pass: reread titles and bodies like a careful human editor before proposing.
 - 1.5.2 (2026-11-14) — Clear real subject and accurate verb, avoid double-meaning words, reread titles and bodies before proposing.
