@@ -1,7 +1,7 @@
 ---
 name: ideation-hub-requirements-agent
 description: Connect coding agents to Ideation Hub (www.ideationhub.me) via the MCP server at /api/mcp or REST API to read, validate, trace, suggest, or directly edit Business Needs, User Profiles, User Needs, Product Requirements, Designs, Implementations, Tests, and TraceLinks.
-version: 1.4.9
+version: 1.5.0
 ---
 
 # Ideation Hub — Requirements & Traceability Agent Skill
@@ -145,9 +145,9 @@ Soft delete is a proposal for Suggest, and applies immediately when that credent
 Workflow:
 
 1. **Read neighbors first.** Pull the chain (`ih_get_chain`) or neighbors (`ih_get_neighbors`) for the parent you will attach to.
-2. **Check duplicates, conflicts, and related requirements before writing.** Search existing requirements and pending proposals by meaning as well as title and statement, including their profiles, scope, status, and traces. Prefer updating an appropriate existing requirement over creating a duplicate. For every proposed new or updated requirement, evaluate other related requirements and all appropriate upward trace targets; link only where the proposed capability genuinely satisfies the need, not merely because wording is similar. Preserve distinctions such as tenant-wide versus product-specific authority.
+2. **Check duplicates, conflicts, overlap, and related requirements before writing.** Search existing requirements and pending proposals by meaning as well as title and statement, including their profiles, scope, status, and traces. Compare against same-type siblings under the intended parent and same-type records product-wide, and state the one-line scope boundary before proposing (see Scope boundary and overlap). Prefer updating an existing requirement only for a full duplicate; if overlap is partial, ask. For every proposed new or updated requirement, evaluate other related requirements and all appropriate upward trace targets; link only where the proposed capability genuinely satisfies the need, not merely because wording is similar. Preserve distinctions such as tenant-wide versus product-specific authority.
    - **Clarify ambiguous definitions or structure before any write.** If duplicate, conflicting, overlapping, or related requirements leave ambiguity about which record to create or update, whether to combine or separate capabilities, or which traces are appropriate, explain the relevant records and recommend a structure, then ask the user to resolve that ambiguity. Do not silently merge, broaden scope, withdraw, or invent relationships. Clear, non-conflicting matches do not require another confirmation. A second `add` of an existing key conflicts.
-3. **Consider traces whenever modifying a requirement.** Before any edit, withdrawal, obsolete, reclassify, or link change, read the requirement's inbound and outbound traces (`ih_get_requirement`, `ih_get_neighbors`). Check whether each existing trace still holds after the change, whether any should be added, removed, or redirected, and whether linked requirements need their own updates. Where you are not certain a trace or related change is right, ask the user for guidance rather than guessing.
+3. **Consider traces whenever modifying a requirement.** Before any edit, withdrawal, obsolete, reclassify, or link change, read the requirement's inbound and outbound traces (`ih_get_requirement`, `ih_get_neighbors`). Check whether each existing trace still holds after the change, whether any should be added, removed, or redirected, and whether linked requirements need their own updates. Where you are not certain a trace or related change is right, ask the user for guidance rather than guessing. After a trim, split, or merge, re-check that no obligation is unowned or double-owned and that traces still hold.
 4. **Explain planned related changes and ask before acting on recommendations.** Before writing, tell the user the main change and every related change you plan (trace additions or removals, edits to linked requirements, withdrawals), with a one-line rationale for each, and ask any open questions. Proceed only with what the user confirms; changes the user explicitly asked for need no second confirmation, but related changes you recommend do.
 5. **Validate and propose with a parent.** Use `ih_validate_against_trace`, or `ih_propose_bulk_push` with `dryRun: true` when staging several changes, before writing.
 
@@ -206,6 +206,16 @@ After proposing, tell the issuer in one short message:
 
 **Bad:** "MCP server at /api/mcp with existing agent surface plus three tools." (count + implementation)  
 **Good:** "On one Product, requirement titles and statements can be searched …" with checks like "Pass: search returns a matching requirement and none from another Product."
+
+## Scope boundary and overlap (rubric)
+
+Apply before every add or edit. Breadth is fine; overlapping another same-type requirement is not.
+
+- **Boundary.** One line: this owns [capability] under [conditions]; it does not own [adjacent]. If you cannot name the outside, ask.
+- **One coherent feature.** Fields and conditions under that feature are fine. Two separately testable features are not. One owner per obligation; do not copy it into another body — trace instead.
+- **Overlap.** Same-type records both claiming the same obligation. Not overlap: parent vs child, a TraceLink, or the same words for a different actor or scope.
+- **Fix.** Narrow, merge, split, or move the shared behavior to one owner and trace. Children of a parent partition its scope (flag gaps). A parent may be broader than any one child.
+- **Ask** when overlap is partial, more than one fix is reasonable, the boundary is unclear, or traces look wrong. Never silently merge, broaden, or withdraw.
 
 ## Business Need vs User Need (rubric)
 
@@ -294,3 +304,4 @@ When guiding users through safety, reliability, or hazard analysis using STPA (S
 - 1.4.7 (2026-11-08) — the same suggest credential that created a pending add may call `ih_restore_draft_title`. The creator or the recorded withdrawing actor may call `reopen_proposal`. Editors keep their existing access. A foreign credential is refused. The snapshot checks, ids, proposal payload, statement, and traces stay as in 1.4.6.
 - 1.4.8 (2026-11-09) — semantic duplicate checks + clarify ambiguity; check traces on every change and explain related changes with rationale before acting; no "As a X, I need" user-story form in User Needs, UN-097 example.
 - 1.4.9 (2026-11-09) — reconciled with the published plugin copy (ideationhub/ideation-hub-cursor-plugin 1.4.0) so both copies match: kept its STPA Guidance section, Upward Traceability & Discovery Guidelines, Design/Implementation/Test record types and id prefixes, broader `realized_by` / `checked_by` definitions, MCP-header authentication, MCP tool parameter signatures, and MCP tool names in the conversational and propose workflows. No behavior rules changed from 1.4.8.
+- 1.5.0 (2026-11-14) — Scope boundary and overlap rubric: broad-but-disjoint allowed, one owner per obligation, mandatory overlap check and boundary before propose, fix options, ask on partial overlap. Prefer-update limited to full duplicates.
