@@ -24,7 +24,7 @@ Ideation Hub is a requirements workspace built on **design controls**: a traceab
 
 **Traceability.** Traces run from a child up to its parents: PRD → UN → BN. Every trace is many-to-many. A record traces up to zero or more parents and is traced to by zero or more children. A one-to-one trace needs an explicit stated reason. Traces let you prove coverage (every BN and UN is served by something), spot gaps, and run impact analysis (what is affected when a record changes).
 
-Cardinality (each side zero or more):
+Cardinality. In each pair, the first type traces up to the second. Each side has zero or more.
 
 - User Need ↔ Business Need; Product Requirement ↔ Business Need; Product Requirement ↔ User Need.
 - User Need ↔ User Profile. A User Need belongs to zero or more Profiles, and a Profile has zero or more User Needs.
