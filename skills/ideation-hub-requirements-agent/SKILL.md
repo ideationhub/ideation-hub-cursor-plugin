@@ -1,7 +1,7 @@
 ---
 name: ideation-hub-requirements-agent
 description: Connect coding agents to Ideation Hub (www.ideationhub.me) via the MCP server at /api/mcp or REST API to read, validate, trace, suggest, or directly edit Business Needs, User Profiles, User Needs, Product Requirements, Designs, Implementations, Tests, and TraceLinks.
-version: 1.5.1
+version: 1.5.2
 ---
 
 # Ideation Hub — Requirements & Traceability Agent Skill
@@ -191,7 +191,7 @@ After proposing, tell the issuer in one short message:
 
 - **Limit each body to that requirement's purpose.** On a new requirement or a revision, include only the detail that states that requirement. Omit background and explanatory subject detail that is not needed to state it. A separate capability belongs in its own traced requirement.
   - Example of this rule, not a change to a living record: a requirement whose purpose is an optional per-project STPA layer states that per-project on/off capability. It does not enumerate what the STPA layer contains or explain STPA.
-- **Plain, complete sentences (every type).** A newcomer should understand each title and body without decoding it. No jargon, coined phrases, or internal shorthand (e.g. "no silent living writes"); state the actual behavior. Stay concise.
+- **Plain, unambiguous sentences (every type).** A newcomer should understand each title and body on first read. Name a clear subject that exists in the product, with an accurate verb (a permission declares; it does not decide). No jargon, coined phrases, or internal shorthand (e.g. "no silent living writes"). Avoid words with two readings (e.g. "per"; write "for each"). Before proposing, reread the title and body once as a newcomer and rephrase anything unclear. Stay concise.
 - A PRD states only **WHAT the product must do**, concisely. A checker can pass/fail it without the linked UN.
 - No who / why / role / purpose / outcome — the TraceLinks up to the UN carry that.
 - No component counts, UI surfaces (pages, dialogs, controls), implementation shape, or design/engineering decisions.
@@ -307,3 +307,4 @@ When guiding users through safety, reliability, or hazard analysis using STPA (S
 - 1.4.9 (2026-11-09) — reconciled with the published plugin copy (ideationhub/ideation-hub-cursor-plugin 1.4.0) so both copies match: kept its STPA Guidance section, Upward Traceability & Discovery Guidelines, Design/Implementation/Test record types and id prefixes, broader `realized_by` / `checked_by` definitions, MCP-header authentication, MCP tool parameter signatures, and MCP tool names in the conversational and propose workflows. No behavior rules changed from 1.4.8.
 - 1.5.0 (2026-11-14) — Scope boundary and overlap rubric: broad-but-disjoint allowed, one owner per obligation, mandatory overlap check and boundary before propose, fix options, ask on partial overlap. Prefer-update limited to full duplicates.
 - 1.5.1 (2026-11-14) — Plain, complete sentences: no jargon or internal shorthand in titles or bodies.
+- 1.5.2 (2026-11-14) — Clear real subject and accurate verb, avoid double-meaning words, reread titles and bodies before proposing.
