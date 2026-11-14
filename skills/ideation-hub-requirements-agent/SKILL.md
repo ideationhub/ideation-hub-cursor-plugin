@@ -1,7 +1,7 @@
 ---
 name: ideation-hub-requirements-agent
 description: Connect coding agents to Ideation Hub (www.ideationhub.me) via the MCP server at /api/mcp or REST API to read, validate, trace, suggest, or directly edit Business Needs, User Profiles, User Needs, Product Requirements, Designs, Implementations, Tests, and TraceLinks.
-version: 1.5.6
+version: 1.5.7
 ---
 
 # Ideation Hub — Requirements & Traceability Agent Skill
@@ -39,17 +39,16 @@ Every requirement has a **Human Readable Durable ID** (`BN-`, `UN-`, `PRD-`, `SD
 
 Every trace is many-to-many, with zero or more on each side, and existing links are always preserved.
 
-Allowed upward traces (child → parent). A Business Need is also called a Business Objective.
+Allowed upward traces (child → parent). A Business Objective is also called a Business Need.
 
-- User Need → Business Need
-- Product Requirement → Business Need and User Need
+- Product Requirement → Business Objective and User Need
 - User Need → User Profile
 - System Design → Product Requirement
 - UX Design → Product Requirement
 - Component Design → System Design
 - Implementation → Component Design, UX Design and System Design
 - Validation Test → Product Requirement, UX Design, System Design, Component Design and Implementation
-- Verification Test → User Need and Business Need
+- Verification Test → User Need and Business Objective
 - Unit Test → Implementation and Component Design
 
 **Hard rule:** a Product Requirement never links directly to a User Profile. It reaches a profile only through a User Need.
@@ -337,3 +336,4 @@ When guiding users through safety, reliability, or hazard analysis using STPA (S
 - 1.5.2 (2026-11-14) — Clear real subject and accurate verb, avoid double-meaning words, reread titles and bodies before proposing.
 - 1.5.5 (2026-11-14) — Every trace is many-to-many, zero or more on each side, including User Need ↔ Profile. Hard rule: a Product Requirement never links directly to a Profile. Untraced records are coverage gaps to flag, not defects.
 - 1.5.6 (2026-11-14) — One "Traceability rules" section holds every trace cardinality rule, the PRD-to-Profile hard rule, and the Profile capability rule. Other sections link to it.
+- 1.5.7 (2026-11-14) — Traceability rules: a User Need traces up to a User Profile only (drop User Need → Business Need). This section uses Business Objective.
