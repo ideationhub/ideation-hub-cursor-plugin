@@ -32,6 +32,7 @@ Cardinality (each side zero or more):
 - Component Design ↔ System Design.
 - Implementation ↔ Component Design, UX Design, and System Design.
 - Validation Test ↔ Product Requirement, UX Design, System Design, Component Design, and Implementation.
+- Verification Test ↔ User Need and Business Need.
 - **Hard rule:** a Product Requirement never links directly to a User Profile. It reaches a Profile only through its User Needs.
 
 TraceLink types:
