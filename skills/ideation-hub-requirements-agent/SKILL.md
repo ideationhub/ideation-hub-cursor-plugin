@@ -1,7 +1,7 @@
 ---
 name: ideation-hub-requirements-agent
 description: Connect coding agents to Ideation Hub (www.ideationhub.me) via the MCP server at /api/mcp or REST API to read, validate, trace, suggest, or directly edit Business Needs, User Profiles, User Needs, Product Requirements, Designs, Implementations, Tests, and TraceLinks.
-version: 1.5.4
+version: 1.5.5
 ---
 
 # Ideation Hub — Requirements & Traceability Agent Skill
@@ -15,23 +15,33 @@ Ideation Hub is a requirements workspace built on **design controls**: a traceab
 
 - **Business Need** (`BN-NNN`) — a business objective. *Purpose:* why the business invests. *Good one:* one outcome the business wants, measurable where possible, free of solution detail.
 - **User Profile** — who the product serves. *Purpose:* anchor needs to a real role. *Good one:* a clear `name` plus a `roleIntent` saying what that role is trying to get done. It declares only the actual person (who they are, their role and context), never their needs; those are User Needs. The API identifies it by UUID or exact name.
-  *Rule:* A User Profile must name who the product serves: a role or type of person with a job to do, not a mechanism or a single behavior. If a proposed Profile is really one capability (e.g. "issues scoped agent credentials"), it does not qualify as a Profile; propose that capability as a Product Requirement traced to an existing Profile instead. Proposals that fail this rule should be rejected, with this reasoning given.
-- **User Need** (`UN-NNN`) — what one Profile must be able to do. *Purpose:* the user's view of value. *Good one:* "Ability to …", one capability, one Profile; WHAT the user wants to achieve, never HOW (that is the PRDs tracing up to it); it `addresses` the Business Need it serves.
-- **Product Requirement** (`PRD-NNN`) — WHAT the product must do. *Purpose:* a buildable, checkable commitment. *Good one:* concise, testable, no who/why or design (see the PRD rubric below); it `addresses` its User Need.
+  *Rule:* A User Profile must name who the product serves: a role or type of person with a job to do, not a mechanism or a single behavior. If a proposed Profile is really one capability (e.g. "issues scoped agent credentials"), it does not qualify as a Profile; propose that capability as a Product Requirement that traces to a User Need of an existing Profile, not to the Profile itself. Proposals that fail this rule should be rejected, with this reasoning given.
+- **User Need** (`UN-NNN`) — what a user must be able to do. *Purpose:* the user's view of value. *Good one:* "Ability to …", one capability, linked to every Profile it serves; WHAT the user wants to achieve, never HOW (that is the PRDs tracing up to it); it `addresses` the Business Needs it serves.
+- **Product Requirement** (`PRD-NNN`) — WHAT the product must do. *Purpose:* a buildable, checkable commitment. *Good one:* concise, testable, no who/why or design (see the PRD rubric below); it `addresses` the User Needs and Business Needs it satisfies.
 - **Design & Implementation** (`SD-NNN`, `UXD-NNN`, `CD-NNN`, `IMPL-NNN`) — System Design, UX Design (`mockupUrl`), Component Design, and Implementation (`repoPath`, `prUrl`, `commitSha`).
 - **Verification & Validation Tests** (`VT-NNN`, `VER-NNN`, `UT-NNN`) — Validation Tests (check UNs), Verification Tests (check PRDs), and Unit Tests (`testPath`, `lastResult`: `pass` | `fail` | `not_run`).
 - **Acceptance criteria / verification** — short pass/fail checks on a PRD, each naming an observable result. Verification methods run those checks to show the PRD is met.
 
-**Traceability.** Every child traces up to its parent: PRD → UN → BN. This lets you prove coverage (every BN and UN is served by something), spot gaps, and run impact analysis (what is affected when a record changes).
+**Traceability.** Traces run from a child up to its parents: PRD → UN → BN. Every trace is many-to-many. A record traces up to zero or more parents and is traced to by zero or more children. A one-to-one trace needs an explicit stated reason. Traces let you prove coverage (every BN and UN is served by something), spot gaps, and run impact analysis (what is affected when a record changes).
+
+Cardinality (each side zero or more):
+
+- User Need ↔ Business Need; Product Requirement ↔ Business Need; Product Requirement ↔ User Need.
+- User Need ↔ User Profile. A User Need belongs to zero or more Profiles, and a Profile has zero or more User Needs.
+- System Design ↔ Product Requirement; UX Design ↔ Product Requirement.
+- Component Design ↔ System Design.
+- Implementation ↔ Component Design, UX Design, and System Design.
+- Validation Test ↔ Product Requirement, UX Design, System Design, Component Design, and Implementation.
+- **Hard rule:** a Product Requirement never links directly to a User Profile. It reaches a Profile only through its User Needs.
 
 TraceLink types:
 
-- `addresses` — child → parent (UN addresses BN; PRD addresses UN).
+- `addresses` — child → parent (UN addresses BN; PRD addresses UN or BN).
 - `refined_by` — a record is refined by a more detailed one.
 - `realized_by` — a need is realized by a requirement, or a requirement or design by a downstream design or implementation.
 - `checked_by` — a need, requirement, or implementation is checked (verified or validated) by another record, such as a test.
 
-Walking **up** answers *why* this exists; walking **down** answers *how* it is delivered and checked. An **orphan** (no parent) or a **gap** (a BN with no UN, a UN with no PRD, a PRD with no checks) is a defect: fix it or flag it.
+Walking **up** answers *why* this exists; walking **down** answers *how* it is delivered and checked. A record with no parent, or a **gap** (a BN with no UN, a UN with no PRD, a PRD with no checks), is allowed. Flag it for the user as a coverage gap.
 
 Every requirement has a **Human Readable Durable ID** (`BN-`, `UN-`, `PRD-`, `SD-`, `UXD-`, `CD-`, `IMPL-`, `VT-`, `VER-`, `UT-` + number, sequenced per type inside a Product) plus a UUID and a revision `@n`. Human Readable Durable IDs never get renumbered or reused.
 
@@ -47,7 +57,7 @@ Every requirement has a **Human Readable Durable ID** (`BN-`, `UN-`, `PRD-`, `SD
 
 ## Upward Traceability & Discovery Guidelines (Required When Authoring Requirements)
 
-1. **Every PRD must trace up to one or more User Needs (`PRD --addresses--> UN`).** A PRD with no upward trace to a User Need is an orphan defect; link it to every User Need it satisfies via `parentId` on create and/or `ih_link_requirements` (`sourceId: "<PRD-ID>", type: "addresses", targetId: "<UN-ID>"`).
+1. **Trace each PRD up to every User Need and Business Need it satisfies (`PRD --addresses--> UN` or `BN`).** A PRD traces up to zero or more of each. A PRD with no upward trace is allowed; flag it as a coverage gap. Link it via `parentId` on create and/or `ih_link_requirements` (`sourceId: "<PRD-ID>", type: "addresses", targetId: "<UN-ID>"`).
 2. **Search existing User Needs whenever defining a new requirement.** Before creating or updating a requirement, search all existing User Needs in the Product (`ih_search_requirements` or `ih_get_chain`) and consider which existing User Needs that new requirement satisfies.
 3. **Suggest candidate new User Needs or Business Objectives and ask before creating them.** Also consider which *new* User Needs or Business Objectives (Business Needs) the new requirement would satisfy that are not yet in the Product. Suggest those to the user as candidate proposals and ask whether they are reasonable before creating them.
 
@@ -202,9 +212,9 @@ After proposing, tell the issuer in one short message:
 - **No user-story form in User Needs.** Never write "As a <role>, I need …" or otherwise restate who the user is; the User Profile trace already carries the role, so it is redundant. State only the objective, simply, without mechanisms such as credentials, permission models, CRUD lists, or approval workflow (those belong in the PRDs beneath).
   - *Example (UN-097, 2026-11-09):* Bad: "As a Product Owner enabling agents, I need an agent with Product-scoped credentials and RBAC to Create, Read, Update, and Delete requirements on that Product via MCP, with Create/Update/Delete as proposals only." Good: "Create an account for agents to read and propose requirement changes to a product I own."
 - A User Profile declares only the person (who, role, context), not their needs; capture those as User Needs.
-- Every User Need must trace up to one or more User Profiles. A User Need with no Profile is an orphan: link it to the Profile(s) it serves, or flag it.
-- A User Profile must name who the product serves: a role or type of person with a job to do, not a mechanism or a single behavior. If a proposed Profile is really one capability (e.g. "issues scoped agent credentials"), it does not qualify as a Profile; propose that capability as a Product Requirement traced to an existing Profile instead. Proposals that fail this rule should be rejected, with this reasoning given.
-- **Layered pattern — apply on every create or update:** User Profiles declare only the person; User Needs declare only the WHAT (the user's objectives); Product Requirements declare the HOW, each tracing up to its User Need. The PRD's "how" is the product capability that satisfies the need, stated as testable product behavior, never implementation or design.
+- A User Need belongs to zero or more User Profiles, and a Profile has zero or more User Needs. Link each User Need to every Profile it serves. A User Need with no Profile is allowed; flag it as a coverage gap.
+- A User Profile must name who the product serves: a role or type of person with a job to do, not a mechanism or a single behavior. If a proposed Profile is really one capability (e.g. "issues scoped agent credentials"), it does not qualify as a Profile; propose that capability as a Product Requirement that traces to a User Need of an existing Profile, not to the Profile itself. Proposals that fail this rule should be rejected, with this reasoning given.
+- **Layered pattern — apply on every create or update:** User Profiles declare only the person; User Needs declare only the WHAT (the user's objectives); Product Requirements declare the HOW, each tracing up to the User Needs it satisfies and never directly to a Profile. The PRD's "how" is the product capability that satisfies the need, stated as testable product behavior, never implementation or design.
 
 **Bad:** "MCP server at /api/mcp with existing agent surface plus three tools." (count + implementation)  
 **Good:** "On one Product, requirement titles and statements can be searched …" with checks like "Pass: search returns a matching requirement and none from another Product."
@@ -222,7 +232,7 @@ Apply before every add or edit. Breadth is fine; overlapping another same-type r
 ## Business Need vs User Need (rubric)
 
 - A **Business Need** is what the business that owns the product must accomplish for itself: revenue, cost, compliance, strategy, or operations. It is not for the sake of the customer.
-- Anything meant to help a customer or user is a **User Need**, traced up to the relevant customer User Profile.
+- Anything meant to help a customer or user is a **User Need**, linked to the relevant customer User Profiles.
 
 Pass/fail checks when filing or reviewing:
 
@@ -252,7 +262,7 @@ When guiding users through safety, reliability, or hazard analysis using STPA (S
 3. **Product-Requirements-Level Control Actions (`PRD-`) & Stimuli (User-Initiated or Environmental):**
    - **Control Actions are first defined at the Product Requirements (`PRD-`) level** — the product defines *who does what* (e.g., driver steers via steering wheel to govern vehicle direction), stated in the affirmative and completely free of implementation architecture (saying nothing about e.g. fly-by-wire vs. rack-and-pinion).
    - **Control-Action stimuli may be user-initiated or environmental** (e.g., a human operator action, rain triggering windshield wipers, or a skid triggering stability control).
-   - Product-level Control Actions trace up to the Product Requirement (`PRD-`) they belong to and link to the pre-design Hazard(s) they control.
+   - Product-level Control Actions trace up to the Product Requirements (`PRD-`) they belong to and link to the pre-design Hazard(s) they control.
 
 4. **Four UCA Failure Modes Run Right After PRDs (Before Implementation Design):**
    - Immediately after Product Requirements and product-level Control Actions are defined—and **before** committing to an implementation Design—evaluate all four **Unsafe Control Action (UCA)** failure modes on each Control Action:
@@ -265,7 +275,7 @@ When guiding users through safety, reliability, or hazard analysis using STPA (S
 5. **Iterative Design Pass, Subsystem Control Actions, and Design-Gated Constraints (`Constraint -> Control Action` & `Constraint -> Design -> PRD -> UN`):**
    - **Iterative Cycle (`Control Actions ↔ Design`):** STPA is an iterative feedback loop, not a strict one-way waterfall. Product-level Control Actions and their UCAs shape the initial Design (`SD-`, `UXD-`, or `CD-`, which traces up to `PRD-`), and committing to a specific Design architecture (e.g., choosing fly-by-wire vs. mechanical rack-and-pinion) reveals deeper **subsystem-level Control Actions** that are only visible after that design commitment.
    - **Deeper Design Pass:** Run a second STPA pass against the chosen Design (`SD-` / `UXD-` / `CD-`) to identify subsystem controllers and subsystem Control Actions, then walk the same four UCA failure modes (`not_provided`, `provided_unsafely`, `wrong_timing`, `wrong_duration`) and derive **Loss Scenarios** (causal pathways in the Design's control loop leading to a UCA, Hazard, and Loss).
-   - **Design-Gated Safety Constraints:** An initial Design (`SD-`, `UXD-`, or `CD-`) **must be in place before safety Constraints can be finalized**. Every safety Constraint states an affirmative design-level obligation and **traces both to the Control Action(s) (and UCA/Loss Scenario) it enforces and up to the Design (`SD-`/`UXD-`/`CD-`), which in turn traces up to the Product Requirement (`PRD-`) and User Need (`UN-`)**.
+   - **Design-Gated Safety Constraints:** An initial Design (`SD-`, `UXD-`, or `CD-`) **must be in place before safety Constraints can be finalized**. Every safety Constraint states an affirmative design-level obligation and **traces both to the Control Action(s) (and UCA/Loss Scenario) it enforces and up to the Design (`SD-`/`UXD-`/`CD-`), which in turn traces up to Product Requirements (`PRD-`) and User Needs (`UN-`)**.
    - **End-to-End Verification:** Implementations (`IMPL-`) and Verification Tests (`VER-` / `UT-`) trace to the Designs, Constraints, Control Actions, and Loss Scenarios they implement and verify, surfacing any uncontrolled Hazard, unaddressed Control Action, or unverified Constraint/Loss Scenario as a coverage gap.
 
 6. **Free-Form Tagging (`STPA`):**
@@ -275,7 +285,8 @@ When guiding users through safety, reliability, or hazard analysis using STPA (S
 
 - Echoing a secret or token anywhere
 - Writing without reading neighbors, or adding duplicates
-- Orphan PRDs (no parent UN). A TraceLink may name a still-pending requirement.
+- Linking a Product Requirement directly to a User Profile
+- Leaving a record with no parent unflagged. A TraceLink may name a still-pending requirement.
 - Filing a Suggest TraceLink that has one pending-add end as its own Review item, showing a link between two pending adds as its own Review row, or treating a link between two existing requirements as already approved
 - A requirement or revision body that explains background or a related capability instead of stating that requirement
 - Asking for a `review` scope (**422**) or trying to Accept your own proposals
@@ -311,3 +322,4 @@ When guiding users through safety, reliability, or hazard analysis using STPA (S
 - 1.5.4 (2026-11-14) — Short sentences, point first, lists after the point.
 - 1.5.3 (2026-11-14) — Required editor pass: reread titles and bodies like a careful human editor before proposing.
 - 1.5.2 (2026-11-14) — Clear real subject and accurate verb, avoid double-meaning words, reread titles and bodies before proposing.
+- 1.5.5 (2026-11-14) — Every trace is many-to-many, zero or more on each side, including User Need ↔ Profile. Hard rule: a Product Requirement never links directly to a Profile. Untraced records are coverage gaps to flag, not defects.
