@@ -16,7 +16,7 @@ Retrieve the smallest set that serves the objective, then expand by ID. Long inp
 | Get a broad view for a goal, such as marketing the whole product | Horizontal view | Read Business Objectives, User Profiles, and User Needs, plus PRD section titles. Read PRD bodies only for the sections the goal needs. |
 | Audit coverage or restructure the whole product | Full export | `ih_get_chain` with `includeObsolete: false`. Omit `includePending` unless the task is about pending work. |
 
-If the server lists a tool that returns an assembled brief or a section export, prefer it to assembling one yourself.
+If the server lists a tool that returns an assembled brief or a section export, prefer it to assembling one yourself. Its defaults: Markdown with a relationship list (JSON only when asked), 8,000 tokens per brief and 30,000 per export page unless the call sets a limit, and approved requirements only.
 
 ## Assemble what you retrieved
 
@@ -26,7 +26,7 @@ When you hand the result to yourself, a subagent, or a person, write it as a sho
 2. Sections in task order (see `document-structure.md`). Each entity is one labeled block: ID, title, body, then its links written as text, such as "Addresses UN-097 Let agents propose requirement changes".
 3. At the end, a repeat of the gaps and open questions, and the relationship list, one line per link.
 
-Keep durable IDs on every block. They are the handles for loading more detail later.
+Keep durable IDs on every block. They are the handles for loading more detail later. Leave unapproved requirements out unless the task is about pending work, and label any you include.
 
 ## Reading IDs and links
 
