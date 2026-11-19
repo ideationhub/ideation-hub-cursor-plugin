@@ -1,7 +1,7 @@
 ---
 name: ideation-hub-requirements-agent
 description: Connect coding agents to Ideation Hub (www.ideationhub.me) via the MCP server at /api/mcp or REST API to read, validate, trace, suggest, or directly edit Business Needs, User Profiles, User Needs, Product Requirements, Designs, Implementations, Tests, and TraceLinks, and to retrieve or structure requirements for an objective.
-version: 1.6.0
+version: 1.6.1
 ---
 
 # Ideation Hub — Requirements & Traceability Agent Skill
@@ -19,7 +19,7 @@ Ideation Hub is a requirements workspace built on **design controls**: a traceab
 - **Product Requirement** (`PRD-NNN`) — WHAT the product must do. *Purpose:* a buildable, checkable commitment. *Good one:* concise, testable, no who/why or design (see the PRD rubric below); it `addresses` the User Needs and Business Needs it satisfies.
 - **Design & Implementation** (`SD-NNN`, `UXD-NNN`, `CD-NNN`, `IMPL-NNN`) — System Design, UX Design (`mockupUrl`), Component Design, and Implementation (`repoPath`, `prUrl`, `commitSha`).
 - **Verification & Validation Tests** (`VT-NNN`, `VER-NNN`, `UT-NNN`) — Validation Tests (check UNs), Verification Tests (check PRDs), and Unit Tests (`testPath`, `lastResult`: `pass` | `fail` | `not_run`).
-- **Acceptance criteria / verification** — pass/fail checks live in Verification, Validation, and Unit Test records, never in a PRD body.
+- **Acceptance criteria / verification** — never in a PRD body; see Writing rules.
 
 **Traceability.** Traces run from a child up to its parents, such as PRD → UN → BN. They let you prove coverage, spot gaps, and run impact analysis. What may trace to what is in [Traceability rules](#traceability-rules).
 
@@ -203,7 +203,7 @@ After proposing, tell the issuer in one short message:
 - A PRD states only **WHAT the product must do**, concisely. A checker can pass/fail it without the linked UN.
 - No who / why / role / purpose / outcome — the TraceLinks up to the UN carry that.
 - No component counts, UI surfaces (pages, dialogs, controls), implementation shape, or design/engineering decisions.
-- No acceptance criteria in a PRD body. Pass/fail checks belong in Verification, Validation, or Unit Test records that trace to the PRD.
+- No acceptance criteria in a PRD body. Write them as functional verification test specifications linked to the PRD.
 - No IDs in prose and no "extends PRD-…" in statements. Express relationships as TraceLinks.
 - User Needs read "Ability to …" and state the user's objective (WHAT), not HOW it is delivered; PRDs that trace up to the UN carry the HOW.
 - **No user-story form in User Needs.** Never write "As a <role>, I need …" or otherwise restate who the user is; the User Profile trace already carries the role, so it is redundant. State only the objective, simply, without mechanisms such as credentials, permission models, CRUD lists, or approval workflow (those belong in the PRDs beneath).
@@ -259,4 +259,4 @@ Safety, reliability, or hazard analysis follows an iterative STPA workflow kept 
 
 ## Changelog
 
-Current: 1.6.0 (2026-11-19) — progressive disclosure: retrieval and document-structure references; REST, STPA, and history moved to `references/`; duplicate guidance merged; no acceptance criteria in PRD bodies. Full history: `references/changelog.md`.
+Current: 1.6.1 (2026-11-19) — acceptance criteria are functional verification test specifications linked to the PRD; export defaults in `references/retrieval.md`. 1.6.0 added the retrieval and document-structure references. Full history: `references/changelog.md`.
