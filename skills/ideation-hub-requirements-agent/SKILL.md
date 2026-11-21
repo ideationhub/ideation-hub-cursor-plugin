@@ -2,7 +2,7 @@
 name: ideation-hub-requirements-agent
 description: Connect coding agents to Ideation Hub (www.ideationhub.me) via the MCP server at /api/mcp or REST API to read, validate, trace, suggest, or directly edit Business Needs, User Profiles, User Needs, Product Requirements, Designs, Implementations, Tests, and TraceLinks, and to retrieve or structure requirements for an objective.
 metadata:
-  version: "1.6.4"
+  version: "1.6.5"
 ---
 
 # Ideation Hub — Requirements & Traceability Agent Skill
@@ -47,8 +47,8 @@ Allowed upward traces (child → parent). A Business Objective is also called a 
 - UX Design → Product Requirement
 - Component Design → System Design
 - Implementation → Component Design, UX Design and System Design
-- Validation Test → Product Requirement, UX Design, System Design, Component Design and Implementation
-- Verification Test → User Need and Business Objective
+- Verification Test → Product Requirement, UX Design, System Design, Component Design and Implementation
+- Validation Test → User Need and Business Objective
 - Unit Test → Implementation and Component Design
 
 **Hard rule:** a Product Requirement never links directly to a User Profile. It reaches a profile only through a User Need.
@@ -262,4 +262,4 @@ Safety, reliability, or hazard analysis follows an iterative STPA workflow kept 
 
 ## Changelog
 
-Current: 1.6.4 (2026-11-21) — a User Need opens with the objective as a verb phrase, never "Ability to", and states only one objective. 1.6.3 said a User Need states only what the user needs to accomplish, not what the user does not want or should not have to do. 1.6.2 added extend-before-you-add. Full history: `references/changelog.md`.
+Current: 1.6.5 (2026-11-21) — Verification Test traces up to product requirements and designs; Validation Test traces up to User Need and Business Objective. 1.6.4 said a User Need opens with the objective as a verb phrase and states only one objective. Full history: `references/changelog.md`.
