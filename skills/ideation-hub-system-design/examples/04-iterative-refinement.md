@@ -25,7 +25,7 @@
 
 **User:** Yes.
 
-**Agent** (calls `ih_propose_bulk_push {dryRun: true, mode: "suggest"}` for the new decision → valid; files it; `ih_propose_edit CD-001 {mode: "suggest", expectedRevision: 1, statement: …}`; `ih_propose_edit CD-002 {mode: "suggest", expectedRevision: 1, …}`; `ih_propose_edit SD-001? no — unchanged`; `ih_propose_edit <new decision> addLinks: [{type: "refined_by", targetId: "CD-001"}, {type: "refined_by", targetId: "CD-002"}]` is folded into the add as `links`; `ih_lifecycle_action {id: "SD-002", action: "obsolete", reason: "Superseded by managed search decision", mode: "suggest"}`):
+**Agent** (calls `ih_propose_bulk_push` with `dryRun: true`, `mode: "suggest"` for the new decision SD, whose `links` include `refined_by` to CD-001 and CD-002 → valid; files it the same way without `dryRun`; `ih_propose_edit CD-001 {mode: "suggest", expectedRevision: 1, statement: …}`; `ih_propose_edit CD-002 {mode: "suggest", expectedRevision: 1, …}`; `ih_lifecycle_action {id: "SD-002", action: "obsolete", reason: "Superseded by the managed search decision", mode: "suggest"}`. SD-001 is unchanged, so it is not touched):
 
 > Filed for review:
 > - add SD-005 "Use a managed search service for product search" (links bundled)
