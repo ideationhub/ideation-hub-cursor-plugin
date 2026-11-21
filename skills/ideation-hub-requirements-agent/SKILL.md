@@ -1,7 +1,8 @@
 ---
 name: ideation-hub-requirements-agent
 description: Connect coding agents to Ideation Hub (www.ideationhub.me) via the MCP server at /api/mcp or REST API to read, validate, trace, suggest, or directly edit Business Needs, User Profiles, User Needs, Product Requirements, Designs, Implementations, Tests, and TraceLinks, and to retrieve or structure requirements for an objective.
-version: 1.6.4
+metadata:
+  version: "1.6.4"
 ---
 
 # Ideation Hub — Requirements & Traceability Agent Skill

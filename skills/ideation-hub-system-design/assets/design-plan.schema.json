@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ideationhub/ideation-hub-cursor-plugin/skills/ideation-hub-system-design/assets/design-plan.schema.json",
+  "title": "Ideation Hub design change plan (scratch, non-authoritative)",
+  "description": "An agent's in-session plan of design changes before they are dry-run and filed as Ideation Hub proposals. Never published or kept as a source of truth; Ideation Hub records are the authority.",
+  "type": "object",
+  "required": ["productId", "scope", "readAt", "changes"],
+  "properties": {
+    "productId": {"type": "string"},
+    "scope": {"type": "string", "description": "Objective, tag, section or PRD IDs agreed with the user"},
+    "readAt": {"type": "string", "format": "date-time", "description": "When the Ideation Hub state this plan is based on was read"},
+    "rung": {"enum": [1, 2, 3], "description": "Proportionality rung"},
+    "directEditAvailable": {"type": "boolean"},
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["action", "reason"],
+        "properties": {
+          "action": {"enum": ["add", "edit", "amend_pending", "link", "unlink", "obsolete", "withdraw_proposal"]},
+          "ref": {"type": "string", "description": "Local ref for a new record, used by links in the same bulk push"},
+          "targetId": {"type": "string", "description": "Human ID of an existing record (edit, amend, obsolete, link source)"},
+          "proposalId": {"type": "string", "description": "Pending proposal to amend"},
+          "expectedRevision": {"type": "integer"},
+          "type": {"enum": ["SD", "CD", "UXD"]},
+          "title": {"type": "string"},
+          "statement": {"type": "string"},
+          "tags": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {"type": "string", "pattern": "^[A-Za-z0-9 _./-]{1,32}$"}
+          },
+          "parentId": {"type": "string"},
+          "links": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["sourceId", "type", "targetId"],
+              "properties": {
+                "sourceId": {"type": "string"},
+                "type": {"enum": ["realized_by", "refined_by", "checked_by"]},
+                "targetId": {"type": "string"}
+              }
+            }
+          },
+          "justifiedBy": {"type": "array", "items": {"type": "string"}, "description": "Requirement or decision IDs read this session"},
+          "reason": {"type": "string"},
+          "needsConfirmation": {"type": "boolean", "description": "True for recommended changes and any change to an accepted record"},
+          "confirmed": {"type": "boolean"}
+        }
+      }
+    }
+  }
+}

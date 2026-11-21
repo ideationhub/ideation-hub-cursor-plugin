@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ideationhub/ideation-hub-cursor-plugin/skills/ideation-hub-system-design/assets/handoff-brief.schema.json",
+  "title": "Ideation Hub implementation handoff brief (derived view)",
+  "type": "object",
+  "required": ["productId", "derivedAt", "draft", "requirements", "components", "designReady"],
+  "properties": {
+    "productId": {"type": "string"},
+    "scope": {"type": "string"},
+    "derivedAt": {"type": "string", "format": "date-time"},
+    "draft": {"type": "boolean", "description": "True when any included design record is not yet accepted"},
+    "pendingIds": {"type": "array", "items": {"type": "string"}},
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "revision", "title"],
+        "properties": {
+          "id": {"type": "string"}, "revision": {"type": "integer"}, "title": {"type": "string"},
+          "kind": {"enum": ["functional", "NFR", "principle"]},
+          "verifiedBy": {"type": "array", "items": {"type": "string"}, "description": "Linked VER/UT IDs"}
+        }
+      }
+    },
+    "architecture": {"type": "string"},
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "revision", "title", "responsibility"],
+        "properties": {
+          "id": {"type": "string"}, "revision": {"type": "integer"}, "title": {"type": "string"},
+          "responsibility": {"type": "string"},
+          "behaviour": {"type": "array", "items": {"type": "string"}},
+          "interactsWith": {"type": "array", "items": {"type": "object", "properties": {"target": {"type": "string"}, "style": {"enum": ["sync", "async"]}, "purpose": {"type": "string"}}}},
+          "delivers": {"type": "array", "items": {"type": "string"}},
+          "security": {"type": "string"},
+          "errors": {"type": "string"}
+        }
+      }
+    },
+    "interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "operations"],
+        "properties": {
+          "id": {"type": "string"}, "title": {"type": "string"}, "provider": {"type": "string"},
+          "consumers": {"type": "array", "items": {"type": "string"}},
+          "style": {"type": "string"},
+          "operations": {"type": "array", "items": {"type": "object", "required": ["name"], "properties": {"name": {"type": "string"}, "input": {}, "output": {}, "errors": {"type": "array", "items": {"type": "string"}}}}},
+          "rules": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "dataModels": {
+      "type": "array",
+      "items": {"type": "object", "required": ["id", "title"], "properties": {"id": {"type": "string"}, "title": {"type": "string"}, "owner": {"type": "string"}, "store": {"type": "string"}, "entities": {"type": "array", "items": {"type": "object"}}, "rules": {"type": "array", "items": {"type": "string"}}}}
+    },
+    "decisions": {"type": "array", "items": {"type": "object", "required": ["id", "title", "decision"], "properties": {"id": {"type": "string"}, "title": {"type": "string"}, "decision": {"type": "string"}, "consequences": {"type": "string"}}}},
+    "constraints": {"type": "array", "items": {"type": "object", "required": ["text", "source"], "properties": {"text": {"type": "string"}, "source": {"type": "string"}}}},
+    "dependencies": {"type": "array", "items": {"type": "string"}},
+    "openQuestions": {"type": "array", "items": {"type": "string"}},
+    "assumptions": {"type": "array", "items": {"type": "string"}},
+    "designReady": {
+      "type": "array",
+      "description": "Result of ih_record_development_phase_event phase design_ready per in-scope PRD",
+      "items": {"type": "object", "required": ["requirement", "result"], "properties": {"requirement": {"type": "string"}, "result": {"enum": ["recorded", "forbidden_no_delivery_write", "error"]}, "detail": {"type": "string"}}}
+    }
+  }
+}
