@@ -1,7 +1,7 @@
 ---
 name: ideation-hub-requirements-agent
 description: Connect coding agents to Ideation Hub (www.ideationhub.me) via the MCP server at /api/mcp or REST API to read, validate, trace, suggest, or directly edit Business Needs, User Profiles, User Needs, Product Requirements, Designs, Implementations, Tests, and TraceLinks, and to retrieve or structure requirements for an objective.
-version: 1.6.2
+version: 1.6.3
 ---
 
 # Ideation Hub — Requirements & Traceability Agent Skill
@@ -206,7 +206,7 @@ After proposing, tell the issuer in one short message:
 - No component counts, UI surfaces (pages, dialogs, controls), implementation shape, or design/engineering decisions.
 - No acceptance criteria in a PRD body. Write them as functional verification test specifications linked to the PRD.
 - No IDs in prose and no "extends PRD-…" in statements. Express relationships as TraceLinks.
-- User Needs read "Ability to …" and state the user's objective (WHAT), not HOW it is delivered; PRDs that trace up to the UN carry the HOW.
+- User Needs read "Ability to …" and state only what the user needs to accomplish (WHAT), not HOW it is delivered; PRDs that trace up to the UN carry the HOW. Do not state what the user does not want, or what the user should not have to do.
 - **No user-story form in User Needs.** Never write "As a <role>, I need …" or otherwise restate who the user is; the User Profile trace already carries the role, so it is redundant. State only the objective, simply, without mechanisms such as credentials, permission models, CRUD lists, or approval workflow (those belong in the PRDs beneath).
   - *Example (UN-097, 2026-11-09):* Bad: "As a Product Owner enabling agents, I need an agent with Product-scoped credentials and RBAC to Create, Read, Update, and Delete requirements on that Product via MCP, with Create/Update/Delete as proposals only." Good: "Create an account for agents to read and propose requirement changes to a product I own."
 - A User Profile declares only the person (who, role, context), never their needs or one capability; see the Profile capability rule. Link each User Need to every Profile it serves. Reject a Profile proposal that fails this, and give the reason.
@@ -260,4 +260,4 @@ Safety, reliability, or hazard analysis follows an iterative STPA workflow kept 
 
 ## Changelog
 
-Current: 1.6.2 (2026-11-19) — extend an existing Product Requirement before adding a new one. 1.6.1 made acceptance criteria linked functional verification test specifications and set export defaults in `references/retrieval.md`. 1.6.0 added the retrieval and document-structure references. Full history: `references/changelog.md`.
+Current: 1.6.3 (2026-11-21) — a User Need states only what the user needs to accomplish, not what the user does not want or should not have to do. 1.6.2 added extend-before-you-add. 1.6.1 made acceptance criteria linked functional verification test specifications and set export defaults in `references/retrieval.md`. Full history: `references/changelog.md`.
