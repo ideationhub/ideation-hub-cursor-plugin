@@ -1,0 +1,23 @@
+{
+  "name": "ideation-hub",
+  "version": "1.1.0",
+  "description": "Connect coding agents to Ideation Hub to read, validate, trace, and propose Business Needs, User Needs, PRDs, Designs, Implementations, and Tests via MCP.",
+  "author": {
+    "name": "Ideation Hub",
+    "email": "support@ideationhub.me"
+  },
+  "homepage": "https://www.ideationhub.me",
+  "repository": "https://github.com/ideationhub/ideation-hub-cursor-plugin",
+  "license": "MIT",
+  "keywords": [
+    "ideation-hub",
+    "requirements",
+    "prd",
+    "traceability",
+    "design-controls",
+    "product-management",
+    "alm",
+    "sdlc",
+    "mcp"
+  ]
+}

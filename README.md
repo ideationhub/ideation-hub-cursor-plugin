@@ -24,8 +24,9 @@
 Ideation Hub gives AI-assisted engineering teams a living system of record for product intent—connecting **Business Needs (`BN`)**, **User Profiles**, **User Needs (`UN`)**, **Product Requirements (`PRD`)**, **System / UX / Component Designs (`SD`, `UXD`, `CD`)**, **Implementations (`IMPL`)**, and **Verification / Validation / Unit Tests (`VT`, `VER`, `UT`)** in a single traceable graph.
 
 This plugin bundles:
-1. **The Ideation Hub Hosted MCP Server (`https://api.ideationhub.me/api/mcp`)** — 16 typed Model Context Protocol tools over stateless Streamable HTTP JSON-RPC (`2025-03-26`).
+1. **The Ideation Hub Hosted MCP Server (`https://api.ideationhub.me/api/mcp`)** — 27 typed Model Context Protocol tools over stateless Streamable HTTP JSON-RPC (`2025-03-26`).
 2. **The `ideation-hub-requirements-agent` Skill (`skills/ideation-hub-requirements-agent/SKILL.md`)** — Design Controls workflow, layered Profile → UN → PRD writing rubrics, duplicate/orphan prevention, and propose-first governance rules.
+3. **The `ideation-hub-system-design` Skill (`skills/ideation-hub-system-design/SKILL.md`, 0.1.0 beta)** — collaborative, proportionate system design from accepted requirements: System, Component and UX Design records traced to Product Requirements, trade-off analysis, design validation, and implementation handoff. Design changes are always filed as proposals unless you explicitly ask for a direct write.
 
 With this plugin installed, Cursor and Grok Bot agents can:
 - **Read & Search Intent (`Read`):** Fetch the full requirement hierarchy (`ih_get_chain`), search existing requirements (`ih_search_requirements`), inspect upstream/downstream trace neighbors (`ih_get_neighbors`), and validate candidate changes against the trace rubric (`ih_validate_against_trace`).
@@ -77,28 +78,63 @@ Cursor Teams / Enterprise admins can import this repository directly with zero w
 https://github.com/ideationhub/ideation-hub-cursor-plugin
 ```
 
+### 4. Other Agent Harnesses (Claude Code, OpenAI Codex, Grok Build)
+
+Both skills follow the open [Agent Skills specification](https://agentskills.io/specification), so they load in any compatible agent.
+
+- **Claude Code:** this repository includes `.claude-plugin/plugin.json` and a root `.mcp.json`. Enable it as a plugin, or copy `skills/*` into `.claude/skills/`.
+- **OpenAI Codex:** copy (or symlink) both skill folders into `.agents/skills/` in your repository, or `~/.agents/skills/` for every project, and add the MCP server to `~/.codex/config.toml`:
+
+  ```bash
+  git clone https://github.com/ideationhub/ideation-hub-cursor-plugin /tmp/ih-plugin
+  mkdir -p ~/.agents/skills
+  cp -R /tmp/ih-plugin/skills/ideation-hub-requirements-agent /tmp/ih-plugin/skills/ideation-hub-system-design ~/.agents/skills/
+  ```
+
+  ```toml
+  [mcp_servers.ideation-hub]
+  url = "https://api.ideationhub.me/api/mcp"
+  env_http_headers = { "X-IH-Client-Id" = "IH_CLIENT_ID", "X-IH-Client-Secret" = "IH_CLIENT_SECRET" }
+  ```
+- **Grok Build:** `grok plugin install ideationhub/ideation-hub-cursor-plugin --trust`.
+
+Per-harness details: [`skills/ideation-hub-system-design/adapters/`](skills/ideation-hub-system-design/adapters/).
+
 ---
 
-## Included MCP Tools (16 Tools)
+## Included MCP Tools (27 Tools)
 
-| Tool | Required Scope | Description |
+With a **Suggest** credential every write tool files a proposal for human review. With **Edit** (direct edit on that product) the same tools change living records unless the call passes `mode: "suggest"`.
+
+| Tool | Permission | Description |
 | --- | --- | --- |
-| `ih_list_products` | `read` | List products and folders accessible to this credential (including `directEdit` status per product). |
-| `ih_get_chain` | `read` | Fetch the full User Profile → User Need → PRD → Design → Implementation → Test chain and trace links (`includePending` optional). |
-| `ih_get_requirement` | `read` | Fetch one requirement by durable human ID (e.g., `PRD-012`) or UUID, including current revision, design fields, and inbound/outbound links. |
-| `ih_get_neighbors` | `read` | Walk upstream (`up`), downstream (`down`), or `both` trace neighbors from any requirement up to `depth`. |
-| `ih_search_requirements` | `read` | Search requirement human IDs, titles, and statements with optional `types`, `status`, and `limit` filters. |
-| `ih_list_review_queue` | `read` | List proposals in the Review Queue filtered by `status` (`pending`, `accepted`, `rejected`), `source`, or `type`. |
-| `ih_validate_against_trace` | `read` | Dry-run validation checking for duplicate titles, missing User Profile, missing parent link, or orphan records without writing. |
-| `ih_propose_profile` | `suggest` / `edit` | Add or edit a User Profile (`name`, `roleIntent`). Queues a proposal in `suggest` mode or writes directly in `edit` mode. |
-| `ih_propose_requirement` | `suggest` / `edit` | Add a `BN`, `UN`, `PRD`, `SD`, `UXD`, `CD`, `IMPL`, `VT`, `VER`, or `UT` record with optional design/test metadata. |
-| `ih_propose_edit` | `suggest` / `edit` | Revise an existing requirement's title, statement, or design/test fields with optional `expectedRevision` optimistic concurrency check. |
-| `ih_propose_bulk_push` | `suggest` / `edit` | Validate and atomically apply or queue a batch of requirements and trace links (`dryRun: true` supported). |
-| `ih_create_requirement` | `edit` | Direct-only requirement creation on products where the credential has `edit` permission. |
-| `ih_update_requirement` | `edit` | Direct-only requirement revision on products where the credential has `edit` permission. |
-| `ih_link_requirements` | `suggest` / `edit` | Create a directional `TraceLink` (`addresses`, `realized_by`, `checked_by`, `refined_by`) between two records. |
-| `ih_unlink_requirements` | `suggest` / `edit` | Soft-remove a `TraceLink` by `linkId` or by `sourceId` + `type` + `targetId`. |
-| `ih_lifecycle_action` | `suggest` / `edit` | Execute lifecycle transitions: `withdraw_proposal`, `obsolete`, `delete_draft`, or `reclassify`. |
+| `ih_list_products` | `read` | List products and folders this credential can open, with `directEdit` per product. |
+| `ih_get_chain` | `read` | Profiles, requirements and trace links for a product (`includePending`, `includeObsolete`, tag filters). |
+| `ih_get_requirement` | `read` | One requirement by human ID or UUID: revisions, design fields, tags, links and its pending proposal. |
+| `ih_get_neighbors` | `read` | Walk trace neighbors up, down or both, to a given depth. |
+| `ih_search` | `read` | Hybrid keyword and meaning search across requirements, profiles, sections, specs and pending proposals. |
+| `ih_search_requirements` | `read` | Keyword and filter listing by human ID, title and statement. |
+| `ih_list_review_queue` | `read` | Proposals visible to this credential, with what each change does. |
+| `ih_validate_against_trace` | `read` | Check a record or draft for duplicate titles, missing profile or parent, and orphans. Writes nothing. |
+| `ih_list_sections` | `read` | PRD sections in order, with summaries. |
+| `ih_propose_requirement` | `suggest` / `edit` | Add a BN, UN, PRD, SD, UXD, CD, IMPL, VT, VER or UT record. |
+| `ih_propose_edit` | `suggest` / `edit` | Revise a requirement, including link changes; amends the one pending proposal. |
+| `ih_propose_bulk_push` | `suggest` / `edit` | Validate and apply or queue many records and links together (`dryRun` supported). |
+| `ih_propose_profile` | `suggest` / `edit` | Add or edit a User Profile. |
+| `ih_link_requirements` | `suggest` / `edit` | Add a trace link (`addresses`, `realized_by`, `refined_by`, `checked_by`). |
+| `ih_unlink_requirements` | `suggest` / `edit` | Soft-remove a trace link. |
+| `ih_lifecycle_action` | `suggest` / `edit` | Withdraw, reopen, obsolete, delete draft or reclassify. |
+| `ih_create_section` | `suggest` / `edit` | Add a PRD section. |
+| `ih_rename_section` | `suggest` / `edit` | Rename or nest a PRD section. |
+| `ih_delete_section` | `suggest` / `edit` | Delete a PRD section (requirements become unassigned). |
+| `ih_reorder_sections` | `suggest` / `edit` | Reorder all PRD sections. |
+| `ih_set_section_summary` | `suggest` / `edit` | Set a PRD section summary. |
+| `ih_assign_sections` | `suggest` / `edit` | Place many PRDs into sections in one change. |
+| `ih_create_requirement` | `edit` only | Direct-only add. |
+| `ih_update_requirement` | `edit` only | Direct-only revise. |
+| `ih_set_tags` | `edit` only | Replace a requirement's tags (no new revision). |
+| `ih_restore_draft_title` | `suggest` (own pending add) | Title-only repair of a pending add. |
+| `ih_record_development_phase_event` | `delivery:write` (direct) | Append one development-phase event (for example `design_ready`). Not a proposal. |
 
 ---
 

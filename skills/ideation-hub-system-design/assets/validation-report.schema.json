@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ideationhub/ideation-hub-cursor-plugin/skills/ideation-hub-system-design/assets/validation-report.schema.json",
+  "title": "Ideation Hub design validation report (derived view)",
+  "type": "object",
+  "required": ["productId", "scope", "derivedAt", "verdict", "checks", "findings"],
+  "properties": {
+    "productId": {"type": "string"},
+    "scope": {"type": "string"},
+    "derivedAt": {"type": "string", "format": "date-time"},
+    "verdict": {"enum": ["ready", "ready_with_gaps", "not_ready"]},
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["check", "passed", "records"],
+        "properties": {
+          "check": {"enum": ["coverage", "justification", "direction", "staleness", "open_items", "nfr_response", "verification"]},
+          "passed": {"type": "boolean"},
+          "records": {"type": "array", "items": {"type": "string"}},
+          "coveredByProposalOnly": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["severity", "label", "finding"],
+        "properties": {
+          "severity": {"enum": ["blocker", "major", "minor"]},
+          "label": {"enum": ["verified", "predicted", "judgement"]},
+          "finding": {"type": "string"},
+          "records": {"type": "array", "items": {"type": "string"}},
+          "proposedFix": {"type": "string"}
+        }
+      }
+    },
+    "openQuestions": {"type": "array", "items": {"type": "string"}}
+  }
+}
