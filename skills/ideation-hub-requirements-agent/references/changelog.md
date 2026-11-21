@@ -40,3 +40,4 @@
 - 1.6.1 (2026-11-19) — Acceptance criteria are written as functional verification test specifications linked to the PRD, never in its body. `references/retrieval.md` states the export defaults: Markdown with a relationship list (JSON on request), 8,000 tokens per brief and 30,000 per export page unless the call sets a limit, approved requirements only.
 - 1.6.2 (2026-11-19) — Extend before you add: amend an existing Product Requirement that covers the same subject; create a new one only when the capability has its own rules or lifecycle; fold overlapping requirements and propose the absorbed one obsolete.
 - 1.6.3 (2026-11-21) — A User Need states only what the user needs to accomplish; it must not state what the user does not want, or what the user should not have to do.
+- 1.6.4 (2026-11-21) — A User Need opens with the objective as a verb phrase, never "Ability to"; it states only one objective and does not bundle an enabling action into the same need.

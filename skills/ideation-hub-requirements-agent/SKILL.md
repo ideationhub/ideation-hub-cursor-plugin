@@ -1,7 +1,7 @@
 ---
 name: ideation-hub-requirements-agent
 description: Connect coding agents to Ideation Hub (www.ideationhub.me) via the MCP server at /api/mcp or REST API to read, validate, trace, suggest, or directly edit Business Needs, User Profiles, User Needs, Product Requirements, Designs, Implementations, Tests, and TraceLinks, and to retrieve or structure requirements for an objective.
-version: 1.6.3
+version: 1.6.4
 ---
 
 # Ideation Hub — Requirements & Traceability Agent Skill
@@ -15,7 +15,7 @@ Ideation Hub is a requirements workspace built on **design controls**: a traceab
 
 - **Business Need** (`BN-NNN`) — a business objective. *Purpose:* why the business invests. *Good one:* one outcome the business wants, measurable where possible, free of solution detail.
 - **User Profile** — who the product serves. *Purpose:* anchor needs to a real role. *Good one:* a clear `name` plus a `roleIntent` saying what that role is trying to get done. It declares only the actual person (who they are, their role and context), never their needs; those are User Needs. It is a role or type of person with a job to do, never one capability (see the Profile capability rule). The API identifies it by `UP-` id, UUID, or exact name.
-- **User Need** (`UN-NNN`) — what a user must be able to do. *Purpose:* the user's view of value. *Good one:* "Ability to …", one capability, linked to every Profile it serves; WHAT the user wants to achieve, never HOW (that is the PRDs tracing up to it); it `addresses` the Business Needs it serves.
+- **User Need** (`UN-NNN`) — what a user must be able to do. *Purpose:* the user's view of value. *Good one:* "Understand …" (a verb phrase, not "Ability to …"), one objective, linked to every Profile it serves; WHAT the user wants to achieve, never HOW (that is the Product Requirements tracing up to it); it `addresses` the Business Needs it serves.
 - **Product Requirement** (`PRD-NNN`) — WHAT the product must do. *Purpose:* a buildable, checkable commitment. *Good one:* concise, testable, no who/why or design (see the PRD rubric below); it `addresses` the User Needs and Business Needs it satisfies.
 - **Design & Implementation** (`SD-NNN`, `UXD-NNN`, `CD-NNN`, `IMPL-NNN`) — System Design, UX Design (`mockupUrl`), Component Design, and Implementation (`repoPath`, `prUrl`, `commitSha`).
 - **Verification & Validation Tests** (`VT-NNN`, `VER-NNN`, `UT-NNN`) — Validation Tests (check UNs), Verification Tests (check PRDs), and Unit Tests (`testPath`, `lastResult`: `pass` | `fail` | `not_run`).
@@ -206,7 +206,8 @@ After proposing, tell the issuer in one short message:
 - No component counts, UI surfaces (pages, dialogs, controls), implementation shape, or design/engineering decisions.
 - No acceptance criteria in a PRD body. Write them as functional verification test specifications linked to the PRD.
 - No IDs in prose and no "extends PRD-…" in statements. Express relationships as TraceLinks.
-- User Needs read "Ability to …" and state only what the user needs to accomplish (WHAT), not HOW it is delivered; PRDs that trace up to the UN carry the HOW. Do not state what the user does not want, or what the user should not have to do.
+- User Needs open with the objective as a verb phrase ("Understand …", "Write …"), never "Ability to …", and state only one objective: what the user needs to accomplish (WHAT), not HOW it is delivered, not an action that enables it, and not what the user does not want or should not have to do. A Product Requirement that covers an enabling action traces to the User Need it serves; do not add a clause for that action in this need.
+  - *Example:* Avoid: "Ability to request implementation of a requirement and understand the state of delivery of my product's features." Prefer: "Understand the state of delivery of my product's features."
 - **No user-story form in User Needs.** Never write "As a <role>, I need …" or otherwise restate who the user is; the User Profile trace already carries the role, so it is redundant. State only the objective, simply, without mechanisms such as credentials, permission models, CRUD lists, or approval workflow (those belong in the PRDs beneath).
   - *Example (UN-097, 2026-11-09):* Bad: "As a Product Owner enabling agents, I need an agent with Product-scoped credentials and RBAC to Create, Read, Update, and Delete requirements on that Product via MCP, with Create/Update/Delete as proposals only." Good: "Create an account for agents to read and propose requirement changes to a product I own."
 - A User Profile declares only the person (who, role, context), never their needs or one capability; see the Profile capability rule. Link each User Need to every Profile it serves. Reject a Profile proposal that fails this, and give the reason.
@@ -239,7 +240,7 @@ Pass/fail checks when filing or reviewing:
 
 Examples:
 
-- BN-002 "Delivery speed is visible and measurable" is misfiled. As a User Need (Profile: Product Owner): "Ability to see how long my products take to build."
+- BN-002 "Delivery speed is visible and measurable" is misfiled. As a User Need (Profile: Product Owner): "See how long my products take to build."
 - BN-038 "Agent-navigable requirements via MCP and companion skill" is a User Need: external agents, and the people who run them, navigating and safely changing requirements are customers being served.
 
 ## STPA (safety analysis)
@@ -260,4 +261,4 @@ Safety, reliability, or hazard analysis follows an iterative STPA workflow kept 
 
 ## Changelog
 
-Current: 1.6.3 (2026-11-21) — a User Need states only what the user needs to accomplish, not what the user does not want or should not have to do. 1.6.2 added extend-before-you-add. 1.6.1 made acceptance criteria linked functional verification test specifications and set export defaults in `references/retrieval.md`. Full history: `references/changelog.md`.
+Current: 1.6.4 (2026-11-21) — a User Need opens with the objective as a verb phrase, never "Ability to", and states only one objective. 1.6.3 said a User Need states only what the user needs to accomplish, not what the user does not want or should not have to do. 1.6.2 added extend-before-you-add. Full history: `references/changelog.md`.
