@@ -8,7 +8,7 @@ The handoff brief lets a separate implementation agent build the design without 
 2. Check the review state of every design record in scope:
    - **All accepted:** build the brief from accepted records only, the same rule Ideation Hub uses for exports and briefs.
    - **Some pending:** build the brief anyway if the user asks, and put this banner at the top: "DRAFT — includes design proposals not yet accepted in Ideation Hub: <IDs>." List the pending IDs.
-3. Do not write application code unless the user asks.
+3. This phase prepares a brief for another agent. It does not write application code. Implementing is separate, and only when the user asks (see `SKILL.md`, Implementation).
 
 ## Brief contents
 
@@ -49,7 +49,7 @@ The linked verification tests (VER/UT) for each PRD and component, by ID and tit
 Everything still tagged `arch.open-question` or `arch.assumption`, and how the implementer should treat it.
 
 ## Traceability expectations for the implementer
-- Record implementations as IMPL records linked `CD realized_by IMPL` (or `SD realized_by IMPL`), with `repoPath`, `prUrl` and `commitSha`, through the requirements skill.
+- Record implementations as IMPL records linked `CD realized_by IMPL` (or `SD realized_by IMPL`), with `repoPath`, `prUrl` and `commitSha`, through the requirements skill. When this skill is asked to implement, this agent does that recording itself.
 - Cite the PRD and CD IDs in pull requests.
 ```
 
@@ -61,7 +61,7 @@ After producing the brief, **always** call `ih_record_development_phase_event` o
 {"requirement": "PRD-012", "phase": "design_ready", "evidenceUrl": "<review or record URL, if known>"}
 ```
 
-- This is the only direct write in this skill. It is append-only and idempotent for the same arguments.
+- Recording `design_ready` is the only direct write in this phase. It is append-only and idempotent for the same arguments. Confirmation reviews and status assessments are separate direct writes, described in `assessment.md`. They need `status:write` and never change a title, body, or trace link.
 - It needs the `delivery:write` permission. On 403, tell the user plainly that the credential cannot record development-phase events, so "design ready" was not recorded, and continue. Do not try any other way.
 - Report which PRDs got the event and which failed.
 

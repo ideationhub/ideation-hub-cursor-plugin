@@ -2,6 +2,8 @@
 
 Use this file to run the design loop. Each phase lists the inputs, the steps, what to show the user, and when to stop. The phases are a loop, not a pipeline: go back to any phase when the user challenges, adds or changes something.
 
+Implementation and assessment are separate from this design loop. When the user asks you to implement, follow the Implementation section in `SKILL.md`. When the user gives you Product Requirements to assess, follow `assessment.md`.
+
 ## Labels used everywhere
 
 Tag every statement you make about the design with one of these labels, in your messages and in record bodies:
@@ -105,7 +107,7 @@ Follow `validation.md`. Run the deterministic checks from Ideation Hub data firs
 
 ## Phase F — Implementation handoff
 
-Follow `implementation-handoff.md`. Build the brief, record `design_ready` for each in-scope Product Requirement, report, and stop. Do not write application code unless the user asks.
+Follow `implementation-handoff.md`. Build the brief and record `design_ready` for each in-scope Product Requirement, then report. This ends the design loop. When the user asked you to implement, continue with the Implementation section in `SKILL.md`. When the user asked you to assess Product Requirements, follow `assessment.md`.
 
 ## Proportionality reminders
 

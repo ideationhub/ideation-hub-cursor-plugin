@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/ideationhub/ideation-hub-cursor-plugin/skills/ideation-hub-system-design/assets/handoff-brief.schema.json",
+  "$id": "https://github.com/ideationhub/ideation-hub-cursor-plugin/skills/ideation-hub-developer/assets/handoff-brief.schema.json",
   "title": "Ideation Hub implementation handoff brief (derived view)",
   "type": "object",
   "required": ["productId", "derivedAt", "draft", "requirements", "components", "designReady"],

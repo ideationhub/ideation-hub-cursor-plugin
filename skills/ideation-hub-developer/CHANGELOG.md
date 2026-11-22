@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0 (2026-11-22) — beta
+
+- Renamed the skill from `ideation-hub-system-design` to `ideation-hub-developer`. `skills/ideation-hub-system-design/SKILL.md` remains as a deprecated alias that points here, so existing installs still resolve the old name.
+- Scope is system design, implementation, and assessment of implementation and test coverage status for Product Requirements.
+- Assessment procedure in `references/assessment.md` (PRD-180). It applies the completeness rules in PRD-026 and the coverage rules in PRD-172, judges the current revision only, and records confirmation reviews and verdicts as PRD-179 describes (`status:write`).
+
 ## 0.1.0 (2026-11-21) — beta
 
 - First release.

@@ -26,7 +26,7 @@ Ideation Hub gives AI-assisted engineering teams a living system of record for p
 This plugin bundles:
 1. **The Ideation Hub Hosted MCP Server (`https://api.ideationhub.me/api/mcp`)** — 27 typed Model Context Protocol tools over stateless Streamable HTTP JSON-RPC (`2025-03-26`).
 2. **The `ideation-hub-requirements-agent` Skill (`skills/ideation-hub-requirements-agent/SKILL.md`)** — Design Controls workflow, layered Profile → UN → PRD writing rubrics, duplicate/orphan prevention, and propose-first governance rules.
-3. **The `ideation-hub-system-design` Skill (`skills/ideation-hub-system-design/SKILL.md`, 0.1.0 beta)** — collaborative, proportionate system design from accepted requirements: System, Component and UX Design records traced to Product Requirements, trade-off analysis, design validation, and implementation handoff. Design changes are always filed as proposals unless you explicitly ask for a direct write.
+3. **The `ideation-hub-developer` Skill (`skills/ideation-hub-developer/SKILL.md`, 0.2.0 beta)** — system design, implementation, and assessment of implementation and test coverage status for Ideation Hub Product Requirements. Collaborative, proportionate System, Component and UX Design records traced to Product Requirements, trade-off analysis, design validation, implementation, and assessment of the current revision (PRD-180, applying PRD-026, PRD-172, and PRD-179). Design changes are always filed as proposals unless you explicitly ask for a direct write. `skills/ideation-hub-system-design/` is a deprecated alias that points at this skill so existing installs still resolve the old name.
 
 With this plugin installed, Cursor and Grok Bot agents can:
 - **Read & Search Intent (`Read`):** Fetch the full requirement hierarchy (`ih_get_chain`), search existing requirements (`ih_search_requirements`), inspect upstream/downstream trace neighbors (`ih_get_neighbors`), and validate candidate changes against the trace rubric (`ih_validate_against_trace`).
@@ -88,7 +88,9 @@ Both skills follow the open [Agent Skills specification](https://agentskills.io/
   ```bash
   git clone https://github.com/ideationhub/ideation-hub-cursor-plugin /tmp/ih-plugin
   mkdir -p ~/.agents/skills
-  cp -R /tmp/ih-plugin/skills/ideation-hub-requirements-agent /tmp/ih-plugin/skills/ideation-hub-system-design ~/.agents/skills/
+  cp -R /tmp/ih-plugin/skills/ideation-hub-requirements-agent /tmp/ih-plugin/skills/ideation-hub-developer ~/.agents/skills/
+  # Deprecated alias so hosts that still invoke ideation-hub-system-design resolve:
+  cp -R /tmp/ih-plugin/skills/ideation-hub-system-design ~/.agents/skills/
   ```
 
   ```toml
@@ -98,7 +100,7 @@ Both skills follow the open [Agent Skills specification](https://agentskills.io/
   ```
 - **Grok Build:** `grok plugin install ideationhub/ideation-hub-cursor-plugin --trust`.
 
-Per-harness details: [`skills/ideation-hub-system-design/adapters/`](skills/ideation-hub-system-design/adapters/).
+Per-harness details: [`skills/ideation-hub-developer/adapters/`](skills/ideation-hub-developer/adapters/).
 
 ---
 
