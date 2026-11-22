@@ -1,8 +1,8 @@
 {
   "name": "ideation-hub",
   "displayName": "Ideation Hub",
-  "version": "1.1.0",
-  "description": "Connect coding agents to Ideation Hub to read, validate, trace, and propose Business Needs, User Needs, PRDs, Designs, Implementations, and Tests via MCP.",
+  "version": "1.2.0",
+  "description": "Compatibility bundle for existing Ideation Hub installs. Loads the developer and requirements plugins' instructions and the MCP server. New installs should use ideation-hub-platform, ideation-hub-developer, and ideation-hub-requirements. Do not install this bundle together with those three.",
   "author": {
     "name": "Ideation Hub",
     "email": "support@ideationhub.me"
@@ -33,7 +33,10 @@
     "mcp",
     "skills"
   ],
-  "skills": "./skills/",
+  "skills": [
+    "./plugins/ideation-hub-developer/skills",
+    "./plugins/ideation-hub-requirements/skills"
+  ],
   "mcpServers": "./mcp.json",
   "variables": [
     {

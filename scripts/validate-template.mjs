@@ -97,14 +97,36 @@ function parseFrontmatter(content) {
 async function walkFiles(dirPath) {
   const files = [];
   const stack = [dirPath];
+  const seen = new Set();
 
   while (stack.length > 0) {
     const current = stack.pop();
+    let real;
+    try {
+      real = await fs.realpath(current);
+    } catch {
+      addError(`Cannot read path (broken symlink or missing directory): ${current}`);
+      continue;
+    }
+    if (seen.has(real)) {
+      continue;
+    }
+    seen.add(real);
+
     const entries = await fs.readdir(current, { withFileTypes: true });
     for (const entry of entries) {
       const entryPath = path.join(current, entry.name);
       if (entry.isDirectory()) {
         stack.push(entryPath);
+      } else if (entry.isSymbolicLink()) {
+        const stat = await fs.stat(entryPath).catch(() => null);
+        if (!stat) {
+          addError(`Broken symlink: ${entryPath}`);
+        } else if (stat.isDirectory()) {
+          stack.push(entryPath);
+        } else if (stat.isFile()) {
+          files.push(entryPath);
+        }
       } else if (entry.isFile()) {
         files.push(entryPath);
       }

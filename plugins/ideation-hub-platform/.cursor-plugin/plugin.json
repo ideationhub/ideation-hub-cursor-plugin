@@ -1,0 +1,52 @@
+{
+  "name": "ideation-hub-platform",
+  "displayName": "Ideation Hub Platform",
+  "version": "1.0.0",
+  "description": "Canonical Ideation Hub schema, REST API, and MCP tools, plus the MCP server. The developer and requirements plugins require this plugin. Cursor has no plugin-dependency field, so that requirement is documented in each of those plugins.",
+  "author": {
+    "name": "Ideation Hub",
+    "email": "support@ideationhub.me"
+  },
+  "publisher": "Ideation Hub",
+  "homepage": "https://www.ideationhub.me",
+  "repository": "https://github.com/ideationhub/ideation-hub-cursor-plugin",
+  "license": "MIT",
+  "logo": "assets/logo.svg",
+  "keywords": [
+    "ideation-hub",
+    "requirements",
+    "mcp",
+    "schema"
+  ],
+  "mcpServers": "./mcp.json",
+  "variables": [
+    {
+      "name": "IH_CLIENT_ID",
+      "description": "Ideation Hub Agent Client ID (minted at https://www.ideationhub.me/settings/agents?setup=grokbot)",
+      "required": true,
+      "secret": false
+    },
+    {
+      "name": "IH_CLIENT_SECRET",
+      "description": "Ideation Hub Agent Client Secret (shown once when creating the Agent Credential at https://www.ideationhub.me/settings/agents?setup=grokbot)",
+      "required": true,
+      "secret": true
+    }
+  ],
+  "setupFields": [
+    {
+      "key": "IH_CLIENT_ID",
+      "label": "Agent Client ID",
+      "description": "Create an Agent Credential at https://www.ideationhub.me/settings/agents?setup=grokbot",
+      "secret": false,
+      "required": true
+    },
+    {
+      "key": "IH_CLIENT_SECRET",
+      "label": "Agent Client Secret",
+      "description": "Copy the Client Secret shown once when creating your Agent Credential",
+      "secret": true,
+      "required": true
+    }
+  ]
+}
