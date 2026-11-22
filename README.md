@@ -23,10 +23,14 @@
 **From first idea to justified release confidence.**  
 Ideation Hub gives AI-assisted engineering teams a living system of record for product intent—connecting **Business Needs (`BN`)**, **User Profiles**, **User Needs (`UN`)**, **Product Requirements (`PRD`)**, **System / UX / Component Designs (`SD`, `UXD`, `CD`)**, **Implementations (`IMPL`)**, and **Verification / Validation / Unit Tests (`VT`, `VER`, `UT`)** in a single traceable graph.
 
-This plugin bundles:
-1. **The Ideation Hub Hosted MCP Server (`https://api.ideationhub.me/api/mcp`)** — 27 typed Model Context Protocol tools over stateless Streamable HTTP JSON-RPC (`2025-03-26`).
-2. **The `ideation-hub-requirements-agent` Skill (`skills/ideation-hub-requirements-agent/SKILL.md`)** — Design Controls workflow, layered Profile → UN → PRD writing rubrics, duplicate/orphan prevention, and propose-first governance rules.
-3. **The `ideation-hub-developer` Skill (`skills/ideation-hub-developer/SKILL.md`, 0.2.0 beta)** — system design, implementation, and assessment of implementation and test coverage status for Ideation Hub Product Requirements. Collaborative, proportionate System, Component and UX Design records traced to Product Requirements, trade-off analysis, design validation, implementation, and assessment of the current revision (PRD-180, applying PRD-026, PRD-172, and PRD-179). Design changes are always filed as proposals unless you explicitly ask for a direct write. `skills/ideation-hub-system-design/` is a deprecated alias that points at this skill so existing installs still resolve the old name.
+This repository is a multi-plugin marketplace:
+
+1. **Ideation Hub Platform** (`plugins/ideation-hub-platform`) — the one description of the schema, REST API, and Model Context Protocol tools, plus `mcp.json` for `https://api.ideationhub.me/api/mcp`. The same text is the skill folder `skills/ideation-hub-platform` for hosts that only load skills.
+2. **Ideation Hub Requirements** (`plugins/ideation-hub-requirements`, skill name `ideation-hub-requirements-agent`, 1.7.0) — authoring workflow and writing rubrics. Requires the platform plugin.
+3. **Ideation Hub Developer** (`plugins/ideation-hub-developer`, skill name `ideation-hub-developer`, 0.4.0 beta) — system design, implementation, and assessment. Before designing or implementing, it traces each Product Requirement up to its User Needs. Assessment of the current revision is unchanged (PRD-180, applying PRD-026, PRD-172, and PRD-179). Requires the platform plugin. `ideation-hub-system-design` remains a deprecated alias.
+4. **Ideation Hub** (repository root, plugin name `ideation-hub`, 1.2.0) — compatibility bundle so existing installs keep loading the same instructions and the root MCP config. Install this bundle **or** the three plugins above, not both.
+
+Cursor's marketplace format has no plugin-dependency field. The developer and requirements plugins document that they require the platform plugin. Agent skill folder names and `SKILL.md` files stay, because that is how hosts load instructions. `skills/` at the repository root is a set of symlinks to those folders so the old paths still resolve.
 
 With this plugin installed, Cursor and Grok Bot agents can:
 - **Read & Search Intent (`Read`):** Fetch the full requirement hierarchy (`ih_get_chain`), search existing requirements (`ih_search_requirements`), inspect upstream/downstream trace neighbors (`ih_get_neighbors`), and validate candidate changes against the trace rubric (`ih_validate_against_trace`).
@@ -80,17 +84,24 @@ https://github.com/ideationhub/ideation-hub-cursor-plugin
 
 ### 4. Other Agent Harnesses (Claude Code, OpenAI Codex, Grok Build)
 
-Both skills follow the open [Agent Skills specification](https://agentskills.io/specification), so they load in any compatible agent.
+The developer and requirements plugins keep `SKILL.md` files so any host that follows the open [Agent Skills specification](https://agentskills.io/specification) can load them. Install the platform plugin beside them.
 
-- **Claude Code:** this repository includes `.claude-plugin/plugin.json` and a root `.mcp.json`. Enable it as a plugin, or copy `skills/*` into `.claude/skills/`.
-- **OpenAI Codex:** copy (or symlink) both skill folders into `.agents/skills/` in your repository, or `~/.agents/skills/` for every project, and add the MCP server to `~/.codex/config.toml`:
+- **Claude Code:** this repository includes `.claude-plugin/plugin.json` and a root `.mcp.json`. Enable the compatibility bundle, or copy the three directories under `plugins/` so they stay siblings. `skills/` at the repo root is symlinks to those plugins.
+- **OpenAI Codex:** copy the three plugin directories so they stay siblings (see the block below), and add the MCP server to `~/.codex/config.toml`:
 
   ```bash
   git clone https://github.com/ideationhub/ideation-hub-cursor-plugin /tmp/ih-plugin
   mkdir -p ~/.agents/skills
-  cp -R /tmp/ih-plugin/skills/ideation-hub-requirements-agent /tmp/ih-plugin/skills/ideation-hub-developer ~/.agents/skills/
-  # Deprecated alias so hosts that still invoke ideation-hub-system-design resolve:
-  cp -R /tmp/ih-plugin/skills/ideation-hub-system-design ~/.agents/skills/
+  # Install the three plugins as siblings so their relative links resolve.
+  mkdir -p ~/.cursor/plugins
+  cp -R /tmp/ih-plugin/plugins/ideation-hub-platform \
+        /tmp/ih-plugin/plugins/ideation-hub-developer \
+        /tmp/ih-plugin/plugins/ideation-hub-requirements \
+        ~/.cursor/plugins/
+  # Hosts that load agent skills from ~/.agents/skills can use the same folders' skills/.
+  # Keep the plugin directories as siblings of each other. Do not flatten only the skill folders
+  # or the links into the platform plugin break.
+  # skills/ideation-hub-system-design inside the developer plugin is the deprecated alias.
   ```
 
   ```toml
@@ -100,43 +111,17 @@ Both skills follow the open [Agent Skills specification](https://agentskills.io/
   ```
 - **Grok Build:** `grok plugin install ideationhub/ideation-hub-cursor-plugin --trust`.
 
-Per-harness details: [`skills/ideation-hub-developer/adapters/`](skills/ideation-hub-developer/adapters/).
+Install guides, checked against the vendor pages named in each file: [Cursor](docs/install/cursor.md), [Claude Code and Claude Desktop](docs/install/claude.md), [Grok Bot](docs/install/grok-bot.md), and [other harnesses](docs/install/generic.md).
+
+Ready-to-copy server files, with placeholders and no secrets, are in [docs/mcp](docs/mcp). One generated instruction file per unit is in [docs/instructions](docs/instructions).
+
+Per-harness notes that ship inside the developer skill: [`plugins/ideation-hub-developer/skills/ideation-hub-developer/adapters/`](plugins/ideation-hub-developer/skills/ideation-hub-developer/adapters/).
 
 ---
 
-## Included MCP Tools (27 Tools)
+## MCP tools
 
-With a **Suggest** credential every write tool files a proposal for human review. With **Edit** (direct edit on that product) the same tools change living records unless the call passes `mode: "suggest"`.
-
-| Tool | Permission | Description |
-| --- | --- | --- |
-| `ih_list_products` | `read` | List products and folders this credential can open, with `directEdit` per product. |
-| `ih_get_chain` | `read` | Profiles, requirements and trace links for a product (`includePending`, `includeObsolete`, tag filters). |
-| `ih_get_requirement` | `read` | One requirement by human ID or UUID: revisions, design fields, tags, links and its pending proposal. |
-| `ih_get_neighbors` | `read` | Walk trace neighbors up, down or both, to a given depth. |
-| `ih_search` | `read` | Hybrid keyword and meaning search across requirements, profiles, sections, specs and pending proposals. |
-| `ih_search_requirements` | `read` | Keyword and filter listing by human ID, title and statement. |
-| `ih_list_review_queue` | `read` | Proposals visible to this credential, with what each change does. |
-| `ih_validate_against_trace` | `read` | Check a record or draft for duplicate titles, missing profile or parent, and orphans. Writes nothing. |
-| `ih_list_sections` | `read` | PRD sections in order, with summaries. |
-| `ih_propose_requirement` | `suggest` / `edit` | Add a BN, UN, PRD, SD, UXD, CD, IMPL, VT, VER or UT record. |
-| `ih_propose_edit` | `suggest` / `edit` | Revise a requirement, including link changes; amends the one pending proposal. |
-| `ih_propose_bulk_push` | `suggest` / `edit` | Validate and apply or queue many records and links together (`dryRun` supported). |
-| `ih_propose_profile` | `suggest` / `edit` | Add or edit a User Profile. |
-| `ih_link_requirements` | `suggest` / `edit` | Add a trace link (`addresses`, `realized_by`, `refined_by`, `checked_by`). |
-| `ih_unlink_requirements` | `suggest` / `edit` | Soft-remove a trace link. |
-| `ih_lifecycle_action` | `suggest` / `edit` | Withdraw, reopen, obsolete, delete draft or reclassify. |
-| `ih_create_section` | `suggest` / `edit` | Add a PRD section. |
-| `ih_rename_section` | `suggest` / `edit` | Rename or nest a PRD section. |
-| `ih_delete_section` | `suggest` / `edit` | Delete a PRD section (requirements become unassigned). |
-| `ih_reorder_sections` | `suggest` / `edit` | Reorder all PRD sections. |
-| `ih_set_section_summary` | `suggest` / `edit` | Set a PRD section summary. |
-| `ih_assign_sections` | `suggest` / `edit` | Place many PRDs into sections in one change. |
-| `ih_create_requirement` | `edit` only | Direct-only add. |
-| `ih_update_requirement` | `edit` only | Direct-only revise. |
-| `ih_set_tags` | `edit` only | Replace a requirement's tags (no new revision). |
-| `ih_restore_draft_title` | `suggest` (own pending add) | Title-only repair of a pending add. |
-| `ih_record_development_phase_event` | `delivery:write` (direct) | Append one development-phase event (for example `design_ready`). Not a proposal. |
+The tool catalog, permissions, and REST routes are the platform plugin: [`plugins/ideation-hub-platform/references/mcp.md`](plugins/ideation-hub-platform/references/mcp.md) and [`plugins/ideation-hub-platform/references/rest-api.md`](plugins/ideation-hub-platform/references/rest-api.md). With a **Suggest** credential, write tools file a proposal for human review. With **Edit**, the same tools change living records unless the call passes `mode: "suggest"`.
 
 ---
 

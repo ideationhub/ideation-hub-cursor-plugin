@@ -1,8 +1,8 @@
 {
   "name": "ideation-hub",
   "displayName": "Ideation Hub",
-  "version": "1.1.0",
-  "description": "Connect coding agents to Ideation Hub to read, validate, trace, and propose Business Needs, User Needs, PRDs, Designs, Implementations, and Tests via MCP.",
+  "version": "1.2.0",
+  "description": "Compatibility bundle for existing Ideation Hub installs. Loads the developer and requirements plugins' instructions and the MCP server. New installs should use the platform, developer, and requirements plugins under plugins/.",
   "author": {
     "name": "Ideation Hub",
     "email": "support@ideationhub.me"
@@ -11,7 +11,10 @@
   "repository": "https://github.com/ideationhub/ideation-hub-cursor-plugin",
   "license": "MIT",
   "logo": "assets/logo.svg",
-  "skills": "./skills/",
+  "skills": [
+    "./plugins/ideation-hub-developer/skills",
+    "./plugins/ideation-hub-requirements/skills"
+  ],
   "mcpServers": "./.grok-plugin/mcp.json",
   "keywords": [
     "ideation-hub",

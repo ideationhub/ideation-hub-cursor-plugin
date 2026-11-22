@@ -1,0 +1,9 @@
+{
+  "name": "ideation-hub-platform",
+  "version": "1.0.0",
+  "description": "Canonical Ideation Hub schema, REST API, and Model Context Protocol tools. The developer and requirements plugins require this one. Claude Code has no dependency field; install this plugin with them.",
+  "author": {
+    "name": "Ideation Hub"
+  },
+  "mcpServers": "./mcp.json"
+}

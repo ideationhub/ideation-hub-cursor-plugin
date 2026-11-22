@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { spawnSync } from "node:child_process";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import process from "node:process";
@@ -97,14 +98,36 @@ function parseFrontmatter(content) {
 async function walkFiles(dirPath) {
   const files = [];
   const stack = [dirPath];
+  const seen = new Set();
 
   while (stack.length > 0) {
     const current = stack.pop();
+    let real;
+    try {
+      real = await fs.realpath(current);
+    } catch {
+      addError(`Cannot read path (broken symlink or missing directory): ${current}`);
+      continue;
+    }
+    if (seen.has(real)) {
+      continue;
+    }
+    seen.add(real);
+
     const entries = await fs.readdir(current, { withFileTypes: true });
     for (const entry of entries) {
       const entryPath = path.join(current, entry.name);
       if (entry.isDirectory()) {
         stack.push(entryPath);
+      } else if (entry.isSymbolicLink()) {
+        const stat = await fs.stat(entryPath).catch(() => null);
+        if (!stat) {
+          addError(`Broken symlink: ${entryPath}`);
+        } else if (stat.isDirectory()) {
+          stack.push(entryPath);
+        } else if (stat.isFile()) {
+          files.push(entryPath);
+        }
       } else if (entry.isFile()) {
         files.push(entryPath);
       }
@@ -353,6 +376,15 @@ async function main() {
     if (!(await pathExists(mcpPath))) {
       addWarning(`${entry.name}: no mcp.json file found (only needed when using MCP servers).`);
     }
+  }
+
+  const instructionCheck = spawnSync(process.execPath, ["scripts/build-instructions.mjs", "--check"], {
+    cwd: repoRoot,
+    encoding: "utf8",
+  });
+  if (instructionCheck.status !== 0) {
+    const detail = `${instructionCheck.stdout ?? ""}${instructionCheck.stderr ?? ""}`.trim();
+    addError(detail || "Generated instruction files are out of date.");
   }
 
   summarizeAndExit();

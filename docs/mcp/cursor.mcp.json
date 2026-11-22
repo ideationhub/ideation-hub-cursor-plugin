@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "ideation-hub": {
+      "url": "https://api.ideationhub.me/api/mcp",
+      "headers": {
+        "X-IH-Client-Id": "${env:IH_CLIENT_ID}",
+        "X-IH-Client-Secret": "${env:IH_CLIENT_SECRET}"
+      }
+    }
+  }
+}

@@ -5,15 +5,63 @@
     "email": "support@ideationhub.me"
   },
   "metadata": {
-    "description": "Connect coding agents to Ideation Hub to read, validate, trace, and propose Business Needs, User Needs, PRDs, Designs, Implementations, and Tests via MCP.",
-    "version": "1.1.0"
+    "description": "Ideation Hub plugins: platform (schema, REST, MCP), developer, and requirements. The root ideation-hub entry remains so existing installs keep loading.",
+    "version": "1.2.0"
   },
   "plugins": [
     {
+      "name": "ideation-hub-platform",
+      "source": "plugins/ideation-hub-platform",
+      "description": "Canonical Ideation Hub schema, REST API, and MCP tools. The developer and requirements plugins require this plugin. Cursor has no dependency field; install it with them.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Ideation Hub",
+        "email": "support@ideationhub.me"
+      },
+      "homepage": "https://www.ideationhub.me",
+      "repository": "https://github.com/ideationhub/ideation-hub-cursor-plugin",
+      "license": "MIT",
+      "logo": "assets/logo.svg",
+      "category": "Productivity",
+      "keywords": ["ideation-hub", "mcp", "schema"]
+    },
+    {
+      "name": "ideation-hub-developer",
+      "source": "plugins/ideation-hub-developer",
+      "description": "Developer plugin for system design, implementation, and assessment. Requires the Ideation Hub platform plugin. Cursor has no dependency field. The ideation-hub-system-design name still resolves.",
+      "version": "0.4.0",
+      "author": {
+        "name": "Ideation Hub",
+        "email": "support@ideationhub.me"
+      },
+      "homepage": "https://www.ideationhub.me",
+      "repository": "https://github.com/ideationhub/ideation-hub-cursor-plugin",
+      "license": "MIT",
+      "logo": "assets/logo.svg",
+      "category": "Productivity",
+      "keywords": ["ideation-hub", "design", "implementation"]
+    },
+    {
+      "name": "ideation-hub-requirements",
+      "source": "plugins/ideation-hub-requirements",
+      "description": "Requirements plugin for authoring Business Needs, User Needs, and Product Requirements. Skill name ideation-hub-requirements-agent is unchanged. Requires the Ideation Hub platform plugin. Cursor has no dependency field.",
+      "version": "1.7.0",
+      "author": {
+        "name": "Ideation Hub",
+        "email": "support@ideationhub.me"
+      },
+      "homepage": "https://www.ideationhub.me",
+      "repository": "https://github.com/ideationhub/ideation-hub-cursor-plugin",
+      "license": "MIT",
+      "logo": "assets/logo.svg",
+      "category": "Productivity",
+      "keywords": ["ideation-hub", "requirements", "prd"]
+    },
+    {
       "name": "ideation-hub",
       "source": ".",
-      "description": "Connect coding agents to Ideation Hub to read, validate, trace, and propose Business Needs, User Needs, PRDs, Designs, Implementations, and Tests via MCP.",
-      "version": "1.1.0",
+      "description": "Compatibility bundle for existing installs. Loads the developer and requirements instructions and the root MCP server. Prefer the platform, developer, and requirements plugins. Do not install this bundle together with those three.",
+      "version": "1.2.0",
       "author": {
         "name": "Ideation Hub",
         "email": "support@ideationhub.me"
