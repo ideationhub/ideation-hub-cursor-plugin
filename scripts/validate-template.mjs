@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { spawnSync } from "node:child_process";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import process from "node:process";
@@ -375,6 +376,15 @@ async function main() {
     if (!(await pathExists(mcpPath))) {
       addWarning(`${entry.name}: no mcp.json file found (only needed when using MCP servers).`);
     }
+  }
+
+  const instructionCheck = spawnSync(process.execPath, ["scripts/build-instructions.mjs", "--check"], {
+    cwd: repoRoot,
+    encoding: "utf8",
+  });
+  if (instructionCheck.status !== 0) {
+    const detail = `${instructionCheck.stdout ?? ""}${instructionCheck.stderr ?? ""}`.trim();
+    addError(detail || "Generated instruction files are out of date.");
   }
 
   summarizeAndExit();

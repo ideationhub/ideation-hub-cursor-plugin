@@ -25,7 +25,7 @@ Ideation Hub gives AI-assisted engineering teams a living system of record for p
 
 This repository is a multi-plugin marketplace:
 
-1. **Ideation Hub Platform** (`plugins/ideation-hub-platform`) — the one description of the schema, REST API, and MCP tools, plus `mcp.json` for `https://api.ideationhub.me/api/mcp`. Not an agent skill.
+1. **Ideation Hub Platform** (`plugins/ideation-hub-platform`) — the one description of the schema, REST API, and Model Context Protocol tools, plus `mcp.json` for `https://api.ideationhub.me/api/mcp`. The same text is the skill folder `skills/ideation-hub-platform` for hosts that only load skills.
 2. **Ideation Hub Requirements** (`plugins/ideation-hub-requirements`, skill name `ideation-hub-requirements-agent`, 1.7.0) — authoring workflow and writing rubrics. Requires the platform plugin.
 3. **Ideation Hub Developer** (`plugins/ideation-hub-developer`, skill name `ideation-hub-developer`, 0.4.0 beta) — system design, implementation, and assessment. Before designing or implementing, it traces each Product Requirement up to its User Needs. Assessment of the current revision is unchanged (PRD-180, applying PRD-026, PRD-172, and PRD-179). Requires the platform plugin. `ideation-hub-system-design` remains a deprecated alias.
 4. **Ideation Hub** (repository root, plugin name `ideation-hub`, 1.2.0) — compatibility bundle so existing installs keep loading the same instructions and the root MCP config. Install this bundle **or** the three plugins above, not both.
@@ -111,7 +111,11 @@ The developer and requirements plugins keep `SKILL.md` files so any host that fo
   ```
 - **Grok Build:** `grok plugin install ideationhub/ideation-hub-cursor-plugin --trust`.
 
-Per-harness details: [`plugins/ideation-hub-developer/skills/ideation-hub-developer/adapters/`](plugins/ideation-hub-developer/skills/ideation-hub-developer/adapters/).
+Install guides, checked against the vendor pages named in each file: [Cursor](docs/install/cursor.md), [Claude Code and Claude Desktop](docs/install/claude.md), [Grok Bot](docs/install/grok-bot.md), and [other harnesses](docs/install/generic.md).
+
+Ready-to-copy server files, with placeholders and no secrets, are in [docs/mcp](docs/mcp). One generated instruction file per unit is in [docs/instructions](docs/instructions).
+
+Per-harness notes that ship inside the developer skill: [`plugins/ideation-hub-developer/skills/ideation-hub-developer/adapters/`](plugins/ideation-hub-developer/skills/ideation-hub-developer/adapters/).
 
 ---
 

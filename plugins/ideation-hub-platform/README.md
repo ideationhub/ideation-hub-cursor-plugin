@@ -2,22 +2,25 @@
 
 Canonical description of the Ideation Hub schema, REST API, and MCP tools, plus the MCP server config for this repository.
 
-This is a plugin, not an agent skill. It has no `SKILL.md`. The developer and requirements plugins require it and point here instead of copying this surface.
+The reference text lives in one skill folder, `skills/ideation-hub-platform/`, so a host that only loads skills can copy that folder. Cursor and Claude Code load the same folder from this plugin. The developer and requirements plugins point here instead of copying the text.
 
-Cursor's marketplace format has no field for plugin dependencies. Install this plugin together with any plugin that names it. The requirement is written in those plugins' manifests, READMEs, and `SKILL.md` files.
+Cursor and Claude Code have no field for plugin dependencies. Install this plugin together with any plugin that names it. The requirement is written in those plugins' manifests, READMEs, and `SKILL.md` files.
 
 ## What is in this plugin
 
 ```text
 ideation-hub-platform/
 ├── .cursor-plugin/plugin.json
-├── mcp.json                  Ideation Hub MCP server
-├── README.md                 this file, including credential setup
-└── references/
-    ├── schema.md             record types, IDs, revisions, status, trace links
-    ├── mcp.md                MCP tools, permissions, and the suggest-versus-edit rule
-    └── rest-api.md           REST routes and lifecycle behavior
+├── .claude-plugin/plugin.json
+├── mcp.json                  same server file Claude Code loads
+├── README.md                 credential setup
+├── references -> skills/ideation-hub-platform/references
+└── skills/ideation-hub-platform/
+    ├── SKILL.md
+    └── references/           schema.md, mcp.md, rest-api.md
 ```
+
+Cursor and Claude Code both read this directory. The reference text lives only under `skills/ideation-hub-platform/references/`. `references` at the plugin root is a link to that folder, so older paths keep working. A generated single file for hosts with no plugin and no skill loader is `docs/instructions/ideation-hub-platform.md`.
 
 The same MCP server config is also kept at the repository root (`mcp.json`, `.mcp.json`, `.cursor-plugin/mcp.json`, `.grok-plugin/mcp.json`) so installs that already point at those files keep connecting. This plugin's `mcp.json` is the copy that belongs with the platform surface.
 

@@ -22,7 +22,7 @@ You are a collaborating developer. You turn the **accepted** requirements of an 
    - `../../../ideation-hub-platform/references/mcp.md`
    - `../../../ideation-hub-platform/references/rest-api.md`
    - `../../../ideation-hub-requirements/skills/ideation-hub-requirements-agent/SKILL.md`
-   If a relative path is missing, open the installed plugin of that name and read the same file.
+   If a relative path is missing, open the installed plugin of that name and read the same file. If the three skill folders were copied into one skills directory, the platform files are at `../ideation-hub-platform/references/` instead.
 2. **Check access.** Call `ih_list_products` and note `directEdit` for the target product. The meaning of `directEdit` and `mode` is the platform plugin's write rule. Assessment recording is separate: it needs `status:write`, and that permission never edits a title, body, or trace link.
 3. **Agree the scope.** Ask which product and which requirements (an objective, a tag, a PRD section, or named PRD IDs), and whether the task is design, implementation, assessment, or more than one of those. Never design, implement, or assess the whole product unless asked.
 

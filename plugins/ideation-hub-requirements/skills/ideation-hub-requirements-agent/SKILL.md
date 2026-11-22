@@ -19,7 +19,7 @@ From this file, when `ideation-hub-platform` is a sibling plugin directory:
 - `../../../ideation-hub-platform/references/rest-api.md`
 - `../../../ideation-hub-platform/README.md` — credential setup
 
-If a relative path is missing, open the installed platform plugin and read the same file. This plugin requires that plugin. Cursor's marketplace format has no dependency field, so the requirement is documented here, in this plugin's manifest, and in its README.
+If a relative path is missing, open the installed platform plugin and read the same file. If the three skill folders were copied into one skills directory, the platform files are at `../ideation-hub-platform/references/` instead. This plugin requires the platform plugin. Cursor and Claude Code have no dependency field, so the requirement is documented here, in this plugin's manifests, and in its README.
 
 ## Schema and traces
 

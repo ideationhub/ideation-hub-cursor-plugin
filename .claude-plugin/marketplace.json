@@ -1,0 +1,30 @@
+{
+  "name": "ideation-hub",
+  "description": "Ideation Hub platform, developer, and requirements plugins. The root ideation-hub entry remains so existing Claude Code installs keep loading.",
+  "owner": {
+    "name": "Ideation Hub",
+    "email": "support@ideationhub.me"
+  },
+  "plugins": [
+    {
+      "name": "ideation-hub-platform",
+      "source": "./plugins/ideation-hub-platform",
+      "description": "Schema, REST API, and Model Context Protocol tools for Ideation Hub."
+    },
+    {
+      "name": "ideation-hub-developer",
+      "source": "./plugins/ideation-hub-developer",
+      "description": "System design, implementation, and assessment. Requires ideation-hub-platform."
+    },
+    {
+      "name": "ideation-hub-requirements",
+      "source": "./plugins/ideation-hub-requirements",
+      "description": "Authoring workflow. Skill name ideation-hub-requirements-agent. Requires ideation-hub-platform."
+    },
+    {
+      "name": "ideation-hub",
+      "source": "./",
+      "description": "Compatibility bundle for existing installs. Prefer the three plugins above. Do not install this bundle together with them."
+    }
+  ]
+}

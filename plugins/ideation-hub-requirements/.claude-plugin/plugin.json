@@ -1,0 +1,8 @@
+{
+  "name": "ideation-hub-requirements",
+  "version": "1.7.0",
+  "description": "Requirements plugin for authoring Ideation Hub Business Needs, User Needs, and Product Requirements. The skill name ideation-hub-requirements-agent is unchanged. Requires the ideation-hub-platform plugin. Claude Code has no dependency field.",
+  "author": {
+    "name": "Ideation Hub"
+  }
+}
