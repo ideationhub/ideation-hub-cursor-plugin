@@ -75,9 +75,11 @@ Never call `ih_create_requirement`, `ih_update_requirement` or `ih_set_tags`.
 - To withdraw your own pending proposal, use `withdraw_proposal` with the **proposal id**. Use `withdraw_requirement` only when the user asks for exactly that.
 - Never re-propose to get around a Reject. Ask the user.
 
-## The one direct write: `design_ready`
+## Direct write: `design_ready`
 
 At handoff, call `ih_record_development_phase_event` with `phase: "design_ready"` for each in-scope Product Requirement, with `evidenceUrl` set to the design's Review URL or record URL if you have one. This is a direct, append-only write by design; it is not requirement content, and retries with the same arguments return the same event. It requires the `delivery:write` permission. On 403, tell the user: "This credential cannot record development-phase events (it lacks delivery:write), so 'design ready' was not recorded." Then continue. Do not try other tools or credentials.
+
+Confirmation reviews and status assessments are also direct writes. They are not design writes and they are not proposals. Follow `assessment.md`. They require `status:write`, and that permission never changes a title, body, or trace link. On 403, tell the user the credential lacks `status:write` and continue. Do not try other tools or credentials.
 
 ## Safety matrix
 
@@ -90,4 +92,5 @@ At handoff, call `ih_record_development_phase_event` with `phase: "design_ready"
 | Change a requirement (BN/UN/PRD) or a test's wording | not done by this skill; hand to the requirements skill | same |
 | Obsolete, withdraw, reclassify | proposal, after confirmation | proposal, after confirmation |
 | `design_ready` event | direct; 403 without `delivery:write` | direct; 403 without `delivery:write` |
+| Confirmation review or status assessment | direct; 403 without `status:write`; never changes title, body, or links | direct; 403 without `status:write`; never changes title, body, or links |
 | Accept or Reject | never (403) | never (403) |

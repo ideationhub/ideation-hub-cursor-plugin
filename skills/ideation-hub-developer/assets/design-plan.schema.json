@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/ideationhub/ideation-hub-cursor-plugin/skills/ideation-hub-system-design/assets/design-plan.schema.json",
+  "$id": "https://github.com/ideationhub/ideation-hub-cursor-plugin/skills/ideation-hub-developer/assets/design-plan.schema.json",
   "title": "Ideation Hub design change plan (scratch, non-authoritative)",
   "description": "An agent's in-session plan of design changes before they are dry-run and filed as Ideation Hub proposals. Never published or kept as a source of truth; Ideation Hub records are the authority.",
   "type": "object",

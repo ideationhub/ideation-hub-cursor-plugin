@@ -2,7 +2,7 @@
 
 **Plugin:** `grok plugin install ideationhub/ideation-hub-cursor-plugin --trust`. Grok Build also reads Claude Code plugins and the root `.mcp.json`. Export `IH_CLIENT_ID` and `IH_CLIENT_SECRET` first.
 
-**Manual:** copy both skill folders into `.grok/skills/` (project) or `~/.grok/skills/` (user); `~/.agents/skills/` also works. Add the server:
+**Manual:** copy `skills/ideation-hub-requirements-agent`, `skills/ideation-hub-developer`, and the deprecated alias `skills/ideation-hub-system-design` into `.grok/skills/` (project) or `~/.grok/skills/` (user); `~/.agents/skills/` also works. Add the server:
 
 ```bash
 grok mcp add --transport http ideation-hub https://api.ideationhub.me/api/mcp \

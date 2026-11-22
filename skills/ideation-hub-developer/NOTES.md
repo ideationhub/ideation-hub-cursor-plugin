@@ -9,6 +9,7 @@
 5. **`design_ready` is per Product Requirement.** Development-phase events are recorded against requirements, so the handoff records one event for each in-scope Product Requirement.
 6. **Search may be keyword-only.** When Ideation Hub's hybrid search is not active, retrieval relies on keywords and tags, so the skill favours tag and ID reads.
 7. **Accepted vs pending.** Records with status `proposed` or `approved` are accepted; `unapproved` is pending.
+8. **Assessment is a status write, not a design write.** Confirmation reviews and status assessments (PRD-179) need `status:write`. That permission never changes a title, body, or trace link, and a review or assessment does not carry to a later revision.
 
 ## Open integration questions
 
