@@ -4,7 +4,7 @@ description: Deprecated alias of ideation-hub-developer. Use when an existing in
 license: MIT
 compatibility: Requires the ideation-hub-developer skill in a sibling directory, the Ideation Hub MCP server (https://api.ideationhub.me/api/mcp), and the ideation-hub-requirements-agent skill.
 metadata:
-  version: "0.2.0"
+  version: "0.3.0"
   status: deprecated
   aliasOf: ideation-hub-developer
   author: Ideation Hub

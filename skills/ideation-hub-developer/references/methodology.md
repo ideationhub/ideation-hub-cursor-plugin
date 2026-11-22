@@ -2,7 +2,11 @@
 
 Use this file to run the design loop. Each phase lists the inputs, the steps, what to show the user, and when to stop. The phases are a loop, not a pipeline: go back to any phase when the user challenges, adds or changes something.
 
-Implementation and assessment are separate from this design loop. When the user asks you to implement, follow the Implementation section in `SKILL.md`. When the user gives you Product Requirements to assess, follow `assessment.md`.
+Before Phase B, run the user-need trace in `implementation.md`. Do not draft a design for a Product Requirement that trace flagged until the user resolves it.
+
+Implementation and assessment are separate from this design loop. When the user asks you to implement, follow `implementation.md` (it starts with the same user-need trace). When the user gives you Product Requirements to assess, follow `assessment.md`. Do not add assessment rules here.
+
+How to read a requirement, a link, a neighbor, or a status word is in the requirements skill (`../../ideation-hub-requirements-agent/references/retrieval.md`). Tool arguments are in `../../ideation-hub-requirements-agent/SKILL.md` §3. This file does not restate them.
 
 ## Labels used everywhere
 
@@ -21,12 +25,11 @@ Never present an assumption or recommendation as a fact.
 
 **Steps:**
 
-1. Retrieve with the smallest read that answers the question (the requirements skill's `references/retrieval.md` has the details):
-   - `ih_search` or `ih_search_requirements` for the objective or tag, with `includePending: false`.
-   - `ih_get_neighbors` `direction: "up"` on each in-scope PRD for its User Needs, Business Needs and profiles.
-   - `ih_get_neighbors` `direction: "down"` for existing designs, implementations and tests.
-   - `ih_get_chain` with `includePending: false` and `includeObsolete: false` only when the scope is the whole product.
-   - Do a separate read with `includePending: true` to see pending proposals. Label them "proposal" and never treat them as accepted.
+1. Start from the user-need summary in `implementation.md` (who, what, and why, with IDs). Then retrieve the rest of the scope with the smallest read that answers the question, using the retrieval reference above:
+   - Search the objective or tag with pending rows excluded.
+   - Walk down from each in-scope PRD for existing designs, implementations, and tests.
+   - Read the whole product chain only when the scope is the whole product, and exclude obsolete rows.
+   - Do a separate read that includes pending proposals. Label them "proposal" and never treat them as accepted.
 2. Find the non-functional requirements and principles. They are Product Requirements tagged `NFR` or `principle`. Search by tag (`tag: "NFR"`). Also look for `STPA` records; if any are in scope, follow the requirements skill's `references/stpa.md`.
 3. Read existing SD, CD and UXD records in scope (`types: ["SD","CD","UXD"]`). An existing design is the starting point, not something to replace.
 4. Build a short **problem frame**:
@@ -37,7 +40,7 @@ Never present an assumption or recommendation as a fact.
    - Constraints: only those stated in records, or stated by the user in this conversation.
    - External dependencies: systems the requirements name.
    - Missing information: what you need but no record states.
-5. Remember the record status vocabulary. `proposed` and `approved` both mean **accepted and living**. Only `unapproved` means a pending add. `obsolete`, `superseded` and `withdrawn` are retired.
+5. Use the status vocabulary in the retrieval reference. Do not invent a second set of status words.
 
 **Show the user:** the problem frame, in under a screen, with IDs.
 
@@ -107,7 +110,7 @@ Follow `validation.md`. Run the deterministic checks from Ideation Hub data firs
 
 ## Phase F — Implementation handoff
 
-Follow `implementation-handoff.md`. Build the brief and record `design_ready` for each in-scope Product Requirement, then report. This ends the design loop. When the user asked you to implement, continue with the Implementation section in `SKILL.md`. When the user asked you to assess Product Requirements, follow `assessment.md`.
+Follow `implementation-handoff.md`. Build the brief and record `design_ready` for each in-scope Product Requirement, then report. This ends the design loop. When the user asked you to implement, continue with `implementation.md`. When the user asked you to assess Product Requirements, follow `assessment.md`.
 
 ## Proportionality reminders
 

@@ -1,8 +1,10 @@
-# ideation-hub-developer (0.2.0 beta)
+# ideation-hub-developer (0.3.0 beta)
 
-A portable Agent Skill that helps any coding agent do system design, implementation, and assessment of implementation and test coverage status for Product Requirements in [Ideation Hub](https://www.ideationhub.me). The agent reads the accepted requirements over MCP, proposes a proportionate design, iterates, validates coverage and traceability, implements when asked, and assesses each Product Requirement it is given.
+A portable Agent Skill that helps any coding agent do system design, implementation, and assessment of implementation and test coverage status for Product Requirements in [Ideation Hub](https://www.ideationhub.me). Before it designs or implements, it traces each Product Requirement up to its User Needs and shapes the work from who the user is and what they are trying to do. It reads the accepted requirements over MCP, proposes a proportionate design, iterates, validates coverage and traceability, implements when asked by following the codebase, and assesses each Product Requirement it is given.
 
 Ideation Hub stays the system of record. Designs are stored there as System Design (SD), Component Design (CD) and UX Design (UXD) records, traced to the Product Requirements that justify them, and filed as Review proposals that a person accepts. Implementation and test-coverage assessments are recorded on the current revision (PRD-180, PRD-026, PRD-172, PRD-179).
+
+The Ideation Hub schema, REST API, and MCP tools are documented in the sibling `ideation-hub-requirements-agent` skill (`SKILL.md`, `references/retrieval.md`, `references/rest-api.md`). This skill points there instead of copying that surface. Install both skills next to each other.
 
 `ideation-hub-system-design` is a deprecated alias of this skill. Its folder holds only a `SKILL.md` that points here, so existing installs that still invoke the old name keep resolving.
 
@@ -12,6 +14,7 @@ Ideation Hub stays the system of record. Designs are stored there as System Desi
 ideation-hub-developer/
 ├── SKILL.md                  entry point the agent loads
 ├── references/               loaded on demand, one level deep
+│   ├── implementation.md     user-need trace, and how to implement
 │   ├── methodology.md        phases A–F, proportionality ladder
 │   ├── design-elements.md    how each artifact maps onto SD/CD/UXD, tags and templates
 │   ├── traceability.md       link direction, coverage, impact, staleness
@@ -63,7 +66,7 @@ The agent always files design changes as proposals (`mode: "suggest"`) unless yo
 
 ## Status
 
-0.2.0 is a beta. The conventions (tags, record templates, link patterns) may change before 1.0 as real designs are recorded. See `NOTES.md` for known gaps. The previous name, `ideation-hub-system-design`, remains as a deprecated alias.
+0.3.0 is a beta. The conventions (tags, record templates, link patterns) may change before 1.0 as real designs are recorded. See `NOTES.md` for known gaps. The previous name, `ideation-hub-system-design`, remains as a deprecated alias.
 
 ## Licence
 

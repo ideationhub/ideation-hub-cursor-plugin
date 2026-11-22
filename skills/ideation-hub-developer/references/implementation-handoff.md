@@ -8,7 +8,7 @@ The handoff brief lets a separate implementation agent build the design without 
 2. Check the review state of every design record in scope:
    - **All accepted:** build the brief from accepted records only, the same rule Ideation Hub uses for exports and briefs.
    - **Some pending:** build the brief anyway if the user asks, and put this banner at the top: "DRAFT — includes design proposals not yet accepted in Ideation Hub: <IDs>." List the pending IDs.
-3. This phase prepares a brief for another agent. It does not write application code. Implementing is separate, and only when the user asks (see `SKILL.md`, Implementation).
+3. This phase prepares a brief for another agent. It does not write application code. Implementing is separate, and only when the user asks (`implementation.md`, and the recording rules in `SKILL.md`, Implementation).
 
 ## Brief contents
 

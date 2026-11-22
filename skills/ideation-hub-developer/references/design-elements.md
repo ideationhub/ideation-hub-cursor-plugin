@@ -1,6 +1,8 @@
 # Design elements: how a design is stored in Ideation Hub
 
-Ideation Hub has three design record types: **System Design (SD)**, **Component Design (CD)** and **UX Design (UXD)**. Each has a title, a Markdown statement, tags, revisions and trace links. A UXD also has a `mockupUrl` field. There are no dedicated types for decisions, interfaces or data models, and no link type for "depends on". This skill stores every design artifact in those three types using the conventions below. Do not ask for new types or links; they are listed as future enhancements in the package README.
+Record types, fields, and the tag format are defined in the requirements skill (`../../ideation-hub-requirements-agent/SKILL.md`, Design controls basics and the Tags paragraph). This file is only the mapping of design artifacts onto those types.
+
+The design types are **System Design (SD)**, **Component Design (CD)** and **UX Design (UXD)**. A UXD uses the `mockupUrl` field that skill already defines. There are no dedicated types for decisions, interfaces or data models, and no link type for "depends on". This skill stores every design artifact in those three types using the conventions below. Do not ask for new types or links; they are listed as future enhancements in the package README.
 
 ## Mapping
 
@@ -23,7 +25,7 @@ Ideation Hub has three design record types: **System Design (SD)**, **Component 
 | Design verification test | VER or UT, authored through the requirements skill | — | see `traceability.md` |
 | Diagram, Markdown document, handoff brief | Generated view, labelled "Derived from Ideation Hub on <date>; not authoritative" | — | — |
 
-Tag rules: 1–32 characters from letters, numbers, spaces and `_-./` (no colon), at most 20 per record. Add the `arch.*` tags alongside any tags the user already uses. Pass the full tag list on an edit, because `tags` replaces the list; omit `tags` to leave them unchanged.
+Tag format, and the rule that `tags` replaces the whole list, are in the requirements skill (the Tags paragraph). Add the `arch.*` tags alongside any tags the user already uses. Pass the full list on an edit; omit `tags` to leave it unchanged.
 
 ## Granularity
 

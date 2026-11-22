@@ -2,16 +2,25 @@
 
 Ideation Hub's trace links are the only traceability store. Never keep a separate trace table, spreadsheet or file as the authority.
 
-## Link types and direction
+Link type names, the allowed pairs, and how to file a link are defined once in the requirements skill:
 
-There are four link types: `addresses`, `refined_by`, `realized_by` and `checked_by` (shown as "Verified by"). The source and target are fixed by type:
+- `../../ideation-hub-requirements-agent/SKILL.md` — TraceLink types, Traceability rules, and §3–§4 (calls, and outcomes `bundled`, `proposed`, `applied`)
+- `../../ideation-hub-requirements-agent/references/retrieval.md` — how to read a link and a revision label
+- `../../ideation-hub-requirements-agent/references/rest-api.md` — REST link routes
 
-- `addresses` runs from the **more specific** record to the broader one: PRD → UN → BN. The design skill does not create `addresses` links.
-- `realized_by`, `refined_by` and `checked_by` run from the **broader** record to the more specific one. The broader record is the source.
+That skill does not state which record is the **source** of `realized_by`, `refined_by`, and `checked_by`, and it does not state revision pins on a link. Those rules stay in this file.
 
-Specificity order used by Ideation Hub: BN < UN < PRD = VT < SD = UXD = VER < CD < IMPL < UT. The target of `realized_by`, `refined_by` and `checked_by` must be at least as specific as the source.
+## Stored direction
 
-Design links this skill creates:
+`addresses` runs from the **more specific** record to the broader one: PRD → UN → BN, and a User Need to its User Profiles. This skill does not create `addresses` links. A missing or wrong User Need link is proposed through the requirements skill's authoring workflow (`implementation.md`), not written here.
+
+`realized_by`, `refined_by` and `checked_by` run from the **broader** record to the more specific one. The broader record is the source.
+
+Specificity order: BN < UN < PRD = VT < SD = UXD = VER < CD < IMPL < UT. The target of `realized_by`, `refined_by` and `checked_by` must be at least as specific as the source.
+
+Check direction yourself before every link. Ideation Hub checks it strictly only on some paths. Never create a link the table below does not allow. A User Profile is never linked to a design.
+
+## Design links this skill creates
 
 | Meaning | Link (source → target) |
 | --- | --- |
@@ -20,24 +29,17 @@ Design links this skill creates:
 | A decision shapes an element | `SD(decision) refined_by SD` or `SD(decision) refined_by CD` |
 | A component belongs to a system or container | `SD realized_by CD` |
 | A sub-component, interface or data model details a component | `CD refined_by CD` |
-| An implementation delivers a component | `CD realized_by IMPL` (written by the implementation agent, not this skill) |
+| An implementation delivers a component or system | `CD realized_by IMPL`, or `SD realized_by IMPL` when there is no CD. Record it as `SKILL.md` (Implementation) describes when this skill is asked to implement |
 
 <!-- Test-link rule: the single place this skill states it. Change only this line if the rule changes. -->
 **Test links:** a design is verified by `SD checked_by VER`, `CD checked_by VER` or `CD checked_by UT`. Verification Tests (VER) check Product Requirements, designs and implementations; Validation Tests (VT) check User Needs and Business Needs, so a design is never `checked_by` a VT.
 
-Ideation Hub checks link direction strictly only in some paths, so **check direction yourself before every link**. Never create a link the table does not allow. A User Profile is never linked to a design.
+## Filing a design link
 
-## Creating links
+File the link the way the requirements skill describes (`parentId`, `links` on a bulk push, `addLinks` / `removeLinks`, or `ih_link_requirements` / `ih_unlink_requirements`), with `mode: "suggest"`. Two facts that skill does not state:
 
-- **With a new record:** pass `parentId` on `ih_propose_requirement` (or on a bulk item). For SD, UXD and CD, Ideation Hub writes `parent realized_by new-record`. Do not add the same link again in `links`, which would give `duplicate_link`.
-- **Other links on new records:** in `ih_propose_bulk_push`, give items a `ref` and list the links in `links` as `{sourceId, type, targetId}` using refs or human IDs.
-- **Links on an existing record:** `ih_propose_edit` with `addLinks` and `removeLinks` (each `{type, targetId}`; the edited record is the source), or `ih_link_requirements` / `ih_unlink_requirements` for a link-only change.
-- Always pass `mode: "suggest"`.
-- Outcomes:
-  - `bundled`: one end is a pending add. The link rides with that add's Review card.
-  - `proposed`: both ends exist. The link is its own Review item.
-  - `applied`: written directly. You should see this only after an explicit direct-write request.
-  - When both ends are pending adds, the link waits until the last end is accepted.
+- `parentId` on an SD, UXD, or CD writes `parent realized_by` the new record. Use it for the first justifying link. Do not also put that same link in `links` (`duplicate_link`).
+- In `ih_propose_bulk_push`, give new items a `ref` and point `links` at those refs or at human IDs. A dry run checks that the ends exist. It does not check direction. Check direction yourself.
 
 ## Revision pins
 

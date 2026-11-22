@@ -3,12 +3,12 @@
 ## Assumptions
 
 1. **Existing types are enough for a first version.** Decisions, interfaces and data models are stored as SD or CD records distinguished by `arch.*` tags. No server or schema change is needed.
-2. **The credential decides whether a write is live.** With direct edit, Ideation Hub's propose tools write living records unless `mode: "suggest"` is passed, so the skill always passes it unless the user explicitly asks for a direct write.
+2. **The credential decides whether a write is live.** That model is the requirements skill's write rule. With direct edit, propose tools write living records unless `mode: "suggest"` is passed, so this skill always passes it unless the user explicitly asks for a direct write.
 3. **Link direction must be checked by the agent.** Ideation Hub's bulk dry run checks that link ends exist but not their direction, so the skill checks direction itself.
 4. **Test links:** Verification Tests (VER) and Unit Tests (UT) verify designs; Validation Tests (VT) check User Needs and Business Needs.
 5. **`design_ready` is per Product Requirement.** Development-phase events are recorded against requirements, so the handoff records one event for each in-scope Product Requirement.
 6. **Search may be keyword-only.** When Ideation Hub's hybrid search is not active, retrieval relies on keywords and tags, so the skill favours tag and ID reads.
-7. **Accepted vs pending.** Records with status `proposed` or `approved` are accepted; `unapproved` is pending.
+7. **Accepted vs pending.** Status words are defined in the requirements skill's `references/retrieval.md`. This skill does not keep a second definition.
 8. **Assessment is a status write, not a design write.** Confirmation reviews and status assessments (PRD-179) need `status:write`. That permission never changes a title, body, or trace link, and a review or assessment does not carry to a later revision.
 
 ## Open integration questions
