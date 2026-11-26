@@ -8,7 +8,7 @@ Regenerate with `node scripts/build-instructions.mjs`.
 name: ideation-hub-requirements-agent
 description: Requirements plugin for Ideation Hub. Use when asked to write, revise, trace, or structure Business Needs, User Profiles, User Needs, and Product Requirements, or to retrieve requirements for an objective. Proposes changes for human review. Requires the Ideation Hub platform plugin for the schema, REST API, and MCP tools.
 metadata:
-  version: "1.7.0"
+  version: "1.7.1"
 ---
 
 # Ideation Hub — Requirements plugin
@@ -112,6 +112,7 @@ After proposing, tell the issuer in one short message:
 - No component counts, UI surfaces (pages, dialogs, controls), implementation shape, or design/engineering decisions.
 - No acceptance criteria in a PRD body. Write them as functional verification test specifications linked to the PRD.
 - No IDs in prose and no "extends PRD-…" in statements. Express relationships as TraceLinks.
+- **Refer to another requirement with a Markdown link, never a bare ID.** Write `[Target title](/products/<product uuid>/docs/<type slug>/<requirement uuid>)`. The link text is the target's exact title. The type slug is `prd`, `user-needs`, `business-objectives`, `system-design`, `ux-design`, `component-design`, `implementation`, `validation-test`, `verification-test` or `unit-test`. Use the uuid, not the human id, so the link survives renames and revisions. A web address is `[text](https://…)`. A link only lets the reader click through. The relationship itself is still recorded as a TraceLink.
 - User Needs open with the objective as a verb phrase ("Understand …", "Write …"), never "Ability to …", and state only one objective: what the user needs to accomplish (WHAT), not HOW it is delivered, not an action that enables it, and not what the user does not want or should not have to do. A Product Requirement that covers an enabling action traces to the User Need it serves; do not add a clause for that action in this need.
   - *Example:* Avoid: "Ability to request implementation of a requirement and understand the state of delivery of my product's features." Prefer: "Understand the state of delivery of my product's features."
 - **No user-story form in User Needs.** Never write "As a <role>, I need …" or otherwise restate who the user is; the User Profile trace already carries the role, so it is redundant. State only the objective, simply, without mechanisms such as credentials, permission models, CRUD lists, or approval workflow (those belong in the PRDs beneath).
@@ -167,7 +168,7 @@ Safety, reliability, or hazard analysis follows an iterative STPA workflow kept 
 
 ## Changelog
 
-Current: 1.7.0 (2026-11-22) — Schema, REST, and the MCP catalog moved to the Ideation Hub platform plugin. This plugin keeps authoring workflow and rubrics. 1.6.5 said Verification Test traces up to product requirements and designs, and Validation Test traces up to User Need and Business Objective. Full history: `references/changelog.md`.
+Current: 1.7.1 (2026-11-25) — Refer to another requirement with a Markdown link whose text is the target's title and whose address is its in-app path, never a bare ID; TraceLinks still record the relationship. 1.7.0 (2026-11-22) — Schema, REST, and the MCP catalog moved to the Ideation Hub platform plugin. This plugin keeps authoring workflow and rubrics. 1.6.5 said Verification Test traces up to product requirements and designs, and Validation Test traces up to User Need and Business Objective. Full history: `references/changelog.md`.
 
 # Source: references/changelog.md
 
@@ -216,6 +217,7 @@ Current: 1.7.0 (2026-11-22) — Schema, REST, and the MCP catalog moved to the I
 - 1.6.4 (2026-11-21) — A User Need opens with the objective as a verb phrase, never "Ability to"; it states only one objective and does not bundle an enabling action into the same need.
 - 1.7.0 (2026-11-22) — Schema, REST, and the MCP catalog moved to the Ideation Hub platform plugin (`plugins/ideation-hub-platform`). This plugin keeps the authoring workflow and rubrics and points at that plugin. `references/rest-api.md` is now a pointer.
 - 1.6.5 (2026-11-21) — Allowed upward traces match the accepted Product Requirement: Verification Test traces to Product Requirement, UX Design, System Design, Component Design and Implementation; Validation Test traces to User Need and Business Objective.
+- 1.7.1 (2026-11-25) — Writing rules: refer to another requirement with a Markdown link (text is the target's title, address is `/products/<product uuid>/docs/<type slug>/<requirement uuid>`), never a bare ID. TraceLinks still record the relationship.
 
 # Source: references/document-structure.md
 

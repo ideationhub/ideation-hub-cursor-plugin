@@ -43,3 +43,4 @@
 - 1.6.4 (2026-11-21) — A User Need opens with the objective as a verb phrase, never "Ability to"; it states only one objective and does not bundle an enabling action into the same need.
 - 1.7.0 (2026-11-22) — Schema, REST, and the MCP catalog moved to the Ideation Hub platform plugin (`plugins/ideation-hub-platform`). This plugin keeps the authoring workflow and rubrics and points at that plugin. `references/rest-api.md` is now a pointer.
 - 1.6.5 (2026-11-21) — Allowed upward traces match the accepted Product Requirement: Verification Test traces to Product Requirement, UX Design, System Design, Component Design and Implementation; Validation Test traces to User Need and Business Objective.
+- 1.7.1 (2026-11-25) — Writing rules: refer to another requirement with a Markdown link (text is the target's title, address is `/products/<product uuid>/docs/<type slug>/<requirement uuid>`), never a bare ID. TraceLinks still record the relationship.
