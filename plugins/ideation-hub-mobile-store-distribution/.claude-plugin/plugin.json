@@ -1,0 +1,8 @@
+{
+  "name": "ideation-hub-mobile-store-distribution",
+  "version": "0.1.0",
+  "description": "Store-distribution guidance for a mobile app on the Apple App Store and Google Play. Standalone. Does not require the Ideation Hub platform plugin.",
+  "author": {
+    "name": "Ideation Hub"
+  }
+}

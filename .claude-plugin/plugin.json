@@ -1,7 +1,7 @@
 {
   "name": "ideation-hub",
   "version": "1.2.0",
-  "description": "Compatibility bundle for existing Ideation Hub installs. skills/ entries are symlinks to the developer and requirements plugins. Schema, REST, and MCP docs are in plugins/ideation-hub-platform. New installs should use the three plugins under plugins/.",
+  "description": "Compatibility bundle for existing Ideation Hub installs. skills/ entries are symlinks to the developer and requirements plugins. Schema, REST, and MCP docs are in plugins/ideation-hub-platform. New installs should use the platform, developer, and requirements plugins under plugins/. The mobile store-distribution plugin is separate and this bundle does not load it.",
   "author": {
     "name": "Ideation Hub",
     "email": "support@ideationhub.me"

@@ -1,0 +1,23 @@
+{
+  "name": "ideation-hub-mobile-store-distribution",
+  "displayName": "Ideation Hub Mobile Store Distribution",
+  "version": "0.1.0",
+  "description": "Store-distribution guidance for a mobile app on the Apple App Store and Google Play: download size, startup, offline use, on-device scanning, consumable purchases, and privacy disclosures. Standalone. Does not require the Ideation Hub platform plugin.",
+  "author": {
+    "name": "Ideation Hub",
+    "email": "support@ideationhub.me"
+  },
+  "publisher": "Ideation Hub",
+  "homepage": "https://www.ideationhub.me",
+  "repository": "https://github.com/ideationhub/ideation-hub-cursor-plugin",
+  "license": "MIT",
+  "logo": "assets/logo.svg",
+  "keywords": [
+    "ideation-hub",
+    "mobile",
+    "app-store",
+    "google-play",
+    "distribution"
+  ],
+  "skills": "./skills/"
+}

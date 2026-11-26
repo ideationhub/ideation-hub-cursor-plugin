@@ -19,6 +19,10 @@ const units = [
     id: "ideation-hub-requirements",
     sourceDir: "plugins/ideation-hub-requirements/skills/ideation-hub-requirements-agent",
   },
+  {
+    id: "ideation-hub-mobile-store-distribution",
+    sourceDir: "plugins/ideation-hub-mobile-store-distribution/skills/ideation-hub-mobile-store-distribution",
+  },
 ];
 
 function outputPath(id) {

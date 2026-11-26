@@ -10,7 +10,7 @@ Create a credential first. Sign in to Ideation Hub at https://www.ideationhub.me
 
 The Agent Skills specification at https://agentskills.io/specification describes a folder with a `SKILL.md` file and optional `references` files. This was checked on 22 November 2026. This repository already follows that layout.
 
-Copy these three folders so they sit next to each other, and do not rename them.
+Copy these folders so they sit next to each other, and do not rename them. The first three are the ones that link to each other.
 
 `plugins/ideation-hub-platform/skills/ideation-hub-platform`
 
@@ -20,9 +20,13 @@ Copy these three folders so they sit next to each other, and do not rename them.
 
 The developer and requirements folders point at `../ideation-hub-platform/references/` when they are siblings. Copy `plugins/ideation-hub-developer/skills/ideation-hub-system-design` as well if something still asks for the old name. That folder only points at the developer instructions.
 
+The mobile store-distribution skill does not point at the platform folder. Copy it when you want that guidance:
+
+`plugins/ideation-hub-mobile-store-distribution/skills/ideation-hub-mobile-store-distribution`
+
 ## A host with neither plugins nor skills
 
-`docs/instructions/ideation-hub-platform.md`, `docs/instructions/ideation-hub-developer.md`, and `docs/instructions/ideation-hub-requirements.md` are single files generated from those skill folders. Give the host the file for the work you want. Do not edit the generated files. Run `node scripts/build-instructions.mjs` after a source change. `node scripts/validate-template.mjs` fails if a generated file is stale.
+`docs/instructions/ideation-hub-platform.md`, `docs/instructions/ideation-hub-developer.md`, `docs/instructions/ideation-hub-requirements.md`, and `docs/instructions/ideation-hub-mobile-store-distribution.md` are single files generated from those skill folders. Give the host the file for the work you want. Do not edit the generated files. Run `node scripts/build-instructions.mjs` after a source change. `node scripts/validate-template.mjs` fails if a generated file is stale.
 
 ## A host that can call a remote Model Context Protocol server
 

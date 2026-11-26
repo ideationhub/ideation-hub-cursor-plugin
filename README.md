@@ -28,9 +28,10 @@ This repository is a multi-plugin marketplace:
 1. **Ideation Hub Platform** (`plugins/ideation-hub-platform`) — the one description of the schema, REST API, and Model Context Protocol tools, plus `mcp.json` for `https://api.ideationhub.me/api/mcp`. The same text is the skill folder `skills/ideation-hub-platform` for hosts that only load skills.
 2. **Ideation Hub Requirements** (`plugins/ideation-hub-requirements`, skill name `ideation-hub-requirements-agent`, 1.7.0) — authoring workflow and writing rubrics. Requires the platform plugin.
 3. **Ideation Hub Developer** (`plugins/ideation-hub-developer`, skill name `ideation-hub-developer`, 0.4.0 beta) — system design, implementation, and assessment. Before designing or implementing, it traces each Product Requirement up to its User Needs. Assessment of the current revision is unchanged (PRD-180, applying PRD-026, PRD-172, and PRD-179). Requires the platform plugin. `ideation-hub-system-design` remains a deprecated alias.
-4. **Ideation Hub** (repository root, plugin name `ideation-hub`, 1.2.0) — compatibility bundle so existing installs keep loading the same instructions and the root MCP config. Install this bundle **or** the three plugins above, not both.
+4. **Ideation Hub Mobile Store Distribution** (`plugins/ideation-hub-mobile-store-distribution`, skill name `ideation-hub-mobile-store-distribution`, 0.1.0 beta) — download size, startup, offline use, on-device scanning, consumable purchases, and store privacy disclosures for a mobile app on the App Store and Google Play. Standalone. It does not require the platform plugin, and the compatibility bundle does not load it.
+5. **Ideation Hub** (repository root, plugin name `ideation-hub`, 1.2.0) — compatibility bundle so existing installs keep loading the same instructions and the root MCP config. Install this bundle **or** the platform, developer, and requirements plugins, not both. Install the mobile store-distribution plugin in addition when you need it.
 
-Cursor's marketplace format has no plugin-dependency field. The developer and requirements plugins document that they require the platform plugin. Agent skill folder names and `SKILL.md` files stay, because that is how hosts load instructions. `skills/` at the repository root is a set of symlinks to those folders so the old paths still resolve.
+Cursor's marketplace format has no plugin-dependency field. The developer and requirements plugins document that they require the platform plugin. The mobile store-distribution plugin does not. Agent skill folder names and `SKILL.md` files stay, because that is how hosts load instructions. `skills/` at the repository root is a set of symlinks to those folders so the old paths still resolve.
 
 With this plugin installed, Cursor and Grok Bot agents can:
 - **Read & Search Intent (`Read`):** Fetch the full requirement hierarchy (`ih_get_chain`), search existing requirements (`ih_search_requirements`), inspect upstream/downstream trace neighbors (`ih_get_neighbors`), and validate candidate changes against the trace rubric (`ih_validate_against_trace`).
@@ -87,16 +88,18 @@ https://github.com/ideationhub/ideation-hub-cursor-plugin
 The developer and requirements plugins keep `SKILL.md` files so any host that follows the open [Agent Skills specification](https://agentskills.io/specification) can load them. Install the platform plugin beside them.
 
 - **Claude Code:** this repository includes `.claude-plugin/plugin.json` and a root `.mcp.json`. Enable the compatibility bundle, or copy the three directories under `plugins/` so they stay siblings. `skills/` at the repo root is symlinks to those plugins.
-- **OpenAI Codex:** copy the three plugin directories so they stay siblings (see the block below), and add the MCP server to `~/.codex/config.toml`:
+- **OpenAI Codex:** copy the plugin directories so they stay siblings (see the block below), and add the MCP server to `~/.codex/config.toml`:
 
   ```bash
   git clone https://github.com/ideationhub/ideation-hub-cursor-plugin /tmp/ih-plugin
   mkdir -p ~/.agents/skills
-  # Install the three plugins as siblings so their relative links resolve.
+  # Install the plugins as siblings so relative links among the platform, developer, and requirements plugins resolve.
+  # The mobile store-distribution plugin has no such links. Copy it too when you want that skill.
   mkdir -p ~/.cursor/plugins
   cp -R /tmp/ih-plugin/plugins/ideation-hub-platform \
         /tmp/ih-plugin/plugins/ideation-hub-developer \
         /tmp/ih-plugin/plugins/ideation-hub-requirements \
+        /tmp/ih-plugin/plugins/ideation-hub-mobile-store-distribution \
         ~/.cursor/plugins/
   # Hosts that load agent skills from ~/.agents/skills can use the same folders' skills/.
   # Keep the plugin directories as siblings of each other. Do not flatten only the skill folders

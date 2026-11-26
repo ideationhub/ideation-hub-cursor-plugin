@@ -22,7 +22,9 @@ Install each plugin by its name, an at-sign, and the marketplace name. The marke
 
 `claude plugin install ideation-hub-developer@ideation-hub`
 
-Do not also install `ideation-hub@ideation-hub` if you installed the three plugins above. That entry is the older combined package, and installing both loads the same instructions twice.
+`claude plugin install ideation-hub-mobile-store-distribution@ideation-hub`
+
+Do not also install `ideation-hub@ideation-hub` if you installed the platform, requirements, and developer plugins above. That entry is the older combined package, and installing both loads the same instructions twice. The mobile store-distribution plugin is not part of that package. Install it in addition when you want it. It does not require the platform plugin.
 
 The documentation says the same marketplace can be registered inside a session with `/plugin marketplace add`, and a plugin can be installed from the `/plugin` panel. Those commands were read from the create-marketplace page.
 
@@ -34,7 +36,7 @@ The Model Context Protocol page for Claude Code says a project server lives in `
 
 Copy `docs/mcp/claude-code.mcp.json` to `.mcp.json` in the project. That file is the same file as `plugins/ideation-hub-platform/mcp.json`. Export `IH_CLIENT_ID` and `IH_CLIENT_SECRET` before you start Claude Code.
 
-The marketplace reference says Claude Code also auto-loads plugins from `.claude/skills/`. Not verified here: whether a skill folder copied into `.claude/skills/` follows links that leave that folder. To keep the links working, copy the three skill folders so they remain siblings, and keep the folder names `ideation-hub-platform`, `ideation-hub-developer`, and `ideation-hub-requirements-agent`.
+The marketplace reference says Claude Code also auto-loads plugins from `.claude/skills/`. Not verified here: whether a skill folder copied into `.claude/skills/` follows links that leave that folder. To keep the links working, copy the three skill folders so they remain siblings, and keep the folder names `ideation-hub-platform`, `ideation-hub-developer`, and `ideation-hub-requirements-agent`. Copy `ideation-hub-mobile-store-distribution` as well when you want that skill. It does not link to the other folders.
 
 ## Claude Desktop
 

@@ -1,6 +1,6 @@
 {
   "name": "ideation-hub",
-  "description": "Ideation Hub platform, developer, and requirements plugins. The root ideation-hub entry remains so existing Claude Code installs keep loading.",
+  "description": "Ideation Hub platform, developer, requirements, and mobile store-distribution plugins. The root ideation-hub entry remains so existing Claude Code installs keep loading.",
   "owner": {
     "name": "Ideation Hub",
     "email": "support@ideationhub.me"
@@ -22,9 +22,14 @@
       "description": "Authoring workflow. Skill name ideation-hub-requirements-agent. Requires ideation-hub-platform."
     },
     {
+      "name": "ideation-hub-mobile-store-distribution",
+      "source": "./plugins/ideation-hub-mobile-store-distribution",
+      "description": "Store distribution for a mobile app on the App Store and Google Play. Skill name ideation-hub-mobile-store-distribution. Standalone. Does not require ideation-hub-platform."
+    },
+    {
       "name": "ideation-hub",
       "source": "./",
-      "description": "Compatibility bundle for existing installs. Prefer the three plugins above. Do not install this bundle together with them."
+      "description": "Compatibility bundle for existing installs. Prefer the platform, developer, and requirements plugins. Do not install this bundle together with those three. The mobile store-distribution plugin does not overlap this bundle."
     }
   ]
 }
