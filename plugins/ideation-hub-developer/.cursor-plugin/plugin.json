@@ -1,7 +1,7 @@
 {
   "name": "ideation-hub-developer",
   "displayName": "Ideation Hub Developer",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Developer plugin for Ideation Hub: system design, implementation, and assessment of Product Requirements. Requires the Ideation Hub platform plugin (schema, REST, MCP). Cursor has no plugin-dependency field; install ideation-hub-platform with this plugin. The deprecated ideation-hub-system-design name still resolves from this plugin's skills directory.",
   "author": {
     "name": "Ideation Hub",

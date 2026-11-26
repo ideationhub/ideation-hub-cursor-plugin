@@ -10,7 +10,7 @@ description: Developer plugin for Ideation Hub Product Requirements. Use when as
 license: MIT
 compatibility: Requires the Ideation Hub platform plugin (schema, REST, MCP), the ideation-hub-requirements-agent plugin when requirement wording changes, and an agent credential. Recording an assessment needs status:write. No scripts or runtime needed.
 metadata:
-  version: "0.4.0"
+  version: "0.4.1"
   status: beta
   author: Ideation Hub
 ---

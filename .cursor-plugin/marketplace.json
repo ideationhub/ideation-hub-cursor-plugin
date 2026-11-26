@@ -29,7 +29,7 @@
       "name": "ideation-hub-developer",
       "source": "plugins/ideation-hub-developer",
       "description": "Developer plugin for system design, implementation, and assessment. Requires the Ideation Hub platform plugin. Cursor has no dependency field. The ideation-hub-system-design name still resolves.",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "author": {
         "name": "Ideation Hub",
         "email": "support@ideationhub.me"

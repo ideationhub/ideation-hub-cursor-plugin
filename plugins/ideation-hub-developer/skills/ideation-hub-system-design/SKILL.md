@@ -4,7 +4,7 @@ description: Deprecated alias of the Ideation Hub developer plugin. Use when an 
 license: MIT
 compatibility: Requires the ideation-hub-developer plugin in a sibling directory, the Ideation Hub platform plugin, and the ideation-hub-requirements-agent plugin.
 metadata:
-  version: "0.4.0"
+  version: "0.4.1"
   status: deprecated
   aliasOf: ideation-hub-developer
   author: Ideation Hub

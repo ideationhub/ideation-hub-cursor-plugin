@@ -1,6 +1,6 @@
 {
   "name": "ideation-hub-developer",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Developer plugin for Ideation Hub system design, implementation, and assessment. Requires the ideation-hub-platform plugin. Claude Code has no dependency field. The ideation-hub-system-design name still resolves from skills/.",
   "author": {
     "name": "Ideation Hub"

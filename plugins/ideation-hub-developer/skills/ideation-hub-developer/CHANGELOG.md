@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.1 (2026-11-26) — beta
+
+- Shopping Price Tally worked example (`examples/01-first-pass-design.md`) follows ADR-002 (2026-11-24): native Swift for iOS and Kotlin for Android, iPhone-first development and user testing, both platforms designed side by side. That replaces the one-cross-platform-codebase recommendation and the earlier Flutter direction.
+- The same example no longer forces a price confirmation or sells the first 10 tallies as a credit pack. The app takes the lowest price on the scanned tag by default, the $1.99 download includes the first 10 tallies, a credit is used on the first scan of a trip, and later packs are consumable in-app purchases.
+- The example adds download budgets (30 MB on iPhone, 25 MB on Android), the Android vitals startup flags from the 23 November 2026 research (cold 5 seconds, warm 2 seconds, hot 1 second), and a short store-rules list with official links. The design method is unchanged.
+
 ## 0.4.0 (2026-11-22) — beta
 
 - This package is the Ideation Hub developer plugin. The agent skill name stays `ideation-hub-developer`, and `ideation-hub-system-design` remains a deprecated alias, so existing names still resolve.
