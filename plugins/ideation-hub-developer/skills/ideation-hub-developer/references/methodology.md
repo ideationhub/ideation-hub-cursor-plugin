@@ -30,7 +30,7 @@ Never present an assumption or recommendation as a fact.
    - Walk down from each in-scope PRD for existing designs, implementations, and tests.
    - Read the whole product chain only when the scope is the whole product, and exclude obsolete rows.
    - Do a separate read that includes pending proposals. Label them "proposal" and never treat them as accepted.
-2. Find the non-functional requirements and principles. They are Product Requirements tagged `NFR` or `principle`. Search by tag (`tag: "NFR"`). Also look for `STPA` records; if any are in scope, follow the requirements plugin's `references/stpa.md`.
+2. Find the non-functional requirements and principles. An NFR is a Product Requirement tagged `NFR`. Search by tag (`tag: "NFR"`). A Principle is a `PRN` record. Read the ones that apply with `ih_list_applicable_principles`. This skill does not author a Principle. Also look for `STPA` records; if any are in scope, follow the requirements plugin's `references/stpa.md`.
 3. Read existing SD, CD and UXD records in scope (`types: ["SD","CD","UXD"]`). An existing design is the starting point, not something to replace.
 4. Build a short **problem frame**:
    - Purpose: one or two sentences from the User and Business Needs.

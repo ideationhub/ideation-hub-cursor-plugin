@@ -2,7 +2,7 @@
 name: ideation-hub-requirements-agent
 description: Requirements plugin for Ideation Hub. Use when asked to write, revise, trace, or structure Business Needs, User Profiles, User Needs, and Product Requirements, or to retrieve requirements for an objective. Proposes changes for human review. Requires the Ideation Hub platform plugin for the schema, REST API, and MCP tools.
 metadata:
-  version: "1.7.0"
+  version: "1.7.1"
 ---
 
 # Ideation Hub — Requirements plugin
@@ -23,7 +23,7 @@ If a relative path is missing, open the installed platform plugin and read the s
 
 ## Schema and traces
 
-Read `schema.md` in the platform plugin before you create or link a record. It defines the types, the four link types, stored direction, allowed pairs, revision pins, status words, and durable IDs. A Product Requirement never links directly to a User Profile. Flag a record with no upward trace. Do not treat that gap as a defect by itself.
+Read `schema.md` in the platform plugin before you create or link a record. It defines the types, the link types, stored direction, allowed pairs, revision pins, status words, and durable IDs. A Product Requirement never links directly to a User Profile. Flag a record with no upward trace. Do not treat that gap as a defect by itself.
 
 **Profile capability rule (authoring):** a proposed Profile that is really one capability (for example "issues scoped agent credentials") is not a Profile. Propose that capability as a Product Requirement that traces to a User Need of an existing Profile, not to the Profile itself. A one-to-one trace needs an explicit stated reason.
 
@@ -161,4 +161,4 @@ Safety, reliability, or hazard analysis follows an iterative STPA workflow kept 
 
 ## Changelog
 
-Current: 1.7.0 (2026-11-22) — Schema, REST, and the MCP catalog moved to the Ideation Hub platform plugin. This plugin keeps authoring workflow and rubrics. 1.6.5 said Verification Test traces up to product requirements and designs, and Validation Test traces up to User Need and Business Objective. Full history: `references/changelog.md`.
+Current: 1.7.1 (2026-11-27) — The schema pointer no longer says there are four link types. Principle (`PRN`) and `respects` are defined in the platform schema. Full history: `references/changelog.md`.

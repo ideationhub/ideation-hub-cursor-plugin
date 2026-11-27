@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0 (2026-11-27) — beta
+
+- A Principle is a `PRN` record, the broadest record, not a Product Requirement tagged `principle`. `respects` runs from a requirement to a Principle and is shown the other way as Respected by. This skill does not author a Principle and does not create that link. Applicable principles are read with `ih_list_applicable_principles`. Tenant-wide adoption is a human tenant admin action in the web app.
+- An NFR stays a Product Requirement tagged `NFR`.
+- `skills/ideation-hub-system-design/SKILL.md` metadata version tracks this release.
+
 ## 0.4.0 (2026-11-22) — beta
 
 - This package is the Ideation Hub developer plugin. The agent skill name stays `ideation-hub-developer`, and `ideation-hub-system-design` remains a deprecated alias, so existing names still resolve.

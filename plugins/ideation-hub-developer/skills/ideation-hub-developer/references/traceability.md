@@ -8,7 +8,7 @@ Link type names, stored direction, allowed pairs, revision pins, and how to file
 - `../../../../ideation-hub-platform/references/mcp.md`
 - `../../../../ideation-hub-platform/references/rest-api.md`
 
-This plugin does not create `addresses` links. A missing or wrong User Need link is proposed through the requirements plugin's authoring workflow (`implementation.md`), not written here.
+This plugin does not create `addresses` or `respects` links. A missing or wrong User Need link is proposed through the requirements plugin's authoring workflow (`implementation.md`), not written here. A Principle (`PRN`) is the broadest record. `respects` runs from a requirement to a Principle and is shown the other way as Respected by. Applicable principles are `ih_list_applicable_principles` in the platform catalog. Tenant-wide adoption is done by a human tenant admin in the web app, not through MCP.
 
 Check direction yourself before every link, using the platform schema. Never create a link the table below does not allow.
 
@@ -43,7 +43,7 @@ Run these from Ideation Hub data (`ih_get_chain` with `includePending: false` fo
 3. **Direction:** every link touching a design matches the table above. List violations.
 4. **Staleness:** every link touching a design pins the current revision of both ends. List stale links with old and new revision.
 5. **Open items:** every design record still tagged `arch.assumption` or `arch.open-question`.
-6. **NFR response:** every in-scope PRD tagged `NFR` or `principle` is `realized_by` at least one design record whose body states the response.
+6. **NFR response:** every in-scope PRD tagged `NFR` is `realized_by` at least one design record whose body states the response. A Principle is a `PRN`, not a tag on a PRD. This skill does not author a Principle and does not create a `respects` link.
 7. **Verification:** in-scope PRDs and CDs with no `checked_by` link. Report as a gap; tests are authored through the requirements skill.
 
 ## Impact analysis

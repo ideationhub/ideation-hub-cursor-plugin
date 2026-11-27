@@ -13,7 +13,7 @@
       "name": "ideation-hub-platform",
       "source": "plugins/ideation-hub-platform",
       "description": "Canonical Ideation Hub schema, REST API, and MCP tools. The developer and requirements plugins require this plugin. Cursor has no dependency field; install it with them.",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "author": {
         "name": "Ideation Hub",
         "email": "support@ideationhub.me"
@@ -29,7 +29,7 @@
       "name": "ideation-hub-developer",
       "source": "plugins/ideation-hub-developer",
       "description": "Developer plugin for system design, implementation, and assessment. Requires the Ideation Hub platform plugin. Cursor has no dependency field. The ideation-hub-system-design name still resolves.",
-      "version": "0.4.0",
+      "version": "0.5.0",
       "author": {
         "name": "Ideation Hub",
         "email": "support@ideationhub.me"
@@ -45,7 +45,7 @@
       "name": "ideation-hub-requirements",
       "source": "plugins/ideation-hub-requirements",
       "description": "Requirements plugin for authoring Business Needs, User Needs, and Product Requirements. Skill name ideation-hub-requirements-agent is unchanged. Requires the Ideation Hub platform plugin. Cursor has no dependency field.",
-      "version": "1.7.0",
+      "version": "1.7.1",
       "author": {
         "name": "Ideation Hub",
         "email": "support@ideationhub.me"

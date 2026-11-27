@@ -8,7 +8,7 @@ Regenerate with `node scripts/build-instructions.mjs`.
 name: ideation-hub-requirements-agent
 description: Requirements plugin for Ideation Hub. Use when asked to write, revise, trace, or structure Business Needs, User Profiles, User Needs, and Product Requirements, or to retrieve requirements for an objective. Proposes changes for human review. Requires the Ideation Hub platform plugin for the schema, REST API, and MCP tools.
 metadata:
-  version: "1.7.0"
+  version: "1.7.1"
 ---
 
 # Ideation Hub — Requirements plugin
@@ -29,7 +29,7 @@ If a relative path is missing, open the installed platform plugin and read the s
 
 ## Schema and traces
 
-Read `schema.md` in the platform plugin before you create or link a record. It defines the types, the four link types, stored direction, allowed pairs, revision pins, status words, and durable IDs. A Product Requirement never links directly to a User Profile. Flag a record with no upward trace. Do not treat that gap as a defect by itself.
+Read `schema.md` in the platform plugin before you create or link a record. It defines the types, the link types, stored direction, allowed pairs, revision pins, status words, and durable IDs. A Product Requirement never links directly to a User Profile. Flag a record with no upward trace. Do not treat that gap as a defect by itself.
 
 **Profile capability rule (authoring):** a proposed Profile that is really one capability (for example "issues scoped agent credentials") is not a Profile. Propose that capability as a Product Requirement that traces to a User Need of an existing Profile, not to the Profile itself. A one-to-one trace needs an explicit stated reason.
 
@@ -167,7 +167,7 @@ Safety, reliability, or hazard analysis follows an iterative STPA workflow kept 
 
 ## Changelog
 
-Current: 1.7.0 (2026-11-22) — Schema, REST, and the MCP catalog moved to the Ideation Hub platform plugin. This plugin keeps authoring workflow and rubrics. 1.6.5 said Verification Test traces up to product requirements and designs, and Validation Test traces up to User Need and Business Objective. Full history: `references/changelog.md`.
+Current: 1.7.1 (2026-11-27) — The schema pointer no longer says there are four link types. Principle (`PRN`) and `respects` are defined in the platform schema. Full history: `references/changelog.md`.
 
 # Source: references/changelog.md
 
@@ -214,6 +214,7 @@ Current: 1.7.0 (2026-11-22) — Schema, REST, and the MCP catalog moved to the I
 - 1.6.2 (2026-11-19) — Extend before you add: amend an existing Product Requirement that covers the same subject; create a new one only when the capability has its own rules or lifecycle; fold overlapping requirements and propose the absorbed one obsolete.
 - 1.6.3 (2026-11-21) — A User Need states only what the user needs to accomplish; it must not state what the user does not want, or what the user should not have to do.
 - 1.6.4 (2026-11-21) — A User Need opens with the objective as a verb phrase, never "Ability to"; it states only one objective and does not bundle an enabling action into the same need.
+- 1.7.1 (2026-11-27) — The schema pointer no longer says there are four link types. Principle (`PRN`) and `respects` are defined in the platform schema.
 - 1.7.0 (2026-11-22) — Schema, REST, and the MCP catalog moved to the Ideation Hub platform plugin (`plugins/ideation-hub-platform`). This plugin keeps the authoring workflow and rubrics and points at that plugin. `references/rest-api.md` is now a pointer.
 - 1.6.5 (2026-11-21) — Allowed upward traces match the accepted Product Requirement: Verification Test traces to Product Requirement, UX Design, System Design, Component Design and Implementation; Validation Test traces to User Need and Business Objective.
 
