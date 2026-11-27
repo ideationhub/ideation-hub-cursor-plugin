@@ -8,6 +8,7 @@ Ideation Hub is a requirements workspace built on **design controls**: a traceab
 
 ## Record types
 
+- **Principle** (`PRN-NNN`) — the broadest record. *Purpose:* a rule that requirements respect. It has a title, a statement, and revisions. Adopting it on a product, or for a whole tenant, does not change the principle, its revisions, or its links. A human tenant admin adopts it for the whole tenant in the web app. There is no MCP tool for tenant-wide adoption.
 - **Business Need** (`BN-NNN`) — a business objective. *Purpose:* why the business invests. *Good one:* one outcome the business wants, measurable where possible, free of solution detail. A Business Need is what the owning business must accomplish for itself (revenue, cost, compliance, strategy, or operations), not for the sake of a customer.
 - **User Profile** — who the product serves. *Purpose:* anchor needs to a real role. *Good one:* a clear `name` plus a `roleIntent` saying what that role is trying to get done. It declares only the actual person (who they are, their role and context), never their needs. Those are User Needs. It is a role or type of person with a job to do, never one capability. The API identifies it by `UP-` id, UUID, or exact name.
 - **User Need** (`UN-NNN`) — what a user must be able to do. *Purpose:* the user's view of value. *Good one:* a verb phrase, one objective, linked to every Profile it serves. It states WHAT the user wants to achieve, never HOW. It `addresses` the Business Needs it serves.
@@ -19,7 +20,7 @@ How to write a good title or body is the requirements plugin's rubric, not this 
 
 ## Identifiers and revisions
 
-Every requirement has a **Human Readable Durable ID** (`BN-`, `UN-`, `PRD-`, `SD-`, `UXD-`, `CD-`, `IMPL-`, `VT-`, `VER-`, `UT-` + number, sequenced per type inside a Product) plus a UUID and a revision `@n`. Human Readable Durable IDs never get renumbered or reused. A former ID still resolves; the record shows its new ID. Profiles use `UP-` ids the same way.
+Every requirement has a **Human Readable Durable ID** (`PRN-`, `BN-`, `UN-`, `PRD-`, `SD-`, `UXD-`, `CD-`, `IMPL-`, `VT-`, `VER-`, `UT-` + number, sequenced per type inside a Product) plus a UUID and a revision `@n`. Human Readable Durable IDs never get renumbered or reused. A former ID still resolves; the record shows its new ID. Profiles use `UP-` ids the same way.
 
 A revision label such as `@3` pins a version. Cite the ID, and the revision when the exact wording matters. Requirements are never hard-deleted.
 
@@ -31,9 +32,10 @@ A revision label such as `@3` pins a version. Cite the ID, and the revision when
 
 ## Trace links
 
-There are four link types:
+There are five link types:
 
 - `addresses` — the more specific record is the source: UN addresses BN; PRD addresses UN or BN; a User Need addresses a User Profile (`targetProfileId`, not `targetId`).
+- `respects` — a requirement to a Principle. Shown the other way as "Respected by". The requirement is the source and the Principle is the target.
 - `refined_by` — a record is refined by a more detailed one. The broader record is the source.
 - `realized_by` — a requirement or design is realized by a downstream design or implementation. The broader record is the source.
 - `checked_by` — shown as "Verified by". A need, requirement, design, or implementation is checked by another record, such as a test. The broader record is the source.
@@ -44,9 +46,11 @@ Walking **up** answers *why* this exists. Walking **down** answers *how* it is d
 
 `addresses` runs from the more specific record to the broader one.
 
+`respects` runs from a requirement to a Principle. The requirement is the source. The Principle is the target. The inverse is shown as "Respected by".
+
 `realized_by`, `refined_by`, and `checked_by` run from the **broader** record to the more specific one. The broader record is the source of the stored link.
 
-Specificity order: BN < UN < PRD = VT < SD = UXD = VER < CD < IMPL < UT. The target of `realized_by`, `refined_by`, and `checked_by` must be at least as specific as the source.
+Specificity order: PRN < BN < UN < PRD = VT < SD = UXD = VER < CD < IMPL < UT. A Principle is the broadest record. The target of `realized_by`, `refined_by`, and `checked_by` must be at least as specific as the source.
 
 The server checks direction strictly only on some paths. Check direction before every link.
 
@@ -54,6 +58,7 @@ The server checks direction strictly only on some paths. Check direction before 
 
 Allowed upward relationships (the more specific record traces up to the broader one). A Business Objective is also called a Business Need.
 
+- Requirement → Principle (`respects`). The source is the requirement and the target is the Principle. The inverse is shown as Respected by.
 - Product Requirement → Business Objective and User Need
 - User Need → User Profile
 - System Design → Product Requirement

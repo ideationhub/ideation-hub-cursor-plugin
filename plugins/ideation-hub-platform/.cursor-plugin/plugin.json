@@ -1,7 +1,7 @@
 {
   "name": "ideation-hub-platform",
   "displayName": "Ideation Hub Platform",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Canonical Ideation Hub schema, REST API, and MCP tools, plus the MCP server. The developer and requirements plugins require this plugin. Cursor has no plugin-dependency field, so that requirement is documented in each of those plugins.",
   "author": {
     "name": "Ideation Hub",

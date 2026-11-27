@@ -4,7 +4,7 @@ description: Shared Ideation Hub reference for record types, trace links, revisi
 license: MIT
 compatibility: Reference files only. No scripts. The Model Context Protocol server is https://api.ideationhub.me/api/mcp.
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   author: Ideation Hub
 ---
 
@@ -21,3 +21,5 @@ Load only the file you need:
 Credential setup for a person is in the platform plugin `README.md`, one directory above this skill when the plugin is installed as a whole. The secret is never written in these files.
 
 When this skill folder is copied next to `ideation-hub-developer` and `ideation-hub-requirements-agent` in one skills directory, those plugins look for `../ideation-hub-platform/references/`. When the three plugins are installed as sibling directories, they look for `../../../ideation-hub-platform/references/`, which is the same directory through the `references` link at the platform plugin root.
+
+Current: 1.1.0 (2026-11-27) — Principle (`PRN`) and the `respects` link are in `references/schema.md`. Applicable principles, product adoption, principle conflicts, and the tenant-admin adoption note are in `references/mcp.md`. Full history: `CHANGELOG.md`.

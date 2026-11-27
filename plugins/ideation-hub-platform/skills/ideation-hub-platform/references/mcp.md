@@ -50,13 +50,13 @@ Soft delete is a proposal for Suggest, and applies immediately when that credent
 | `ih_validate_against_trace` | read | `{id?, proposedPayload?, productId?}`. Duplicate title, missing profile or parent, orphan. Does not write |
 | `ih_list_review_queue` | read | `{status?, source?: all\|agent\|human\|mine, type?, productId?, tag?, tags?}`. Each item's tags merge the payload and the target requirement |
 | `ih_list_sections` | read | PRD sections in order, with summaries |
-| `ih_propose_requirement` | suggest or edit | `{type, statement, title?, profileNameOrId?, parentId?, mockupUrl?, repoPath?, prUrl?, commitSha?, testPath?, lastResult?, tags?, mode?, productId?}`. Add BN/UN/PRD/SD/UXD/CD/IMPL/VT/VER/UT |
+| `ih_propose_requirement` | suggest or edit | `{type, statement, title?, profileNameOrId?, parentId?, mockupUrl?, repoPath?, prUrl?, commitSha?, testPath?, lastResult?, tags?, mode?, productId?}`. Add BN/UN/PRD/PRN/SD/UXD/CD/IMPL/VT/VER/UT |
 | `ih_propose_edit` | suggest or edit | `{id, title?, statement?, expectedRevision?, proposalId?, mockupUrl?, repoPath?, prUrl?, commitSha?, testPath?, lastResult?, tags?, addLinks?, removeLinks?, addProfileIds?, removeProfileIds?, mode?, productId?}`. Revise. Amends the one pending add or edit on that requirement in place (`amended: true`, same `proposalId`). `addLinks` and `removeLinks` are arrays of `{type, targetId \| targetProfileId}`. On a User Need, `addProfileIds` and `removeProfileIds` are shorthand. Link changes apply with the edit at Accept. A conflict then is **409** `link_conflict` or `duplicate_link`. **409** `pending_proposal_exists` or `ambiguous_proposal`: amend or pass that `proposalId`. `expectedRevision` mismatch is **409**. A no-op is **422** |
 | `ih_propose_bulk_push` | suggest or edit | `{items, links?, dryRun?, mode?, productId?}`. `dryRun` does not persist or consume human ids. It checks types, required fields, duplicate titles, and that parents and link ends exist. It does not check link direction |
 | `ih_propose_profile` | suggest or edit | `{action: add\|edit, id?, name, roleIntent, mode?, productId?}` |
 | `ih_create_requirement` / `ih_update_requirement` | edit only | Direct aliases. Optional `tags`. Suggest-only is **403** |
 | `ih_set_tags` | edit only | `{id, tags, productId?}`. Replaces tags. Does not create a revision. Suggest-only is **403** |
-| `ih_link_requirements` | suggest or edit | `{sourceId, type: addresses\|realized_by\|checked_by\|refined_by, targetId?, targetProfileId?, productId?}`. Pass exactly one of `targetId` or `targetProfileId`. A User Need to User Profile link uses type `addresses` and `targetProfileId` only. Outcomes: `applied`, `bundled` (`bundledWith`), or `proposed` (`proposalId`). **422** `link_pair_not_allowed`, `profile_not_in_product`, or `link_target`. **409** `duplicate_link`. Proposing the same pending link again returns the existing proposal |
+| `ih_link_requirements` | suggest or edit | `{sourceId, type: addresses\|respects\|realized_by\|checked_by\|refined_by, targetId?, targetProfileId?, productId?}`. Pass exactly one of `targetId` or `targetProfileId`. A User Need to User Profile link uses type `addresses` and `targetProfileId` only. `respects` runs from a requirement to a principle: the source is the requirement and the target is the principle. The inverse is shown as Respected by. Outcomes: `applied`, `bundled` (`bundledWith`), or `proposed` (`proposalId`). **422** `link_pair_not_allowed`, `profile_not_in_product`, or `link_target`. **409** `duplicate_link`. Proposing the same pending link again returns the existing proposal |
 | `ih_unlink_requirements` | suggest or edit | `{linkId?, sourceId?, type?, targetId?, targetProfileId?, productId?}`. Soft-remove by `linkId` or source + type + target. To remove a User Need to User Profile link, pass `targetProfileId` instead of `targetId`. Reject or withdraw leaves the link |
 | `ih_lifecycle_action` | suggest or edit | `{id, action, targetType?, reason?, mode?, productId?}`. Actions: `withdraw_proposal` (proposal id only), `withdraw_requirement`, `reopen_proposal` (withdrawn add-link at version 1), `reopen_requirement` (edit), `obsolete`, `delete_draft`, `reclassify` |
 | `ih_restore_draft_title` | suggest | Title-only repair of the caller's pending add. Does not change the proposal |
@@ -66,6 +66,10 @@ Soft delete is a proposal for Suggest, and applies immediately when that credent
 | `ih_reorder_sections` | suggest or edit | Reorder all PRD sections |
 | `ih_set_section_summary` | suggest or edit | Set a PRD section summary |
 | `ih_assign_sections` | suggest or edit | Place many PRDs into sections in one change |
+| `ih_list_applicable_principles` | read | `{productId?}`. Principles that apply to this product. See below |
+| `ih_propose_principle_adoption` | suggest or edit | `{principleId, action: adopt\|stop, mode?, productId?}`. Adopt or stop on this product. See below |
+| `ih_list_principle_conflicts` | read | `{unresolved?, productId?}`. Conflicts for this product and the tenant. See below |
+| `ih_propose_principle_conflict` | suggest or edit | `{principleA, principleB, priorityPrincipleId?, reason?, mode?, productId?}`. See below |
 | `ih_record_development_phase_event` | delivery:write | `{requirement, phase, sourceId?, requester?, evidenceUrl?, occurredAt?, productId?}`. Append one development-phase event. Direct, not a proposal. The developer plugin records `phase: "design_ready"` at handoff |
 | `ih_get_revision_status` | read | `{id, productId?}`. Per revision: derived completeness and coverage, the latest assessment or null, and `differs`, `completenessDiffers`, `coverageDiffers`, `completenessComment`, `coverageComment`. REST: `GET /api/requirements/{id}/revision-status` |
 | `ih_record_confirmation_review` | status:write | See below. Direct. Do not pass `mode` |
@@ -76,6 +80,57 @@ Soft delete is a proposal for Suggest, and applies immediately when that credent
 Section tools are listed with the purpose the product documents. If `tools/list` shows a more specific argument schema for a section tool, use that schema. Do not invent arguments.
 
 How to retrieve a small slice versus a whole product is the requirements plugin's `references/retrieval.md`. How to judge implementation and test coverage is the developer plugin's `references/assessment.md`. Those files use the tools above. They do not redefine them.
+
+## Principles
+
+Tenant-wide adoption is done by a human tenant admin in the web app, not through MCP. `ih_propose_principle_adoption` adopts a principle on the granted product only.
+
+### Applicable principles
+
+`ih_list_applicable_principles`. Read.
+
+| Argument | Value |
+| --- | --- |
+| `productId` | Granted product |
+
+Principles that apply to this product. Read. Each entry is an active adoption: `principleId`, `humanId`, `title`, `statement`, `revision`, `sourceProductId`, `sourceProductName`, `source` (`product` or `tenant`), `adoptionId`, and `adoptedAt`. `source` `product` is the product that recorded the principle. `source` `tenant` means the tenant adopted it, and that entry is included for every product in the tenant. A principle adopted at both scopes is listed once, with `source` `tenant`. Title, statement, revision, and source product name are returned even when this credential cannot open the product that recorded the principle. Ended adoptions are omitted.
+
+### Product adoption
+
+`ih_propose_principle_adoption`. Suggest or edit.
+
+| Argument | Value |
+| --- | --- |
+| `principleId` | Required. Principle human id or uuid recorded in this product |
+| `action` | Required. `adopt` or `stop` |
+| `mode` | `suggest`, `propose`, or `edit`. Defaults to `suggest` |
+| `productId` | Granted product |
+
+Adopt a principle on this product, or stop adopting it. `principleId` is the principle human id or uuid. `action` is `adopt` or `stop`. `mode` defaults to `suggest`. `suggest` or `propose` files one Review proposal with `targetType` `principle_adoption`: `kind` `add` for adopt, `kind` `obsolete` for stop. `mode` `edit` writes the row when this product is in `editDirectlyProductIds` or the credential has edit scope, and is **403** without that grant. Only a principle recorded in this product can be adopted; anything else is **422**. A second active adoption is **409**. Stop sets `ended_at` and keeps the row. It does not change the principle, its revisions, or its links. Stopping a tenant adoption is **403**.
+
+### Principle conflicts
+
+`ih_list_principle_conflicts`. Read.
+
+| Argument | Value |
+| --- | --- |
+| `unresolved` | When true, only pairs that apply here and have no recorded priority |
+| `productId` | Granted product |
+
+Conflicts recorded for this product and the tenant. Read. `unresolved` true returns only pairs where both principles apply to this product, a live conflict exists at this product or the tenant, and no live row at this product or the tenant has a priority. A tenant priority resolves the pair for every product. Each entry includes the two principles, the priority when one is recorded, the reason, and scope `product` or `tenant`.
+
+`ih_propose_principle_conflict`. Suggest or edit.
+
+| Argument | Value |
+| --- | --- |
+| `principleA` | Required. Principle human id or uuid |
+| `principleB` | Required. Principle human id or uuid |
+| `priorityPrincipleId` | Optional. One of the two principles. Records which one takes priority |
+| `reason` | Required when `priorityPrincipleId` is set. Why that principle takes priority |
+| `mode` | `suggest`, `propose`, or `edit`. Defaults to `suggest` |
+| `productId` | Granted product |
+
+Mark two principles as conflicting, or record which one takes priority. `principleA` and `principleB` are human ids or uuids. They are stored in uuid order, so A,B and B,A are the same pair. `priorityPrincipleId` is optional and must be one of the pair. `reason` is required when a priority is set. `mode` defaults to `suggest`. `suggest` or `propose` files one Review proposal with `targetType` `principle_conflict`. Accept applies it. `mode` `edit` writes the row when this product is in `editDirectlyProductIds` or the credential has edit scope, and is **403** without that grant. A second live mark of the same pair is **409**.
 
 ## Confirmation review
 

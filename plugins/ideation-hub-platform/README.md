@@ -17,6 +17,7 @@ ideation-hub-platform/
 ├── references -> skills/ideation-hub-platform/references
 └── skills/ideation-hub-platform/
     ├── SKILL.md
+    ├── CHANGELOG.md
     └── references/           schema.md, mcp.md, rest-api.md
 ```
 

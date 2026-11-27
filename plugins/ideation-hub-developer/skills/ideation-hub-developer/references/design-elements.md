@@ -15,7 +15,8 @@ The design types are **System Design (SD)**, **Component Design (CD)** and **UX 
 | Interface or API contract | CD | `arch.interface` | `CD(owner) refined_by CD(interface)`, or `SD realized_by CD(interface)` when it belongs to a container |
 | Data model | CD | `arch.data` | `SD or CD refined_by CD(data)` |
 | Screens and flows | UXD | `arch.ux` | `PRD realized_by UXD`; `mockupUrl` when a mockup exists |
-| Product-level constraint, NFR or principle | Stays a PRD tagged `NFR` or `principle`. Never authored by this skill | `NFR` | `PRD(NFR) realized_by` each SD/CD that responds to it |
+| Product-level constraint or NFR | Stays a PRD tagged `NFR`. Never authored by this skill | `NFR` | `PRD(NFR) realized_by` each SD/CD that responds to it |
+| Principle | A Principle (`PRN`). The broadest record. Never authored by this skill | — | A requirement `respects` the Principle. The source is the requirement and the target is the Principle. Inverse: Respected by. This skill does not create that link |
 | Technical constraint found during design | "Constraints" section in the affected SD; its own SD only if it cuts across the system | `arch.constraint` | as the record it sits in |
 | Safety constraint | Follow the requirements plugin's `references/stpa.md` | `STPA` | per STPA |
 | Assumption | "Assumptions" section in the affected record, each marked *provisional* or *confirmed* | `arch.assumption` while any is provisional | — |

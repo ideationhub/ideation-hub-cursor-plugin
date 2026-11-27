@@ -10,7 +10,7 @@ description: Developer plugin for Ideation Hub Product Requirements. Use when as
 license: MIT
 compatibility: Requires the Ideation Hub platform plugin (schema, REST, MCP), the ideation-hub-requirements-agent plugin when requirement wording changes, and an agent credential. Recording an assessment needs status:write. No scripts or runtime needed.
 metadata:
-  version: "0.4.0"
+  version: "0.5.0"
   status: beta
   author: Ideation Hub
 ---
@@ -343,7 +343,8 @@ The design types are **System Design (SD)**, **Component Design (CD)** and **UX 
 | Interface or API contract | CD | `arch.interface` | `CD(owner) refined_by CD(interface)`, or `SD realized_by CD(interface)` when it belongs to a container |
 | Data model | CD | `arch.data` | `SD or CD refined_by CD(data)` |
 | Screens and flows | UXD | `arch.ux` | `PRD realized_by UXD`; `mockupUrl` when a mockup exists |
-| Product-level constraint, NFR or principle | Stays a PRD tagged `NFR` or `principle`. Never authored by this skill | `NFR` | `PRD(NFR) realized_by` each SD/CD that responds to it |
+| Product-level constraint or NFR | Stays a PRD tagged `NFR`. Never authored by this skill | `NFR` | `PRD(NFR) realized_by` each SD/CD that responds to it |
+| Principle | A Principle (`PRN`). The broadest record. Never authored by this skill | — | A requirement `respects` the Principle. The source is the requirement and the target is the Principle. Inverse: Respected by. This skill does not create that link |
 | Technical constraint found during design | "Constraints" section in the affected SD; its own SD only if it cuts across the system | `arch.constraint` | as the record it sits in |
 | Safety constraint | Follow the requirements plugin's `references/stpa.md` | `STPA` | per STPA |
 | Assumption | "Assumptions" section in the affected record, each marked *provisional* or *confirmed* | `arch.assumption` while any is provisional | — |
@@ -655,7 +656,7 @@ Never present an assumption or recommendation as a fact.
    - Walk down from each in-scope PRD for existing designs, implementations, and tests.
    - Read the whole product chain only when the scope is the whole product, and exclude obsolete rows.
    - Do a separate read that includes pending proposals. Label them "proposal" and never treat them as accepted.
-2. Find the non-functional requirements and principles. They are Product Requirements tagged `NFR` or `principle`. Search by tag (`tag: "NFR"`). Also look for `STPA` records; if any are in scope, follow the requirements plugin's `references/stpa.md`.
+2. Find the non-functional requirements and principles. An NFR is a Product Requirement tagged `NFR`. Search by tag (`tag: "NFR"`). A Principle is a `PRN` record. Read the ones that apply with `ih_list_applicable_principles`. This skill does not author a Principle. Also look for `STPA` records; if any are in scope, follow the requirements plugin's `references/stpa.md`.
 3. Read existing SD, CD and UXD records in scope (`types: ["SD","CD","UXD"]`). An existing design is the starting point, not something to replace.
 4. Build a short **problem frame**:
    - Purpose: one or two sentences from the User and Business Needs.
@@ -755,7 +756,7 @@ Link type names, stored direction, allowed pairs, revision pins, and how to file
 - `../../../../ideation-hub-platform/references/mcp.md`
 - `../../../../ideation-hub-platform/references/rest-api.md`
 
-This plugin does not create `addresses` links. A missing or wrong User Need link is proposed through the requirements plugin's authoring workflow (`implementation.md`), not written here.
+This plugin does not create `addresses` or `respects` links. A missing or wrong User Need link is proposed through the requirements plugin's authoring workflow (`implementation.md`), not written here. A Principle (`PRN`) is the broadest record. `respects` runs from a requirement to a Principle and is shown the other way as Respected by. Applicable principles are `ih_list_applicable_principles` in the platform catalog. Tenant-wide adoption is done by a human tenant admin in the web app, not through MCP.
 
 Check direction yourself before every link, using the platform schema. Never create a link the table below does not allow.
 
@@ -790,7 +791,7 @@ Run these from Ideation Hub data (`ih_get_chain` with `includePending: false` fo
 3. **Direction:** every link touching a design matches the table above. List violations.
 4. **Staleness:** every link touching a design pins the current revision of both ends. List stale links with old and new revision.
 5. **Open items:** every design record still tagged `arch.assumption` or `arch.open-question`.
-6. **NFR response:** every in-scope PRD tagged `NFR` or `principle` is `realized_by` at least one design record whose body states the response.
+6. **NFR response:** every in-scope PRD tagged `NFR` is `realized_by` at least one design record whose body states the response. A Principle is a `PRN`, not a tag on a PRD. This skill does not author a Principle and does not create a `respects` link.
 7. **Verification:** in-scope PRDs and CDs with no `checked_by` link. Report as a gap; tests are authored through the requirements skill.
 
 ## Impact analysis
