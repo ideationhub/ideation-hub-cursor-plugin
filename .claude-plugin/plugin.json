@@ -1,7 +1,7 @@
 {
   "name": "ideation-hub",
-  "version": "1.2.0",
-  "description": "Compatibility bundle for existing Ideation Hub installs. skills/ entries are symlinks to the developer and requirements plugins. Schema, REST, and MCP docs are in plugins/ideation-hub-platform. New installs should use the three plugins under plugins/.",
+  "version": "2.0.0",
+  "description": "Connect coding agents to Ideation Hub, a requirements traceability workspace. Includes the Ideation Hub MCP server and three skills: ideation-hub-platform (schema, REST, and MCP reference), ideation-hub-requirements-agent (write and trace Business Needs, User Needs, and Product Requirements), and ideation-hub-developer (system design, implementation, and assessment; the old ideation-hub-system-design name still resolves).",
   "author": {
     "name": "Ideation Hub",
     "email": "support@ideationhub.me"

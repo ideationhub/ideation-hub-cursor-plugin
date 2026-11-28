@@ -1,0 +1,5 @@
+# Any other host
+
+- **Skills:** any loader that follows the Agent Skills specification (https://agentskills.io/specification) can load the folders under `skills/`: `ideation-hub-requirements-agent` and `ideation-hub-developer`, plus `ideation-hub-platform`, which must stay a sibling folder because the schema, REST API, and MCP catalog live there only. Also load `ideation-hub-system-design` if an existing install still invokes that name; it is a deprecated alias. If the host has no skill loader, give the agent `skills/ideation-hub-developer/SKILL.md` and let it read the platform `references/` files.
+- **MCP:** Streamable HTTP JSON-RPC, `POST https://api.ideationhub.me/api/mcp`, protocol `2025-03-26` (or `2024-11-05`), no SSE. Send `X-IH-Client-Id` and `X-IH-Client-Secret` on every request, or use an OAuth `client_credentials` bearer token (platform skill `references/rest-api.md`).
+- **No subagents?** Where the requirements skill asks for a fresh-reader check, do its editor pass instead.

@@ -12,13 +12,13 @@ The Agent Skills specification at https://agentskills.io/specification describes
 
 Copy these three folders so they sit next to each other, and do not rename them.
 
-`plugins/ideation-hub-platform/skills/ideation-hub-platform`
+`skills/ideation-hub-platform`
 
-`plugins/ideation-hub-developer/skills/ideation-hub-developer`
+`skills/ideation-hub-developer`
 
-`plugins/ideation-hub-requirements/skills/ideation-hub-requirements-agent`
+`skills/ideation-hub-requirements-agent`
 
-The developer and requirements folders point at `../ideation-hub-platform/references/` when they are siblings. Copy `plugins/ideation-hub-developer/skills/ideation-hub-system-design` as well if something still asks for the old name. That folder only points at the developer instructions.
+The developer and requirements folders point at `../ideation-hub-platform/references/` when they are siblings. Copy `skills/ideation-hub-system-design` as well if something still asks for the old name. That folder only points at the developer instructions.
 
 ## A host with neither plugins nor skills
 
@@ -26,8 +26,8 @@ The developer and requirements folders point at `../ideation-hub-platform/refere
 
 ## A host that can call a remote Model Context Protocol server
 
-`docs/mcp/generic.mcp.json` is a sample. It uses the key `mcpServers`, the type `http`, the server address, and two headers, `X-IH-Client-Id` and `X-IH-Client-Secret`. Claude Code's documented project file uses that shape. This repository's platform plugin uses it too, with environment-variable placeholders instead of angle brackets.
+`docs/mcp/generic.mcp.json` is a sample. It uses the key `mcpServers`, the type `http`, the server address, and two headers, `X-IH-Client-Id` and `X-IH-Client-Secret`. Claude Code's documented project file uses that shape. This repository's plugin uses it too, with environment-variable placeholders instead of angle brackets.
 
 Not verified: that any other product accepts this sample unchanged. Read that product's own Model Context Protocol page and adjust the key names before you rely on it. The header names and the server address are the Ideation Hub contract. The surrounding keys may differ.
 
-Cursor's copy is `docs/mcp/cursor.mcp.json`. It uses `${env:IH_CLIENT_ID}` because that is the form in the Cursor documentation. Claude Code's copy is `docs/mcp/claude-code.mcp.json`, which is the platform plugin's `mcp.json`, and it uses `${IH_CLIENT_ID}` because that is the form in the Claude Code documentation.
+Cursor's copy is `docs/mcp/cursor.mcp.json`. It uses `${env:IH_CLIENT_ID}` because that is the form in the Cursor documentation. Claude Code's copy is `docs/mcp/claude-code.mcp.json`, which is the root `mcp.json`, and it uses `${IH_CLIENT_ID}` because that is the form in the Claude Code documentation.

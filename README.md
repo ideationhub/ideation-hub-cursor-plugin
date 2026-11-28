@@ -23,14 +23,13 @@
 **From first idea to justified release confidence.**  
 Ideation Hub gives AI-assisted engineering teams a living system of record for product intent—connecting **Principles (`PRN`)**, **Business Needs (`BN`)**, **User Profiles**, **User Needs (`UN`)**, **Product Requirements (`PRD`)**, **System / UX / Component Designs (`SD`, `UXD`, `CD`)**, **Implementations (`IMPL`)**, and **Verification / Validation / Unit Tests (`VT`, `VER`, `UT`)** in a single traceable graph.
 
-This repository is a multi-plugin marketplace:
+This repository is one plugin, **Ideation Hub** (`ideation-hub`, 2.0.0). It ships the MCP server and three skills, side by side in `skills/`:
 
-1. **Ideation Hub Platform** (`plugins/ideation-hub-platform`, 1.1.0) — the one description of the schema, REST API, and Model Context Protocol tools, plus `mcp.json` for `https://api.ideationhub.me/api/mcp`. The same text is the skill folder `skills/ideation-hub-platform` for hosts that only load skills.
-2. **Ideation Hub Requirements** (`plugins/ideation-hub-requirements`, skill name `ideation-hub-requirements-agent`, 1.7.1) — authoring workflow and writing rubrics. Requires the platform plugin.
-3. **Ideation Hub Developer** (`plugins/ideation-hub-developer`, skill name `ideation-hub-developer`, 0.5.0 beta) — system design, implementation, and assessment. Before designing or implementing, it traces each Product Requirement up to its User Needs. Assessment of the current revision is unchanged (PRD-180, applying PRD-026, PRD-172, and PRD-179). Requires the platform plugin. `ideation-hub-system-design` remains a deprecated alias.
-4. **Ideation Hub** (repository root, plugin name `ideation-hub`, 1.2.0) — compatibility bundle so existing installs keep loading the same instructions and the root MCP config. Install this bundle **or** the three plugins above, not both.
+1. **`ideation-hub-platform`** (1.1.0) — the one description of the schema, REST API, and Model Context Protocol tools, plus how to create an agent credential. Both other skills read it.
+2. **`ideation-hub-requirements-agent`** (1.7.1) — authoring workflow and writing rubrics for Business Needs, User Needs, and Product Requirements.
+3. **`ideation-hub-developer`** (0.5.0 beta) — system design, implementation, and assessment. Before designing or implementing, it traces each Product Requirement up to its User Needs. Assessment of the current revision is unchanged (PRD-180, applying PRD-026, PRD-172, and PRD-179). `ideation-hub-system-design` is a deprecated alias that lives in `skills/ideation-hub-system-design`.
 
-Cursor's marketplace format has no plugin-dependency field. The developer and requirements plugins document that they require the platform plugin. Agent skill folder names and `SKILL.md` files stay, because that is how hosts load instructions. `skills/` at the repository root is a set of symlinks to those folders so the old paths still resolve.
+The MCP server is `https://api.ideationhub.me/api/mcp`. Each skill folder has one source of truth in `skills/`; there are no second copies. The skills read each other by relative path, so they stay siblings. Version 2.0.0 replaced the earlier four-entry marketplace (separate platform, requirements, and developer plugins plus a compatibility bundle) with this single plugin. Skill names did not change.
 
 With this plugin installed, Cursor and Grok Bot agents can:
 - **Read & Search Intent (`Read`):** Fetch the full requirement hierarchy (`ih_get_chain`), search existing requirements (`ih_search_requirements`), inspect upstream/downstream trace neighbors (`ih_get_neighbors`), and validate candidate changes against the trace rubric (`ih_validate_against_trace`).
@@ -76,58 +75,54 @@ The plugin connects automatically to `https://api.ideationhub.me/api/mcp` using 
 }
 ```
 
-### 3. Team Marketplace Instant Install (Optional)
-Cursor Teams / Enterprise admins can import this repository directly with zero wait time via **Cursor Dashboard → Settings → Plugins → Import from Repo** using:
-```text
-https://github.com/ideationhub/ideation-hub-cursor-plugin
+### 3. Install the plugin
+
+**Default path: one plugin, one install.** Install **Ideation Hub** (`ideation-hub`) from the marketplace of your host. It brings the MCP server and all three skills.
+
+- **Cursor:** once listed, install **Ideation Hub** from the Cursor Marketplace. Until then, in Customize choose **From GitHub Repository** and import `https://github.com/ideationhub/ideation-hub-cursor-plugin`, then install **Ideation Hub**. On Teams or Enterprise, an admin can instead use **Dashboard → Plugins & MCPs → Team Marketplaces → Import from Repo** with the same URL.
+- **Grok Bot:** once the plugin is listed in Connect Apps, add **Ideation Hub** there. Until then, add a custom connector with the server URL and the two headers above, and save the skills' instructions with the bot's skill tool. See [docs/install/grok-bot.md](docs/install/grok-bot.md).
+- **Claude Code:** `claude plugin marketplace add ideationhub/ideation-hub-cursor-plugin`, then `claude plugin install ideation-hub@ideation-hub`. Export `IH_CLIENT_ID` and `IH_CLIENT_SECRET` first.
+- **Grok Build:** `grok plugin install ideationhub/ideation-hub-cursor-plugin --trust`.
+
+### 4. Hosts without plugin support (OpenAI Codex, generic)
+
+The three skill folders follow the open [Agent Skills specification](https://agentskills.io/specification), so any host that loads skills can use them. Copy them as siblings so the relative links resolve:
+
+```bash
+git clone https://github.com/ideationhub/ideation-hub-cursor-plugin /tmp/ih-plugin
+mkdir -p ~/.agents/skills
+cp -R /tmp/ih-plugin/skills/ideation-hub-platform \
+      /tmp/ih-plugin/skills/ideation-hub-developer \
+      /tmp/ih-plugin/skills/ideation-hub-requirements-agent \
+      ~/.agents/skills/
+# skills/ideation-hub-system-design is the deprecated alias of the developer skill; copy it only if something still asks for that name.
 ```
 
-### 4. Other Agent Harnesses (Claude Code, OpenAI Codex, Grok Build)
+For OpenAI Codex also add the MCP server to `~/.codex/config.toml`:
 
-The developer and requirements plugins keep `SKILL.md` files so any host that follows the open [Agent Skills specification](https://agentskills.io/specification) can load them. Install the platform plugin beside them.
-
-- **Claude Code:** this repository includes `.claude-plugin/plugin.json` and a root `.mcp.json`. Enable the compatibility bundle, or copy the three directories under `plugins/` so they stay siblings. `skills/` at the repo root is symlinks to those plugins.
-- **OpenAI Codex:** copy the three plugin directories so they stay siblings (see the block below), and add the MCP server to `~/.codex/config.toml`:
-
-  ```bash
-  git clone https://github.com/ideationhub/ideation-hub-cursor-plugin /tmp/ih-plugin
-  mkdir -p ~/.agents/skills
-  # Install the three plugins as siblings so their relative links resolve.
-  mkdir -p ~/.cursor/plugins
-  cp -R /tmp/ih-plugin/plugins/ideation-hub-platform \
-        /tmp/ih-plugin/plugins/ideation-hub-developer \
-        /tmp/ih-plugin/plugins/ideation-hub-requirements \
-        ~/.cursor/plugins/
-  # Hosts that load agent skills from ~/.agents/skills can use the same folders' skills/.
-  # Keep the plugin directories as siblings of each other. Do not flatten only the skill folders
-  # or the links into the platform plugin break.
-  # skills/ideation-hub-system-design inside the developer plugin is the deprecated alias.
-  ```
-
-  ```toml
-  [mcp_servers.ideation-hub]
-  url = "https://api.ideationhub.me/api/mcp"
-  env_http_headers = { "X-IH-Client-Id" = "IH_CLIENT_ID", "X-IH-Client-Secret" = "IH_CLIENT_SECRET" }
-  ```
-- **Grok Build:** `grok plugin install ideationhub/ideation-hub-cursor-plugin --trust`.
+```toml
+[mcp_servers.ideation-hub]
+url = "https://api.ideationhub.me/api/mcp"
+env_http_headers = { "X-IH-Client-Id" = "IH_CLIENT_ID", "X-IH-Client-Secret" = "IH_CLIENT_SECRET" }
+```
 
 Install guides, checked against the vendor pages named in each file: [Cursor](docs/install/cursor.md), [Claude Code and Claude Desktop](docs/install/claude.md), [Grok Bot](docs/install/grok-bot.md), and [other harnesses](docs/install/generic.md).
 
 Ready-to-copy server files, with placeholders and no secrets, are in [docs/mcp](docs/mcp). One generated instruction file per unit is in [docs/instructions](docs/instructions).
 
-Per-harness notes that ship inside the developer skill: [`plugins/ideation-hub-developer/skills/ideation-hub-developer/adapters/`](plugins/ideation-hub-developer/skills/ideation-hub-developer/adapters/).
+Per-harness notes that ship inside the developer skill: [`skills/ideation-hub-developer/adapters/`](skills/ideation-hub-developer/adapters/).
 
 ---
 
 ## MCP tools
 
-The tool catalog, permissions, and REST routes are the platform plugin: [`plugins/ideation-hub-platform/references/mcp.md`](plugins/ideation-hub-platform/references/mcp.md) and [`plugins/ideation-hub-platform/references/rest-api.md`](plugins/ideation-hub-platform/references/rest-api.md). With a **Suggest** credential, write tools file a proposal for human review. With **Edit**, the same tools change living records unless the call passes `mode: "suggest"`.
+The tool catalog, permissions, and REST routes are the platform skill: [`skills/ideation-hub-platform/references/mcp.md`](skills/ideation-hub-platform/references/mcp.md) and [`skills/ideation-hub-platform/references/rest-api.md`](skills/ideation-hub-platform/references/rest-api.md). With a **Suggest** credential, write tools file a proposal for human review. With **Edit**, the same tools change living records unless the call passes `mode: "suggest"`.
 
 ---
 
 ## Validation
 
-To validate the plugin manifest, marketplace manifest, skill frontmatter, and referenced asset/MCP paths locally:
+To validate the plugin manifest, the marketplace manifest (exactly one plugin), skill frontmatter, and referenced asset/MCP paths locally:
 
 ```bash
 node scripts/validate-template.mjs
