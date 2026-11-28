@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.2 (2026-11-28) — beta
+
+- While implementing, record development status on each in-scope Product Requirement with `ih_record_development_phase_event`: `implementation_complete` when the work is finished, `merged_to_main` when the pull request merges, and `deploy_completed` when production deployment completes. After shipping, record a status assessment with `ih_record_status_assessment`. There is no agent-writable phase for starting implementation; do not invent one.
+- `skills/ideation-hub-system-design/SKILL.md` metadata version tracks this release.
+
 ## 0.5.1 (2026-11-28) — beta
 
 - Technology choices (language, framework, platform, cloud, or vendor) come from the product's and tenant's applicable Principles, read with `ih_list_applicable_principles`. If none apply, ask the human. This skill does not recommend a specific technology.

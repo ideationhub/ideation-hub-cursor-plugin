@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "Ideation Hub: one plugin with the MCP server and the platform, requirements, and developer skills.",
-    "version": "2.0.2"
+    "version": "2.0.3"
   },
   "plugins": [
     {
       "name": "ideation-hub",
       "source": ".",
       "description": "Connect coding agents to Ideation Hub, a requirements traceability workspace. Includes the Ideation Hub MCP server and three skills: ideation-hub-platform (schema, REST, and MCP reference), ideation-hub-requirements-agent (write and trace Business Needs, User Needs, and Product Requirements), and ideation-hub-developer (system design, implementation, and assessment; the old ideation-hub-system-design name still resolves).",
-      "version": "2.0.2",
+      "version": "2.0.3",
       "author": {
         "name": "Ideation Hub",
         "email": "support@ideationhub.me"

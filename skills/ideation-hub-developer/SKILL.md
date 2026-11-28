@@ -4,7 +4,7 @@ description: Developer skill of the Ideation Hub plugin for Product Requirements
 license: MIT
 compatibility: Uses the ideation-hub-platform skill (schema, REST, MCP), the ideation-hub-requirements-agent skill when requirement wording changes, and an agent credential. All three ship in the one Ideation Hub plugin. Recording an assessment needs status:write. No scripts or runtime needed.
 metadata:
-  version: "0.5.1"
+  version: "0.5.2"
   status: beta
   author: Ideation Hub
 ---
@@ -42,7 +42,7 @@ Run the user-need trace before the first design pass and before any implementati
 | D. Iterate | On a challenge, a new constraint or a changed requirement, find the affected elements through links and revision pins. Change only those. State downstream effects. | `references/traceability.md` |
 | E. Validate | Run the coverage, justification, link-direction and staleness checks from Ideation Hub data, then the qualitative review. Label every finding verified, predicted or judgement. | `references/validation.md` |
 | F. Handoff | When another agent will build the design: build the handoff brief, record the `design_ready` event, and report. | `references/implementation-handoff.md` |
-| G. Implement | When you are asked to implement: run phase 0 first if this scope does not already have a user-need summary, then build the scoped behavior from the accepted requirements and designs by following the codebase. | `references/implementation.md` |
+| G. Implement | When you are asked to implement: run phase 0 first if this scope does not already have a user-need summary, then build the scoped behavior from the accepted requirements and designs by following the codebase. Record development status as `references/implementation.md` describes. | `references/implementation.md` |
 | H. Assess | When you are given Product Requirements to assess: judge implementation and test coverage of the current revision, and record the verdicts. | `references/assessment.md` |
 
 ## Implementation
@@ -52,6 +52,8 @@ When the user asks you to implement, load `references/implementation.md` and fol
 Build the scoped behavior in the codebase from the accepted Product Requirements and the accepted designs that realize them. Cite the PRD and design IDs you are implementing.
 
 Record each Implementation as an IMPL through the platform skill's write rule, with `mode: "suggest"` unless the user explicitly asks for a direct write on that product in this conversation. Link it from the design it realizes (`CD realized_by IMPL`, or `SD realized_by IMPL`), and set `repoPath`, `prUrl`, and `commitSha` when you have them.
+
+Record development status on each in-scope Product Requirement as `references/implementation.md` describes: `implementation_complete` when the work is finished, `merged_to_main` when the pull request merges, `deploy_completed` when production deployment completes, then a status assessment. There is no agent-writable phase for starting implementation; do not invent one.
 
 A handoff brief is for another agent. Do not stop at handoff when you were asked to implement. Do not change a requirement. If the behavior you would write contradicts a Product Requirement, stop and report the difference to the user.
 
@@ -70,7 +72,7 @@ Tool arguments, proposal outcomes, and error codes are in the platform skill (`.
 - **Accepted records are never changed silently.** An edit, obsolete, withdraw or reclassify on an accepted SD, CD or UXD needs the user's explicit confirmation first.
 - **Never author or edit requirements** (BN, UN, PRD, tests' acceptance wording). If the design or the code exposes a missing or wrong requirement, say so and hand it to the requirements skill's workflow, with the user's agreement. When the code and a Product Requirement disagree, report the difference. Do not change the requirement.
 - **Never fabricate.** Every ID you cite must come from a read in this conversation. Never invent a requirement, a link or a constraint the requirements do not state; label your own ideas as recommendations.
-- **Direct writes that are not proposals.** At handoff, call `ih_record_development_phase_event` (`phase: "design_ready"`) for each in-scope Product Requirement. It needs `delivery:write`. When assessing, record confirmation reviews and status assessments as `references/assessment.md` describes. Those need `status:write` and never change a title, body, or trace link. If a call returns 403, tell the user which permission is missing and continue. Never work around it.
+- **Direct writes that are not proposals.** At handoff, call `ih_record_development_phase_event` (`phase: "design_ready"`) for each in-scope Product Requirement. While implementing, record `implementation_complete`, `merged_to_main`, and `deploy_completed` as `references/implementation.md` describes, then record a status assessment. Phase events need `delivery:write`. When assessing, and after shipping work you implemented, record confirmation reviews and status assessments as `references/assessment.md` describes. Those need `status:write` and never change a title, body, or trace link. If a call returns 403, tell the user which permission is missing and continue. Never work around it.
 - Agents cannot Accept or Reject. After every design write, report each proposal id, kind, outcome (`bundled`, `proposed` or `applied`) and target, and point to Review on www.ideationhub.me.
 - Never print, log or store credentials or tokens.
 
