@@ -38,6 +38,15 @@ The Product Requirement says what the product must do. This is how you build it.
 5. **Tests with the change.** Write unit tests and verification tests alongside the change. Write or update those tests before a major refactor. The tests check the behavior the Product Requirement states.
 6. **Small pull requests.** One requirement, or one thin slice of it, per pull request. Cite the requirement IDs (`PRD-xxx`, plus the design IDs you implemented) in the commit message and the pull request.
 7. **Record the traces where this skill already says how.** Record the Implementation as `SKILL.md` (Implementation) describes: an IMPL linked `CD realized_by IMPL` or `SD realized_by IMPL`, with `repoPath`, `prUrl`, and `commitSha` when you have them. Record Verification Tests and Unit Tests on the design as `traceability.md` (Test links) describes, using the test fields in the platform schema (`testPath`, `lastResult`). File both through the platform write rule, with `mode: "suggest"` unless the user explicitly asks for a direct write on that product in this conversation. Do not invent a second write path.
+8. **Record development status.** Follow [Record development status](#record-development-status) for each in-scope Product Requirement. Those writes are direct, not proposals.
+
+## Record development status
+
+For each in-scope Product Requirement you implement, update its development status with direct writes. Do not invent a phase name. Pass `evidenceUrl` (the pull request or deploy URL) when you have one. If a call returns 403, tell the user which permission is missing and continue. Never work around it.
+
+1. There is no agent-writable phase for starting implementation. When the implementation for that requirement is finished, call `ih_record_development_phase_event` with `phase: "implementation_complete"`. It needs `delivery:write`.
+2. When the pull request merges, record `phase: "merged_to_main"`. When production deployment completes, record `phase: "deploy_completed"`. You may also record `tests_passing`, `pushed_to_git`, and `deploy_started` at those moments. Events are append-only; the same phase may appear more than once.
+3. After shipping, record a status assessment of the current revision with `ih_record_status_assessment` as `assessment.md` describes. It needs `status:write` and cannot change a title, body, or trace link.
 
 ## When not to implement
 
@@ -45,4 +54,4 @@ A handoff brief is for another agent. Do not stop at handoff when you were asked
 
 If the behavior you would write contradicts a Product Requirement, stop and report the difference. Do not change the requirement.
 
-Assessment of implementation and test coverage is a separate task. When you are asked to assess, follow `assessment.md`. Do not treat this file as a change to that procedure.
+A full assessment of other requirements remains a separate task (Phase H). After you ship a requirement you implemented, record its status assessment as this file describes, following `assessment.md` for how to judge and record the verdicts.
