@@ -1,7 +1,7 @@
 {
   "name": "ideation-hub",
   "displayName": "Ideation Hub",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Connect coding agents to Ideation Hub, a requirements traceability workspace. Includes the Ideation Hub MCP server and three skills: ideation-hub-platform (schema, REST, and MCP reference), ideation-hub-requirements-agent (write and trace Business Needs, User Needs, and Product Requirements), and ideation-hub-developer (system design, implementation, and assessment; the old ideation-hub-system-design name still resolves).",
   "author": {
     "name": "Ideation Hub",

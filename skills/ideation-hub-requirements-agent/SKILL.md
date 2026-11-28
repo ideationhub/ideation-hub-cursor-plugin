@@ -2,7 +2,7 @@
 name: ideation-hub-requirements-agent
 description: Requirements skill of the Ideation Hub plugin. Use when asked to write, revise, trace, or structure Business Needs, User Profiles, User Needs, and Product Requirements, or to retrieve requirements for an objective. Proposes changes for human review. Uses the Ideation Hub platform skill for the schema, REST API, and MCP tools.
 metadata:
-  version: "1.7.1"
+  version: "1.7.2"
 ---
 
 # Ideation Hub — Requirements
@@ -105,7 +105,7 @@ After proposing, tell the issuer in one short message:
 - No who / why / role / purpose / outcome — the TraceLinks up to the UN carry that.
 - No component counts, UI surfaces (pages, dialogs, controls), implementation shape, or design/engineering decisions.
 - No acceptance criteria in a PRD body. Write them as functional verification test specifications linked to the PRD.
-- No IDs in prose and no "extends PRD-…" in statements. Express relationships as TraceLinks.
+- **Refer to another requirement with a Markdown link whose text is the target's human ID.** This is the one allowed form of an ID in a body. Write `[PRD-123](/products/<product uuid>/docs/<type slug>/<requirement uuid>)`. Do not use a bare ID, the target's title as the link text, or "extends PRD-…" prose. The type slug is `prd`, `user-needs`, `business-objectives`, `system-design`, `ux-design`, `component-design`, `implementation`, `validation-test`, `verification-test` or `unit-test`. Use the uuid in the address, not the human id, so the link survives renames and revisions. A web address is `[text](https://…)`. A link only lets the reader click through. The relationship itself is still recorded as a TraceLink.
 - User Needs open with the objective as a verb phrase ("Understand …", "Write …"), never "Ability to …", and state only one objective: what the user needs to accomplish (WHAT), not HOW it is delivered, not an action that enables it, and not what the user does not want or should not have to do. A Product Requirement that covers an enabling action traces to the User Need it serves; do not add a clause for that action in this need.
   - *Example:* Avoid: "Ability to request implementation of a requirement and understand the state of delivery of my product's features." Prefer: "Understand the state of delivery of my product's features."
 - **No user-story form in User Needs.** Never write "As a <role>, I need …" or otherwise restate who the user is; the User Profile trace already carries the role, so it is redundant. State only the objective, simply, without mechanisms such as credentials, permission models, CRUD lists, or approval workflow (those belong in the PRDs beneath).
@@ -161,4 +161,4 @@ Safety, reliability, or hazard analysis follows an iterative STPA workflow kept 
 
 ## Changelog
 
-Current: 1.7.1 (2026-11-27) — The schema pointer no longer says there are four link types. Principle (`PRN`) and `respects` are defined in the platform schema. Full history: `references/changelog.md`.
+Current: 1.7.2 (2026-11-28) — Refer to another requirement with a Markdown link whose text is the target's human ID and whose address is its in-app uuid path; this is the one allowed form of an ID in a body; TraceLinks still record the relationship. 1.7.1 (2026-11-27) — The schema pointer no longer says there are four link types. Principle (`PRN`) and `respects` are defined in the platform schema. Full history: `references/changelog.md`.
