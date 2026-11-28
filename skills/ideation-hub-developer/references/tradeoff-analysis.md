@@ -37,18 +37,20 @@ Rank the scenarios by importance to the user and by difficulty. Work on the top 
 
 ## 3. Recommend
 
-State the recommendation, the main reason tied to a requirement or scenario, what would make you change your mind, and the provisional assumption you use until the user decides. Record significant choices as a decision SD (`design-elements.md`).
+State the recommendation, the main reason tied to a requirement, an applicable Principle, or a scenario, what would make you change your mind, and the provisional assumption you use until the user decides. Record significant choices as a decision SD (`design-elements.md`).
+
+Before you recommend a language, framework, platform, cloud, vendor, or other specific technology, call `ih_list_applicable_principles` and follow any that apply. If none apply, ask the human; do not pick one yourself. You may still recommend a structural option (for example, whether a capability is in scope) when a requirement supports it.
 
 ## Build vs buy
 
 For each significant capability, answer briefly:
 
-1. Is it a commodity (auth, payments, email, search, file storage, analytics, observability)? Prefer an existing managed service or library.
-2. Is it core to what makes the product different? Then building may be justified.
-3. What are the lock-in, cost, data-residency and compliance consequences of buying? Use only constraints the requirements or the user state.
-4. What is the cheapest reversible option?
+1. Is it a commodity (auth, payments, email, search, file storage, analytics, observability)? Follow applicable Principles. If none speak to build vs buy, ask the human. Do not prefer a managed service, library, or vendor as a default of this skill.
+2. Is it core to what makes the product different? Then building may be justified if the Principles or the human say so.
+3. What are the lock-in, cost, data-residency and compliance consequences of buying? Use only constraints the requirements, applicable Principles, or the user state.
+4. What option do the Principles, or the human if none apply, treat as acceptable and reversible?
 
-Record the answer in the container SD's "Technology" line, or as a decision SD if it is contested.
+Record the answer in the container SD's "Technology" line, or as a decision SD if it is contested. Name a runtime, framework, or vendor there only when a Principle or the human has chosen it.
 
 ## Present trade-offs to the user
 

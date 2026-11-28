@@ -2,33 +2,33 @@
 
 *Illustrative transcript. IDs and results are invented for the example.*
 
-**Scenario:** SD-001 (context), SD-002 (decision "Use PostgreSQL full-text search for product search"), CD-001 (Search API) and CD-002 (Catalogue data model) are accepted. The user now wants a search service, and PRD-030 has a new revision.
+**Scenario:** SD-001 (context), SD-002 (decision "Use the existing database's full-text search for product search"), CD-001 (Search API) and CD-002 (Catalogue data model) are accepted. The user now wants typo-tolerant search, and PRD-030 has a new revision.
 
 ---
 
 **User:** We're adding typo tolerance — PRD-030 now requires it. Revisit the search decision.
 
-**Agent** (calls `ih_get_requirement PRD-030` → revision 2, `pendingProposal: null`; `ih_get_neighbors PRD-030 direction: down` → links pinned at PRD-030@1 to SD-002 and CD-001; reads SD-002's outbound `refined_by` → CD-001, CD-002):
+**Agent** (calls `ih_get_requirement PRD-030` → revision 2, `pendingProposal: null`; `ih_list_applicable_principles` → PRN-008@1 still in force; `ih_get_neighbors PRD-030 direction: down` → links pinned at PRD-030@1 to SD-002 and CD-001; reads SD-002's outbound `refined_by` → CD-001, CD-002):
 
 > **Impact (verified from links):** PRD-030 moved from @1 to @2. Two designs were reviewed against @1: the search decision (SD-002) and the Search API (CD-001). The Catalogue data model (CD-002) is unaffected apart from needing a change feed, which I'll add.
 >
 > **What changes:**
-> 1. New decision SD "Use a managed search service for product search", superseding SD-002. Options re-run with typo tolerance as a driver; managed search now wins on PRD-030@2.
+> 1. New decision SD "Use a dedicated search service for product search", superseding SD-002. PRD-030@2 now requires typo tolerance, so PRN-008's "until a measured requirement is missed" no longer supports the existing-store decision. No applicable Principle names a vendor, so the decision records the capability and leaves the vendor as an open question for you.
 > 2. Propose `obsolete` on SD-002, and move its `refined_by` links to the new decision.
 > 3. Edit CD-001 (Search API): the provider becomes the search service; the interface stays the same, so no consumer changes.
 > 4. Edit CD-002: add a change feed for index updates.
 >
-> **Unchanged:** SD-001 context (still one deployable app plus managed services), every other component.
+> **Unchanged:** SD-001 context (still one deployable app plus the services already in it), every other component.
 > **Downstream:** the PRD-091 latency load test still applies; any IMPL linked to CD-001 will need a code change.
 >
 > These change accepted records, so I need your yes before filing. OK?
 
 **User:** Yes.
 
-**Agent** (calls `ih_propose_bulk_push` with `dryRun: true`, `mode: "suggest"` for the new decision SD, whose `links` include `refined_by` to CD-001 and CD-002 → valid; files it the same way without `dryRun`; `ih_propose_edit CD-001 {mode: "suggest", expectedRevision: 1, statement: …}`; `ih_propose_edit CD-002 {mode: "suggest", expectedRevision: 1, …}`; `ih_lifecycle_action {id: "SD-002", action: "obsolete", reason: "Superseded by the managed search decision", mode: "suggest"}`. SD-001 is unchanged, so it is not touched):
+**Agent** (calls `ih_propose_bulk_push` with `dryRun: true`, `mode: "suggest"` for the new decision SD, whose `links` include `refined_by` to CD-001 and CD-002 → valid; files it the same way without `dryRun`; `ih_propose_edit CD-001 {mode: "suggest", expectedRevision: 1, statement: …}`; `ih_propose_edit CD-002 {mode: "suggest", expectedRevision: 1, …}`; `ih_lifecycle_action {id: "SD-002", action: "obsolete", reason: "Superseded by the dedicated search decision", mode: "suggest"}`. SD-001 is unchanged, so it is not touched):
 
 > Filed for review:
-> - add SD-005 "Use a managed search service for product search" (links bundled)
+> - add SD-005 "Use a dedicated search service for product search" (links bundled)
 > - edit CD-001 Search API (proposal 91a2…)
 > - edit CD-002 Catalogue data model (proposal 91a4…)
 > - obsolete SD-002 (proposal 91a6…)

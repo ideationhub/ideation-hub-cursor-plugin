@@ -14,7 +14,7 @@
 >
 > **Conflict (fact):** PRD-040 wants mention notifications within a minute; PRD-041 caps emails at one per member per day. Both can hold if mentions go through a channel other than email (in-app or push) and email is a daily digest. That's my recommendation, and it keeps both requirements as written. If you instead meant mentions to be emailed immediately, PRD-041 needs changing, and that's a requirements change I'd hand to the requirements workflow rather than decide in the design.
 >
-> **Gap:** no requirement says whether push notifications to phones are in scope. If they are, we need a push provider (a buy decision) and device token storage, both in the EU per PRD-090. I'll assume **in-app and email only** (provisional) until you say otherwise.
+> **Gap:** no requirement says whether push notifications to phones are in scope. If they are, we need a push capability (a build-vs-buy decision that follows applicable Principles, or you if none apply) and device token storage, both in the EU per PRD-090. I'll assume **in-app and email only** (provisional) until you say otherwise.
 >
 > Options for the conflict:
 > 1. In-app real-time for mentions + daily email digest (recommended; satisfies both PRDs).

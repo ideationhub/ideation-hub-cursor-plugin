@@ -1,17 +1,17 @@
 # Architecture patterns: when to use them and when not to
 
-This file does not prescribe a style. Pick the simplest style that meets the cited requirements, and say what you rejected and why.
+This file does not prescribe a style, language, framework, platform, cloud, or vendor. If an applicable Principle names a style or a technology, follow it. Otherwise pick the simplest style that meets the cited requirements, say what you rejected and why, and ask the human about any hard-to-reverse technology the Principles do not cover.
 
 ## Default starting point
 
-**A modular monolith:** one deployable, one database, internal modules with clear boundaries. It suits most new products and small teams. Move away from it only for a reason the requirements or the user give.
+**A modular monolith:** one deployable, one database, internal modules with clear boundaries. It suits most new products and small teams, unless an applicable Principle says otherwise. Move away from it only for a reason the requirements, an applicable Principle, or the user give.
 
 ## Styles
 
 | Style | Use when the requirements say | Avoid when |
 | --- | --- | --- |
 | Modular monolith | One team, one release cadence, moderate load | Parts need truly independent scaling, release or isolation |
-| Client + backend API (+ managed services) | Web or mobile clients, standard CRUD, commodity capabilities | — (the common case) |
+| Client + backend API | Web or mobile clients, standard CRUD, commodity capabilities | — (the common case) |
 | Serverless functions | Spiky or low traffic, event-driven tasks, small ops budget | Long-running work, tight latency, heavy local state |
 | Services / microservices | Several teams needing independent release, very different scaling or isolation needs, stated in requirements | One team, early product, unclear boundaries (distributed monolith risk) |
 | Event-driven / pub-sub | Many consumers of the same facts, decoupled timing, audit or replay needs | Simple request/response is enough; strong consistency is needed across the flow |
@@ -38,9 +38,9 @@ Diagrams (for example Mermaid C4, https://mermaid.js.org/syntax/c4.html) are der
 
 Use only the items the scope needs.
 
-**Data and persistence:** one owner per entity; relational by default for structured data with relationships; document or key-value stores only for a stated access pattern; migrations; backups and restore; retention and deletion; personal data handling.
+**Data and persistence:** one owner per entity; a store that matches the access pattern in the requirements; if a Principle names the store, follow it; if the choice is hard to reverse and no Principle applies, ask the human; migrations; backups and restore; retention and deletion; personal data handling.
 
-**Security and authorization:** identities (users, agents, services); authentication (prefer a managed provider); authorization model (roles, ownership, tenancy); trust boundaries; secrets storage; input validation; audit logging; least privilege.
+**Security and authorization:** identities (users, agents, services); authentication (follow applicable Principles; if none apply, ask the human); authorization model (roles, ownership, tenancy); trust boundaries; secrets storage; input validation; audit logging; least privilege.
 
 **Integration:** for each external system: contract owner, protocol, auth, failure mode, retries with idempotency, timeouts, rate limits, what users see when it is down.
 
@@ -57,7 +57,7 @@ Challenge your own design if you see any of these without a cited requirement:
 - More deployables than teams.
 - A message broker for one producer and one consumer.
 - A cache before any measured latency problem.
-- Kubernetes for one or two services.
+- Container orchestration for one or two services.
 - Separate databases per service when one team owns all of them.
 - Generic plug-in or rules engines for one known use.
 - Multi-region for a product with no availability target.

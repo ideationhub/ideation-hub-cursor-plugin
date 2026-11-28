@@ -10,7 +10,7 @@ description: Developer skill of the Ideation Hub plugin for Product Requirements
 license: MIT
 compatibility: Uses the ideation-hub-platform skill (schema, REST, MCP), the ideation-hub-requirements-agent skill when requirement wording changes, and an agent credential. All three ship in the one Ideation Hub plugin. Recording an assessment needs status:write. No scripts or runtime needed.
 metadata:
-  version: "0.5.0"
+  version: "0.5.1"
   status: beta
   author: Ideation Hub
 ---
@@ -31,6 +31,7 @@ You are a collaborating developer. You turn the **accepted** requirements of an 
    If a relative path is missing because only this folder was copied, open the installed skill of that name and read the same file.
 2. **Check access.** Call `ih_list_products` and note `directEdit` for the target product. The meaning of `directEdit` and `mode` is the platform skill's write rule. Assessment recording is separate: it needs `status:write`, and that permission never edits a title, body, or trace link.
 3. **Agree the scope.** Ask which product and which requirements (an objective, a tag, a PRD section, or named PRD IDs), and whether the task is design, implementation, assessment, or more than one of those. Never design, implement, or assess the whole product unless asked.
+4. **Technology choices come from Principles, not from this skill.** Call `ih_list_applicable_principles` for the product (the platform skill describes the tool). Follow those Principles, including tenant-adopted ones the tool returns. Do not recommend a specific language, framework, platform, cloud, or vendor. If no applicable Principle speaks to the choice, ask the human, and do not proceed with a provisional technology assumption of your own.
 
 ## The loop
 
@@ -41,9 +42,9 @@ Run the user-need trace before the first design pass and before any implementati
 | Phase | What you do | Load |
 | --- | --- | --- |
 | 0. User needs | Before designing or implementing, for each in-scope Product Requirement trace upward to its User Needs, then to the User Profiles and Business Needs behind them. Summarize who the user is, what they are trying to do, and why. Let that summary shape UX, defaults, edge cases, error messages, and what to cut. If a requirement has no linked User Need, or conflicts with its User Needs, flag it and propose a trace link or wording change. Do not guess, and do not edit the requirement. | `references/implementation.md` |
-| A. Understand | Read the scoped requirements, the user-need summary from phase 0, NFRs and principles, plus any existing designs. Sort facts (cited `ID@rev`) from assumptions and recommendations. List what is missing. | `references/methodology.md` |
+| A. Understand | Read the scoped requirements, the user-need summary from phase 0, NFRs, and applicable Principles (`ih_list_applicable_principles`), plus any existing designs. Sort facts (cited `ID@rev`) from assumptions and recommendations. List what is missing. | `references/methodology.md` |
 | B. First pass | Pick the smallest proportionality rung that covers the scope. Draft only the elements the requirements justify. Each element names the IDs that justify it. | `references/design-elements.md`, `references/architecture-patterns.md` |
-| C. Collaborate | Present the design in sections. Ask at most 3–5 questions, only those that change the architecture, each with options and your recommendation. Carry on with labelled provisional assumptions. | `references/tradeoff-analysis.md` |
+| C. Collaborate | Present the design in sections. Ask at most 3–5 questions, only those that change the architecture, each with options. Recommend a structure or risk judgement; for a language, framework, platform, cloud, or vendor, follow applicable Principles or ask the human. Carry on with labelled provisional assumptions that are not a stack this skill invented. | `references/tradeoff-analysis.md` |
 | D. Iterate | On a challenge, a new constraint or a changed requirement, find the affected elements through links and revision pins. Change only those. State downstream effects. | `references/traceability.md` |
 | E. Validate | Run the coverage, justification, link-direction and staleness checks from Ideation Hub data, then the qualitative review. Label every finding verified, predicted or judgement. | `references/validation.md` |
 | F. Handoff | When another agent will build the design: build the handoff brief, record the `design_ready` event, and report. | `references/implementation-handoff.md` |
@@ -98,8 +99,8 @@ Link type names, stored direction, and allowed pairs are in the platform schema.
 ## Quality bar
 
 - **Proportionate.** Start from one deployable unit and a few components. Add a container, a service, a queue or a cache only when a cited requirement needs it. Say what you chose not to add and why.
-- **Build vs buy** for every significant capability.
-- **Alternatives only where trade-offs matter.** Recommend one, with reasons tied to requirement IDs.
+- **Build vs buy** for every significant capability, following applicable Principles; if none apply, ask the human.
+- **Alternatives only where trade-offs matter.** Recommend one only when a requirement or an applicable Principle supports it. Do not recommend a language, framework, platform, cloud, or vendor from this skill; follow Principles or ask the human.
 - **Requirements say what; designs say how.** Never push implementation choices back into requirements.
 - **Name uncertainty.** Every assumption is labelled provisional until the user confirms it.
 
@@ -120,18 +121,18 @@ Link type names, stored direction, and allowed pairs are in the platform schema.
 
 # Architecture patterns: when to use them and when not to
 
-This file does not prescribe a style. Pick the simplest style that meets the cited requirements, and say what you rejected and why.
+This file does not prescribe a style, language, framework, platform, cloud, or vendor. If an applicable Principle names a style or a technology, follow it. Otherwise pick the simplest style that meets the cited requirements, say what you rejected and why, and ask the human about any hard-to-reverse technology the Principles do not cover.
 
 ## Default starting point
 
-**A modular monolith:** one deployable, one database, internal modules with clear boundaries. It suits most new products and small teams. Move away from it only for a reason the requirements or the user give.
+**A modular monolith:** one deployable, one database, internal modules with clear boundaries. It suits most new products and small teams, unless an applicable Principle says otherwise. Move away from it only for a reason the requirements, an applicable Principle, or the user give.
 
 ## Styles
 
 | Style | Use when the requirements say | Avoid when |
 | --- | --- | --- |
 | Modular monolith | One team, one release cadence, moderate load | Parts need truly independent scaling, release or isolation |
-| Client + backend API (+ managed services) | Web or mobile clients, standard CRUD, commodity capabilities | — (the common case) |
+| Client + backend API | Web or mobile clients, standard CRUD, commodity capabilities | — (the common case) |
 | Serverless functions | Spiky or low traffic, event-driven tasks, small ops budget | Long-running work, tight latency, heavy local state |
 | Services / microservices | Several teams needing independent release, very different scaling or isolation needs, stated in requirements | One team, early product, unclear boundaries (distributed monolith risk) |
 | Event-driven / pub-sub | Many consumers of the same facts, decoupled timing, audit or replay needs | Simple request/response is enough; strong consistency is needed across the flow |
@@ -158,9 +159,9 @@ Diagrams (for example Mermaid C4, https://mermaid.js.org/syntax/c4.html) are der
 
 Use only the items the scope needs.
 
-**Data and persistence:** one owner per entity; relational by default for structured data with relationships; document or key-value stores only for a stated access pattern; migrations; backups and restore; retention and deletion; personal data handling.
+**Data and persistence:** one owner per entity; a store that matches the access pattern in the requirements; if a Principle names the store, follow it; if the choice is hard to reverse and no Principle applies, ask the human; migrations; backups and restore; retention and deletion; personal data handling.
 
-**Security and authorization:** identities (users, agents, services); authentication (prefer a managed provider); authorization model (roles, ownership, tenancy); trust boundaries; secrets storage; input validation; audit logging; least privilege.
+**Security and authorization:** identities (users, agents, services); authentication (follow applicable Principles; if none apply, ask the human); authorization model (roles, ownership, tenancy); trust boundaries; secrets storage; input validation; audit logging; least privilege.
 
 **Integration:** for each external system: contract owner, protocol, auth, failure mode, retries with idempotency, timeouts, rate limits, what users see when it is down.
 
@@ -177,7 +178,7 @@ Challenge your own design if you see any of these without a cited requirement:
 - More deployables than teams.
 - A message broker for one producer and one consumer.
 - A cache before any measured latency problem.
-- Kubernetes for one or two services.
+- Container orchestration for one or two services.
 - Separate databases per service when one team owns all of them.
 - Generic plug-in or rules engines for one known use.
 - Multi-region for a product with no availability target.
@@ -367,7 +368,7 @@ Do not split a design into more records than it needs.
 ## Titles
 
 - SD and CD titles name the thing: "Order service", "Checkout API", "Order data model", "System context: ShopTrack".
-- Decision titles state the choice: "Use PostgreSQL for order data", "Run as one deployable web app".
+- Decision titles state the choice: "Keep order data in the product's existing store", "Run as one deployable web app". Name a specific technology only when an applicable Principle or the user has chosen it.
 - No requirement IDs, no type names ("SD:"), no profile names in titles.
 - Run the requirements skill's editor pass on titles and bodies before filing.
 
@@ -406,7 +407,7 @@ Write bodies in plain Markdown. Leave out a section that does not apply. Do not 
 ```markdown
 **Responsibility.** <one sentence>
 
-**Technology.** <runtime, framework, store> — <build or buy reason>
+**Technology.** <runtime, framework, or store from an applicable Principle or a choice the user confirmed> — <build or buy reason>
 
 **Provides.** <interfaces it exposes, by title>
 
@@ -464,7 +465,7 @@ Structure adapted from MADR (https://adr.github.io/madr/, MIT or CC0-1.0).
 ```markdown
 **Provider.** <component title>   **Consumers.** <titles>
 
-**Style.** <REST/JSON, GraphQL, gRPC, events, function call> — <why>
+**Style.** <the interface style the applicable Principles or the agreed design name, for example REST/JSON or events> — <why>
 
 **Operations.**
 | Operation | Input | Output | Errors | Notes |
@@ -606,7 +607,7 @@ Show the summary before the first design section or the first code change. Keep 
 
 The Product Requirement says what the product must do. This is how you build it. Cite the PRD and design IDs you are implementing.
 
-1. **Follow the codebase.** Read the existing patterns first: structure, naming, data access, API shape, UI components, error handling, and tests. Match them. Do not introduce a new pattern for one requirement.
+1. **Follow the codebase.** Read the existing patterns first: structure, naming, data access, API shape, UI components, error handling, and tests. Match them. Do not introduce a new pattern for one requirement. Do not introduce a language, framework, platform, cloud, or vendor that the codebase and the applicable Principles do not already use. If the work needs one and no Principle applies, ask the human.
 2. **Smallest thin slice.** Pick the smallest change that satisfies the requirement end to end, one path a user can complete through the data model, the API, and the UI. Cut anything the cited User Needs and Product Requirements do not need.
 3. **Consistent layers.** Design the data model, API, and UI changes so they agree with each other and with the rest of the system. A field, an error, or a screen means the same thing in every layer that has it.
 4. **Simple and reversible.** Prefer a choice you can replace later without migrating users or stored data. A hard-to-reverse choice is a design decision: record it as `design-elements.md` describes before you build it.
@@ -640,7 +641,7 @@ Tag every statement you make about the design with one of these labels, in your 
 
 - **Fact:** stated by a record you read in this conversation. Cite it as `PRD-012@3`.
 - **Assumption:** something you take as true to make progress. Mark it *provisional* until the user confirms it.
-- **Recommendation:** your engineering judgement. Give the reason.
+- **Recommendation:** your engineering judgement on structure, scope, or risk. Give the reason. It is not a license to pick a language, framework, platform, cloud, or vendor; those come from applicable Principles or from the human.
 - **Open question:** something you cannot decide without the user or more information.
 
 Never present an assumption or recommendation as a fact.
@@ -663,9 +664,9 @@ Never present an assumption or recommendation as a fact.
    - Users and actors: from the profiles.
    - Functional scope: the in-scope PRDs, grouped by capability.
    - Quality drivers: the NFRs, and any quality the PRDs imply. Label implied ones as assumptions.
-   - Constraints: only those stated in records, or stated by the user in this conversation.
+   - Constraints: those stated in records, including applicable Principles, or stated by the user in this conversation.
    - External dependencies: systems the requirements name.
-   - Missing information: what you need but no record states.
+   - Missing information: what you need but no record states. If the missing item is a language, framework, platform, cloud, or vendor, and no applicable Principle covers it, list it as an open question. Do not assume a stack.
 5. Use the status vocabulary in the retrieval reference. Do not invent a second set of status words.
 
 **Show the user:** the problem frame, in under a screen, with IDs.
@@ -696,7 +697,7 @@ Never present an assumption or recommendation as a fact.
    - Scalability, reliability and performance: only against stated or confirmed targets.
    - Deployment and operations: where it runs, how it is observed, how it is released.
    - Significant technical risks.
-3. **Build vs buy.** For each significant capability (auth, payments, search, messaging, storage, email, analytics), name an existing product or library option and say why you would build or buy. Prefer buy for commodity capabilities.
+3. **Build vs buy.** For each significant capability (auth, payments, search, messaging, storage, email, analytics), say whether to build or buy only as applicable Principles require. If none apply, ask the human. Do not name a vendor, product, or library from this skill, and do not prefer buy or build as a default.
 4. **Justify every element.** Each element lists the requirement IDs (and decisions) it serves. An element with no justification is removed or flagged as a recommendation for the user to accept.
 5. **Draft records, do not file them yet.** Write the record titles, bodies, tags and links following `design-elements.md`. Keep them in the conversation (or in a scratch design plan matching `assets/design-plan.schema.json`).
 
@@ -706,12 +707,12 @@ Never present an assumption or recommendation as a fact.
 2. **Pick the questions that matter.** Ask a question only if its answer changes the structure, a hard-to-reverse choice, or an NFR response. Ask at most 3–5 at once, most important first. Each question:
    - says why it matters (what changes depending on the answer)
    - offers two or three options
-   - gives your recommendation and the provisional assumption you will use if the user does not answer
+   - gives your recommendation and the provisional assumption you will use if the user does not answer, except when the question is a language, framework, platform, cloud, or vendor: then cite any applicable Principle, or ask the human, and do not offer a skill-level recommendation or a provisional technology assumption of your own
 3. **Use trade-off analysis only where a trade-off is real** (`tradeoff-analysis.md`).
-4. **Keep moving.** If the user answers some questions and not others, carry the provisional assumptions forward and say so.
+4. **Keep moving.** If the user answers some questions and not others, carry the provisional assumptions forward and say so, except you must not carry a technology assumption this skill invented.
 5. **When the user agrees**, stage the records with a dry run and file them as proposals (`write-protocol.md`).
 
-Avoid: questionnaires, asking what the requirements already say, asking about details that do not change the design, and asking the user to make choices you are better placed to recommend.
+Avoid: questionnaires, asking what the requirements already say, and asking about details that do not change the design. Ask the user rather than recommending a language, framework, platform, cloud, or vendor when no applicable Principle covers the choice.
 
 ## Phase D — Iterate and refine
 
@@ -741,7 +742,7 @@ Follow `implementation-handoff.md`. Build the brief and record `design_ready` fo
 ## Proportionality reminders
 
 - One deployable is the default. Distribution needs a cited reason: independent scaling, independent release, isolation or team boundaries that the requirements or the user state.
-- No queue, cache, CDN, search engine, service mesh or Kubernetes without a requirement that needs it.
+- No queue, cache, CDN, search engine, service mesh or container orchestration without a requirement that needs it.
 - Small products deserve small designs. A one-record design for a small app is a good outcome.
 
 # Source: references/traceability.md
@@ -853,18 +854,20 @@ Rank the scenarios by importance to the user and by difficulty. Work on the top 
 
 ## 3. Recommend
 
-State the recommendation, the main reason tied to a requirement or scenario, what would make you change your mind, and the provisional assumption you use until the user decides. Record significant choices as a decision SD (`design-elements.md`).
+State the recommendation, the main reason tied to a requirement, an applicable Principle, or a scenario, what would make you change your mind, and the provisional assumption you use until the user decides. Record significant choices as a decision SD (`design-elements.md`).
+
+Before you recommend a language, framework, platform, cloud, vendor, or other specific technology, call `ih_list_applicable_principles` and follow any that apply. If none apply, ask the human; do not pick one yourself. You may still recommend a structural option (for example, whether a capability is in scope) when a requirement supports it.
 
 ## Build vs buy
 
 For each significant capability, answer briefly:
 
-1. Is it a commodity (auth, payments, email, search, file storage, analytics, observability)? Prefer an existing managed service or library.
-2. Is it core to what makes the product different? Then building may be justified.
-3. What are the lock-in, cost, data-residency and compliance consequences of buying? Use only constraints the requirements or the user state.
-4. What is the cheapest reversible option?
+1. Is it a commodity (auth, payments, email, search, file storage, analytics, observability)? Follow applicable Principles. If none speak to build vs buy, ask the human. Do not prefer a managed service, library, or vendor as a default of this skill.
+2. Is it core to what makes the product different? Then building may be justified if the Principles or the human say so.
+3. What are the lock-in, cost, data-residency and compliance consequences of buying? Use only constraints the requirements, applicable Principles, or the user state.
+4. What option do the Principles, or the human if none apply, treat as acceptable and reversible?
 
-Record the answer in the container SD's "Technology" line, or as a decision SD if it is contested.
+Record the answer in the container SD's "Technology" line, or as a decision SD if it is contested. Name a runtime, framework, or vendor there only when a Principle or the human has chosen it.
 
 ## Present trade-offs to the user
 

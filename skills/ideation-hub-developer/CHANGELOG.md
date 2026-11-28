@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.1 (2026-11-28) — beta
+
+- Technology choices (language, framework, platform, cloud, or vendor) come from the product's and tenant's applicable Principles, read with `ih_list_applicable_principles`. If none apply, ask the human. This skill does not recommend a specific technology.
+- Examples and references no longer prescribe a stack (for example a cross-platform codebase, a named database, or a managed provider). `skills/ideation-hub-system-design/SKILL.md` metadata version tracks this release.
+
+
 ## 0.5.0 (2026-11-27) — beta
 
 - A Principle is a `PRN` record, the broadest record, not a Product Requirement tagged `principle`. `respects` runs from a requirement to a Principle and is shown the other way as Respected by. This skill does not author a Principle and does not create that link. Applicable principles are read with `ih_list_applicable_principles`. Tenant-wide adoption is a human tenant admin action in the web app.
