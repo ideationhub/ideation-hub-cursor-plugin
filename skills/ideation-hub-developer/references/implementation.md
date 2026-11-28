@@ -31,7 +31,7 @@ Show the summary before the first design section or the first code change. Keep 
 
 The Product Requirement says what the product must do. This is how you build it. Cite the PRD and design IDs you are implementing.
 
-1. **Follow the codebase.** Read the existing patterns first: structure, naming, data access, API shape, UI components, error handling, and tests. Match them. Do not introduce a new pattern for one requirement.
+1. **Follow the codebase.** Read the existing patterns first: structure, naming, data access, API shape, UI components, error handling, and tests. Match them. Do not introduce a new pattern for one requirement. Do not introduce a language, framework, platform, cloud, or vendor that the codebase and the applicable Principles do not already use. If the work needs one and no Principle applies, ask the human.
 2. **Smallest thin slice.** Pick the smallest change that satisfies the requirement end to end, one path a user can complete through the data model, the API, and the UI. Cut anything the cited User Needs and Product Requirements do not need.
 3. **Consistent layers.** Design the data model, API, and UI changes so they agree with each other and with the rest of the system. A field, an error, or a screen means the same thing in every layer that has it.
 4. **Simple and reversible.** Prefer a choice you can replace later without migrating users or stored data. A hard-to-reverse choice is a design decision: record it as `design-elements.md` describes before you build it.

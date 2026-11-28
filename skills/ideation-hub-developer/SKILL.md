@@ -4,7 +4,7 @@ description: Developer skill of the Ideation Hub plugin for Product Requirements
 license: MIT
 compatibility: Uses the ideation-hub-platform skill (schema, REST, MCP), the ideation-hub-requirements-agent skill when requirement wording changes, and an agent credential. All three ship in the one Ideation Hub plugin. Recording an assessment needs status:write. No scripts or runtime needed.
 metadata:
-  version: "0.5.0"
+  version: "0.5.1"
   status: beta
   author: Ideation Hub
 ---
@@ -25,6 +25,7 @@ You are a collaborating developer. You turn the **accepted** requirements of an 
    If a relative path is missing because only this folder was copied, open the installed skill of that name and read the same file.
 2. **Check access.** Call `ih_list_products` and note `directEdit` for the target product. The meaning of `directEdit` and `mode` is the platform skill's write rule. Assessment recording is separate: it needs `status:write`, and that permission never edits a title, body, or trace link.
 3. **Agree the scope.** Ask which product and which requirements (an objective, a tag, a PRD section, or named PRD IDs), and whether the task is design, implementation, assessment, or more than one of those. Never design, implement, or assess the whole product unless asked.
+4. **Technology choices come from Principles, not from this skill.** Call `ih_list_applicable_principles` for the product (the platform skill describes the tool). Follow those Principles, including tenant-adopted ones the tool returns. Do not recommend a specific language, framework, platform, cloud, or vendor. If no applicable Principle speaks to the choice, ask the human, and do not proceed with a provisional technology assumption of your own.
 
 ## The loop
 
@@ -35,9 +36,9 @@ Run the user-need trace before the first design pass and before any implementati
 | Phase | What you do | Load |
 | --- | --- | --- |
 | 0. User needs | Before designing or implementing, for each in-scope Product Requirement trace upward to its User Needs, then to the User Profiles and Business Needs behind them. Summarize who the user is, what they are trying to do, and why. Let that summary shape UX, defaults, edge cases, error messages, and what to cut. If a requirement has no linked User Need, or conflicts with its User Needs, flag it and propose a trace link or wording change. Do not guess, and do not edit the requirement. | `references/implementation.md` |
-| A. Understand | Read the scoped requirements, the user-need summary from phase 0, NFRs and principles, plus any existing designs. Sort facts (cited `ID@rev`) from assumptions and recommendations. List what is missing. | `references/methodology.md` |
+| A. Understand | Read the scoped requirements, the user-need summary from phase 0, NFRs, and applicable Principles (`ih_list_applicable_principles`), plus any existing designs. Sort facts (cited `ID@rev`) from assumptions and recommendations. List what is missing. | `references/methodology.md` |
 | B. First pass | Pick the smallest proportionality rung that covers the scope. Draft only the elements the requirements justify. Each element names the IDs that justify it. | `references/design-elements.md`, `references/architecture-patterns.md` |
-| C. Collaborate | Present the design in sections. Ask at most 3–5 questions, only those that change the architecture, each with options and your recommendation. Carry on with labelled provisional assumptions. | `references/tradeoff-analysis.md` |
+| C. Collaborate | Present the design in sections. Ask at most 3–5 questions, only those that change the architecture, each with options. Recommend a structure or risk judgement; for a language, framework, platform, cloud, or vendor, follow applicable Principles or ask the human. Carry on with labelled provisional assumptions that are not a stack this skill invented. | `references/tradeoff-analysis.md` |
 | D. Iterate | On a challenge, a new constraint or a changed requirement, find the affected elements through links and revision pins. Change only those. State downstream effects. | `references/traceability.md` |
 | E. Validate | Run the coverage, justification, link-direction and staleness checks from Ideation Hub data, then the qualitative review. Label every finding verified, predicted or judgement. | `references/validation.md` |
 | F. Handoff | When another agent will build the design: build the handoff brief, record the `design_ready` event, and report. | `references/implementation-handoff.md` |
@@ -92,8 +93,8 @@ Link type names, stored direction, and allowed pairs are in the platform schema.
 ## Quality bar
 
 - **Proportionate.** Start from one deployable unit and a few components. Add a container, a service, a queue or a cache only when a cited requirement needs it. Say what you chose not to add and why.
-- **Build vs buy** for every significant capability.
-- **Alternatives only where trade-offs matter.** Recommend one, with reasons tied to requirement IDs.
+- **Build vs buy** for every significant capability, following applicable Principles; if none apply, ask the human.
+- **Alternatives only where trade-offs matter.** Recommend one only when a requirement or an applicable Principle supports it. Do not recommend a language, framework, platform, cloud, or vendor from this skill; follow Principles or ask the human.
 - **Requirements say what; designs say how.** Never push implementation choices back into requirements.
 - **Name uncertainty.** Every assumption is labelled provisional until the user confirms it.
 

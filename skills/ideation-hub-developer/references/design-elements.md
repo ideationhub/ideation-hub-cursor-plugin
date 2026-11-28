@@ -39,7 +39,7 @@ Do not split a design into more records than it needs.
 ## Titles
 
 - SD and CD titles name the thing: "Order service", "Checkout API", "Order data model", "System context: ShopTrack".
-- Decision titles state the choice: "Use PostgreSQL for order data", "Run as one deployable web app".
+- Decision titles state the choice: "Keep order data in the product's existing store", "Run as one deployable web app". Name a specific technology only when an applicable Principle or the user has chosen it.
 - No requirement IDs, no type names ("SD:"), no profile names in titles.
 - Run the requirements skill's editor pass on titles and bodies before filing.
 
@@ -78,7 +78,7 @@ Write bodies in plain Markdown. Leave out a section that does not apply. Do not 
 ```markdown
 **Responsibility.** <one sentence>
 
-**Technology.** <runtime, framework, store> — <build or buy reason>
+**Technology.** <runtime, framework, or store from an applicable Principle or a choice the user confirmed> — <build or buy reason>
 
 **Provides.** <interfaces it exposes, by title>
 
@@ -136,7 +136,7 @@ Structure adapted from MADR (https://adr.github.io/madr/, MIT or CC0-1.0).
 ```markdown
 **Provider.** <component title>   **Consumers.** <titles>
 
-**Style.** <REST/JSON, GraphQL, gRPC, events, function call> — <why>
+**Style.** <the interface style the applicable Principles or the agreed design name, for example REST/JSON or events> — <why>
 
 **Operations.**
 | Operation | Input | Output | Errors | Notes |
