@@ -1,4 +1,4 @@
-# Ideation Hub Developer skill (0.5.2 beta)
+# Ideation Hub Developer skill (0.5.3 beta)
 
 A portable Agent Skill that helps any coding agent do system design, implementation, and assessment of implementation and test coverage status for Product Requirements in [Ideation Hub](https://www.ideationhub.me). Before it designs or implements, it traces each Product Requirement up to its User Needs and shapes the work from who the user is and what they are trying to do. It reads the accepted requirements over MCP, proposes a proportionate design, iterates, validates coverage and traceability, implements when asked by following the codebase, and assesses each Product Requirement it is given.
 
@@ -66,7 +66,7 @@ The agent always files design changes as proposals (`mode: "suggest"`) unless yo
 
 ## Status
 
-0.5.2 is a beta. The conventions (tags, record templates, link patterns) may change before 1.0 as real designs are recorded. See `NOTES.md` for known gaps. The previous name, `ideation-hub-system-design`, remains as a deprecated alias.
+0.5.3 is a beta. The conventions (tags, record templates, link patterns) may change before 1.0 as real designs are recorded. See `NOTES.md` for known gaps. The previous name, `ideation-hub-system-design`, remains as a deprecated alias.
 
 ## Licence
 

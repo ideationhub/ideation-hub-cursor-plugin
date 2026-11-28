@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.3 (2026-11-28) — beta
+
+- When you start implementing a requirement, record `phase: "implementation_started"` with `ih_record_development_phase_event` (`delivery:write`, no requester). The skill already records `implementation_complete`, `merged_to_main`, `deploy_completed`, and a status assessment after shipping.
+- `skills/ideation-hub-system-design/SKILL.md` metadata version tracks this release.
+
+
 ## 0.5.2 (2026-11-28) — beta
 
 - While implementing, record development status on each in-scope Product Requirement with `ih_record_development_phase_event`: `implementation_complete` when the work is finished, `merged_to_main` when the pull request merges, and `deploy_completed` when production deployment completes. After shipping, record a status assessment with `ih_record_status_assessment`. There is no agent-writable phase for starting implementation; do not invent one.

@@ -4,7 +4,7 @@ description: Deprecated alias of the Ideation Hub developer skill. Use when an e
 license: MIT
 compatibility: Requires the ideation-hub-developer skill in a sibling directory, the Ideation Hub platform skill, and the ideation-hub-requirements-agent skill.
 metadata:
-  version: "0.5.2"
+  version: "0.5.3"
   status: deprecated
   aliasOf: ideation-hub-developer
   author: Ideation Hub

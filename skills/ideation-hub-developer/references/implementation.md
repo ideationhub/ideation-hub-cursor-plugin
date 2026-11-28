@@ -44,7 +44,7 @@ The Product Requirement says what the product must do. This is how you build it.
 
 For each in-scope Product Requirement you implement, update its development status with direct writes. Do not invent a phase name. Pass `evidenceUrl` (the pull request or deploy URL) when you have one. If a call returns 403, tell the user which permission is missing and continue. Never work around it.
 
-1. There is no agent-writable phase for starting implementation. When the implementation for that requirement is finished, call `ih_record_development_phase_event` with `phase: "implementation_complete"`. It needs `delivery:write`.
+1. When you start implementing a requirement, call `ih_record_development_phase_event` with `phase: "implementation_started"`. When the implementation for that requirement is finished, record `phase: "implementation_complete"`. It needs `delivery:write`.
 2. When the pull request merges, record `phase: "merged_to_main"`. When production deployment completes, record `phase: "deploy_completed"`. You may also record `tests_passing`, `pushed_to_git`, and `deploy_started` at those moments. Events are append-only; the same phase may appear more than once.
 3. After shipping, record a status assessment of the current revision with `ih_record_status_assessment` as `assessment.md` describes. It needs `status:write` and cannot change a title, body, or trace link.
 

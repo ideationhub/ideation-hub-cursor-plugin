@@ -23,11 +23,11 @@
 **From first idea to justified release confidence.**  
 Ideation Hub gives AI-assisted engineering teams a living system of record for product intent—connecting **Principles (`PRN`)**, **Business Needs (`BN`)**, **User Profiles**, **User Needs (`UN`)**, **Product Requirements (`PRD`)**, **System / UX / Component Designs (`SD`, `UXD`, `CD`)**, **Implementations (`IMPL`)**, and **Verification / Validation / Unit Tests (`VT`, `VER`, `UT`)** in a single traceable graph.
 
-This repository is one plugin, **Ideation Hub** (`ideation-hub`, 2.0.3). It ships the MCP server and three skills, side by side in `skills/`:
+This repository is one plugin, **Ideation Hub** (`ideation-hub`, 2.0.4). It ships the MCP server and three skills, side by side in `skills/`:
 
 1. **`ideation-hub-platform`** (1.1.0) — the one description of the schema, REST API, and Model Context Protocol tools, plus how to create an agent credential. Both other skills read it.
 2. **`ideation-hub-requirements-agent`** (1.7.2) — authoring workflow and writing rubrics for Business Needs, User Needs, and Product Requirements.
-3. **`ideation-hub-developer`** (0.5.2 beta) — system design, implementation, and assessment. Before designing or implementing, it traces each Product Requirement up to its User Needs. Assessment of the current revision is unchanged (PRD-180, applying PRD-026, PRD-172, and PRD-179). `ideation-hub-system-design` is a deprecated alias that lives in `skills/ideation-hub-system-design`.
+3. **`ideation-hub-developer`** (0.5.3 beta) — system design, implementation, and assessment. Before designing or implementing, it traces each Product Requirement up to its User Needs. Assessment of the current revision is unchanged (PRD-180, applying PRD-026, PRD-172, and PRD-179). `ideation-hub-system-design` is a deprecated alias that lives in `skills/ideation-hub-system-design`.
 
 The MCP server is `https://api.ideationhub.me/api/mcp`. Each skill folder has one source of truth in `skills/`; there are no second copies. The skills read each other by relative path, so they stay siblings. Version 2.0.0 replaced the earlier four-entry marketplace (separate platform, requirements, and developer plugins plus a compatibility bundle) with this single plugin. Skill names did not change.
 
