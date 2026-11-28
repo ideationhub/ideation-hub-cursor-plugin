@@ -2,7 +2,7 @@
 
 These steps were checked against the Cursor documentation on 22 November 2026. The pages used are https://cursor.com/docs/plugins, https://cursor.com/docs/skills, https://cursor.com/docs/mcp, and https://cursor.com/docs/reference/plugins.
 
-Ideation Hub is a workspace for product requirements. This repository is one plugin, **Ideation Hub** (`ideation-hub`, 2.0.0). It carries the MCP server and three skills: `ideation-hub-platform` describes the records and the tools, `ideation-hub-requirements-agent` is the writing guide, and `ideation-hub-developer` is the design and implementation guide.
+Ideation Hub is a workspace for product requirements. This repository is one plugin, **Ideation Hub** (`ideation-hub`, 2.0.1). It carries the MCP server and three skills: `ideation-hub-platform` describes the records and the tools, `ideation-hub-requirements-agent` is the writing guide, and `ideation-hub-developer` is the design and implementation guide.
 
 The server address in this repository is https://api.ideationhub.me/api/mcp. On 22 November 2026 a request to https://www.ideationhub.me/api/mcp also returned a successful response. The files in this repository use the api host.
 
