@@ -1,0 +1,3 @@
+# Grok Bot
+
+Install **Ideation Hub** from Connect apps once the plugin is listed in the catalog. It brings the MCP server and the three skills. Until it is listed, add the MCP server as a custom connector named `IdeationHub` with URL `https://api.ideationhub.me/api/mcp` and headers `X-IH-Client-Id` / `X-IH-Client-Secret`, and save the agent instructions with the bot's skill tool (slugs `ideation-hub-requirements-agent` and `ideation-hub-developer`; `ideation-hub-system-design` is a deprecated alias of the developer skill). The schema, REST API, and MCP catalog are the platform skill. The bot opens a secure dialog for the secret; never paste it into chat.

@@ -1,5 +1,0 @@
-# Any other host
-
-- **Plugins:** any loader that follows the Agent Skills specification (https://agentskills.io/specification) can load `ideation-hub-requirements-agent` and `ideation-hub-developer` from the requirements and developer plugins. Also load `ideation-hub-system-design` if an existing install still invokes that name. It is a deprecated alias. Keep `ideation-hub-platform` as a sibling directory. The schema, REST API, and MCP catalog are there, not copied into the other plugins. If the host has no skill loader, give the agent `plugins/ideation-hub-developer/skills/ideation-hub-developer/SKILL.md` and let it read the platform `references/` files.
-- **MCP:** Streamable HTTP JSON-RPC, `POST https://api.ideationhub.me/api/mcp`, protocol `2025-03-26` (or `2024-11-05`), no SSE. Send `X-IH-Client-Id` and `X-IH-Client-Secret` on every request, or use an OAuth `client_credentials` bearer token (platform plugin `references/rest-api.md`).
-- **No subagents?** Where the requirements plugin asks for a fresh-reader check, do its editor pass instead.

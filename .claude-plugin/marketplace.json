@@ -1,30 +1,15 @@
 {
   "name": "ideation-hub",
-  "description": "Ideation Hub platform, developer, and requirements plugins. The root ideation-hub entry remains so existing Claude Code installs keep loading.",
+  "description": "Ideation Hub: one plugin with the MCP server and the platform, requirements, and developer skills.",
   "owner": {
     "name": "Ideation Hub",
     "email": "support@ideationhub.me"
   },
   "plugins": [
     {
-      "name": "ideation-hub-platform",
-      "source": "./plugins/ideation-hub-platform",
-      "description": "Schema, REST API, and Model Context Protocol tools for Ideation Hub."
-    },
-    {
-      "name": "ideation-hub-developer",
-      "source": "./plugins/ideation-hub-developer",
-      "description": "System design, implementation, and assessment. Requires ideation-hub-platform."
-    },
-    {
-      "name": "ideation-hub-requirements",
-      "source": "./plugins/ideation-hub-requirements",
-      "description": "Authoring workflow. Skill name ideation-hub-requirements-agent. Requires ideation-hub-platform."
-    },
-    {
       "name": "ideation-hub",
       "source": "./",
-      "description": "Compatibility bundle for existing installs. Prefer the three plugins above. Do not install this bundle together with them."
+      "description": "Connect coding agents to Ideation Hub, a requirements traceability workspace. Includes the Ideation Hub MCP server and three skills: ideation-hub-platform (schema, REST, and MCP reference), ideation-hub-requirements-agent (write and trace Business Needs, User Needs, and Product Requirements), and ideation-hub-developer (system design, implementation, and assessment; the old ideation-hub-system-design name still resolves)."
     }
   ]
 }

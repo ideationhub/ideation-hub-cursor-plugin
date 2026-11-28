@@ -9,15 +9,15 @@ const repoRoot = process.cwd();
 const units = [
   {
     id: "ideation-hub-platform",
-    sourceDir: "plugins/ideation-hub-platform/skills/ideation-hub-platform",
+    sourceDir: "skills/ideation-hub-platform",
   },
   {
     id: "ideation-hub-developer",
-    sourceDir: "plugins/ideation-hub-developer/skills/ideation-hub-developer",
+    sourceDir: "skills/ideation-hub-developer",
   },
   {
     id: "ideation-hub-requirements",
-    sourceDir: "plugins/ideation-hub-requirements/skills/ideation-hub-requirements-agent",
+    sourceDir: "skills/ideation-hub-requirements-agent",
   },
 ];
 

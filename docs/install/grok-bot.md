@@ -24,7 +24,7 @@ Choose Add plugin.
 
 The documentation says the tools are ready from the next message, and that a team policy can block a server so it cannot be saved. If the button does not save, that policy is the documented reason to check.
 
-Not verified: a catalog listing named Ideation Hub inside Connect apps. Use the custom connector steps above until a catalog entry is documented.
+Ideation Hub is one plugin (`ideation-hub`, 2.0.0) with the MCP server and the three skills. It has been submitted for the Cursor Marketplace, which backs the Connect apps catalog, but it is not listed yet. Once it is listed, add **Ideation Hub** from Connect apps instead of the custom connector. Until then, use the custom connector steps above.
 
 ## Skills
 
